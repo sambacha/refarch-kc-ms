@@ -1,0 +1,30 @@
+[
+  {
+    "id": "f1",
+    "name": "KC-Fleet North",
+    "ships": [
+      {
+        "id": "s1",
+        "name": "Marie Rose",
+        "latitude": "37.8044",
+        "longitude": "-122.2711",
+        "status": "Docked",
+        "port": "Oakland",
+        "type": "Carrier"
+      },
+      {
+        "id": "s2",
+        "name": "BlackBear",
+        "latitude": "36.8044",
+        "longitude": "-140.2711",
+        "status": "AtSea",
+        "type": "Carrier"
+      }
+    ]
+  },
+  {
+  	"id": "f2",
+    "name": "KC- Fleet South",
+    "ships": []
+  }
+]
