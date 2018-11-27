@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
@@ -16,8 +15,7 @@ import ibm.labs.kc.event.model.ContainerMetric;
 public class ContainerPublisher extends Publisher{
 
 	public ContainerPublisher() {
-		 Properties p = config.buildProducerProperties();
-		 p.setProperty(ProducerConfig.CLIENT_ID_CONFIG, p.getProperty(ProducerConfig.CLIENT_ID_CONFIG)+"_container");
+		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID)+"_container");
 		 kafkaProducer = new KafkaProducer<String, String>(p);
 	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
 	}

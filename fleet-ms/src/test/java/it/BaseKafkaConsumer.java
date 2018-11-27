@@ -24,8 +24,8 @@ public class BaseKafkaConsumer {
    	   this.config = new ApplicationConfig();
 	}
 	
-	protected void prepareConsumer(String topicName) {
-		Properties properties = this.config.buildConsumerProperties();
+	protected void prepareConsumer(String topicName,String clientID) {
+		Properties properties = this.config.buildConsumerProperties(clientID);
         kafkaConsumer = new KafkaConsumer<>(properties);
         kafkaConsumer.subscribe(Arrays.asList(topicName));
 	}

@@ -18,7 +18,7 @@ public class ApplicationConfig {
 	public static final String KAFKA_BW_PROBLEM_TOPIC_NAME = "kafka.bw.problem.topic.name";
 	public static final String KAFKA_GROUPID = "kafka.groupid";
 	public static final String KAFKA_CONSUMER_CLIENTID = "kafka.consumer.clientid";
-	private static final String KAFKA_PRODUCER_CLIENTID = "kafka.producer.clientid";
+	public static final String KAFKA_PRODUCER_CLIENTID = "kafka.producer.clientid";
 	public static final String KAFKA_USER = "kafka.user";
 	public static final String KAFKA_PWD = "kafka.password";
 	public static final String KAFKA_APIKEY = "kafka.api_key";
@@ -53,7 +53,11 @@ public class ApplicationConfig {
 		return p;
 	}
 
-	public Properties buildConsumerProperties() {
+	public Properties buildConsumerProperties(String clientID) {
+		String clientId = clientID;
+		if (clientId == null ) {
+			clientId = getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID);
+		}
 		Properties properties = buildCommonProperties();
         
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, 
@@ -67,15 +71,19 @@ public class ApplicationConfig {
         properties.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, "30000");
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
-        properties.put(ConsumerConfig.CLIENT_ID_CONFIG, getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID));
+        properties.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
        return properties;
 	}
 	
-	public Properties buildProducerProperties() {
+	public Properties buildProducerProperties(String clientID) {
+		String clientId = clientID;
+		if (clientId == null ) {
+			clientId = getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID);
+		}
 		Properties properties = buildCommonProperties();
 		properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 		properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
-		properties.put(ProducerConfig.CLIENT_ID_CONFIG, getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID));
+		properties.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
 		properties.put(ProducerConfig.ACKS_CONFIG, "-1");
         return properties;
 	}

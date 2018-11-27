@@ -10,15 +10,13 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
-import com.google.gson.Gson;
-
 import ibm.labs.kc.event.model.ShipPosition;
 
 public class PositionPublisher extends Publisher{
 
 	 
 	 public PositionPublisher() {
-		 Properties p = config.buildProducerProperties();
+		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID));
 		 kafkaProducer = new KafkaProducer<String, String>(p);
 	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
 	 }

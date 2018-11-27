@@ -8,15 +8,13 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 
 import ibm.labs.kc.app.kafka.ApplicationConfig;
 import ibm.labs.kc.event.model.BluewaterProblem;
-import ibm.labs.kc.event.model.ShipPosition;
 import it.BaseKafkaConsumer;
-import it.ShipPositionConsumer;
 
 public class BluewaterProblemConsumer extends BaseKafkaConsumer {
 	
 	public BluewaterProblemConsumer() {
 		super();
-		prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_BW_PROBLEM_TOPIC_NAME));
+		prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_BW_PROBLEM_TOPIC_NAME),"BW-problem-consumer");
 	}
 
 	public List<BluewaterProblem>  consume() {

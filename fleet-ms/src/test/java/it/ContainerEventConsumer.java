@@ -16,7 +16,8 @@ public class ContainerEventConsumer extends BaseKafkaConsumer {
     
     public ContainerEventConsumer() {
     	 super();
-    	 prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME));
+    	 prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME),
+    			 getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID)+"_container");
 	}
 
     

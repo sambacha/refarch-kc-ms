@@ -22,7 +22,8 @@ public class ShipPositionConsumer extends BaseKafkaConsumer {
     
     public ShipPositionConsumer() {
     	 super();
-    	 prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME));
+    	 prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME),
+    			 "ship-consumer");
 	}
     
     public List<ShipPosition>  consume() {
