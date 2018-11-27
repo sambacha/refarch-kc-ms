@@ -15,6 +15,7 @@ public class ApplicationConfig {
 	public static final String KAFKA_BOOTSTRAP_SERVERS = "kafka.bootstrap.servers";
 	public static final String KAFKA_SHIP_TOPIC_NAME = "kafka.ship.topic.name";
 	public static final String KAFKA_CONTAINER_TOPIC_NAME = "kafka.container.topic.name";
+	public static final String KAFKA_BW_PROBLEM_TOPIC_NAME = "kafka.bw.problem.topic.name";
 	public static final String KAFKA_GROUPID = "kafka.groupid";
 	public static final String KAFKA_CONSUMER_CLIENTID = "kafka.consumer.clientid";
 	private static final String KAFKA_PRODUCER_CLIENTID = "kafka.producer.clientid";
@@ -23,6 +24,7 @@ public class ApplicationConfig {
 	public static final String KAFKA_APIKEY = "kafka.api_key";
 	public static final String KAFKA_POLL_DURATION = "kafka.poll.duration";
 	public static final String VERSION = "version";
+	
 	
 	
 	private Properties p;

@@ -17,35 +17,18 @@ import ibm.labs.kc.event.model.ShipPosition;
 
 
 
-public class ShipPositionConsumer {
+public class ShipPositionConsumer extends BaseKafkaConsumer {
 
-
-	private static KafkaConsumer<String, String> kafkaConsumer;
-    
-    private Gson gson = new Gson();
-    public ApplicationConfig config;
-    
-    public ShipPositionConsumer(ApplicationConfig cfg) {
-     this.config = cfg;	
-     prepareConsumer();
-    }
     
     public ShipPositionConsumer() {
-    	 this.config = new ApplicationConfig();
-    	 prepareConsumer();
-	}
-
-	private void prepareConsumer() {
-		Properties properties = this.config.buildConsumerProperties();
-        
-        kafkaConsumer = new KafkaConsumer<>(properties);
-        kafkaConsumer.subscribe(Arrays.asList(config.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME)));
+    	 super();
+    	 prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME));
 	}
     
     public List<ShipPosition>  consume() {
     	List<ShipPosition> buffer = new ArrayList<ShipPosition>();
     	ConsumerRecords<String, String> records = kafkaConsumer.poll(
-    			Long.parseLong(config.getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
+    			Long.parseLong(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
     	
 	    for (ConsumerRecord<String, String> record : records) {
 	    	ShipPosition a = gson.fromJson(record.value(), ShipPosition.class);
@@ -54,13 +37,6 @@ public class ShipPositionConsumer {
     	return buffer;
     }
     
-    public void commitOffset() {
-    	kafkaConsumer.commitSync();
-    }
-    
-    public void close() {
-    	kafkaConsumer.close();
-    }
     
 	public static void main(String[] args) {
 		

@@ -44,9 +44,9 @@ public class Ship {
 			} else {
 				row++;
 				column = 0;
-			}
-			
+			}	
 		}
+		this.setMaxRow(row);
 	}
 	
 

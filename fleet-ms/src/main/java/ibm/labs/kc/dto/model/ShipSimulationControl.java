@@ -7,11 +7,15 @@ package ibm.labs.kc.dto.model;
  */
 public class ShipSimulationControl {
 	public static final String CONTAINER_FIRE = "CONTAINER_FIRE";
+	public static final String HEAT_WAVE = "HEAT_WAVE";
+	public static final String REEFER_DOWN = "REEFER_DOWN";
 	protected String shipName;
 	protected String command;
 	private int numberOfContainers;
 	public double numberOfMinutes;
 
+	public ShipSimulationControl() {}
+	
 	public  ShipSimulationControl(String name, String command) {
 		this.shipName = name;
 		this.command = command;
@@ -39,6 +43,14 @@ public class ShipSimulationControl {
 
 	public void setNumberOfMinutes(double numberOfMinutes) {
 		this.numberOfMinutes = numberOfMinutes;
+	}
+
+	public void setShipName(String shipName) {
+		this.shipName = shipName;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
 	}
 	
 }

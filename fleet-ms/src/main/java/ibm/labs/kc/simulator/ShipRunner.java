@@ -70,7 +70,7 @@ public class ShipRunner implements Runnable {
 				// Then publish the state of their containers
 				for (List<Container> row :  ship.getContainers()) {
 					for (Container c : row) {
-						ContainerMetric cm = BadEventSimulator.buildContainerMetric(c,dateFormat.format(currentWorldTime));
+						ContainerMetric cm = BadEventSimulator.buildContainerMetric(this.shipName,c,dateFormat.format(currentWorldTime));
 						if ( this.usePublish)
 							containerPublisher.publishContainerMetric(cm);
 						else 
@@ -80,10 +80,14 @@ public class ShipRunner implements Runnable {
 				currentWorldTime=modifyTime(currentWorldTime);
 	            // Thread.sleep(100);
 				Thread.sleep(Math.round(this.numberOfMinutes*60000/this.positions.size()));
+				
 			}
         } catch (InterruptedException e) { 
             System.out.println ("ShipRunner stopped"); 
-        } 
+        } finally {
+        	containerPublisher.close();
+        	positionPublisher.close();
+        }
 	}
 	
 	

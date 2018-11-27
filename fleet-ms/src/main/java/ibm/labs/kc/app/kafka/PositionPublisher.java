@@ -25,18 +25,21 @@ public class PositionPublisher extends Publisher{
 
 	public void publishShipPosition(ShipPosition sp) {
 		 try {
+			 String eventAsJson = parser.toJson(sp);
 			 ProducerRecord<String, String> record = new ProducerRecord<String, String>(
-                topic,null,parser.toJson(sp));
+                topic,null,eventAsJson);
         
 			 // Send record asynchronously
 			 Future<RecordMetadata> future = kafkaProducer.send(record);
        
 			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
-			 System.out.println(" -> sent" + recordMetadata.offset());
+			 System.out.println(eventAsJson + " event sent -> offet: " + recordMetadata.offset());
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
-		} finally {
-            kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
-        }
+		} 
+	}
+	
+	public void close() {
+		kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
 	}
 }

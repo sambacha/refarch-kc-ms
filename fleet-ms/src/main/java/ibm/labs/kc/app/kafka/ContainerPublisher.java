@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
@@ -16,6 +17,7 @@ public class ContainerPublisher extends Publisher{
 
 	public ContainerPublisher() {
 		 Properties p = config.buildProducerProperties();
+		 p.setProperty(ProducerConfig.CLIENT_ID_CONFIG, p.getProperty(ProducerConfig.CLIENT_ID_CONFIG)+"_container");
 		 kafkaProducer = new KafkaProducer<String, String>(p);
 	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
 	}
@@ -23,18 +25,21 @@ public class ContainerPublisher extends Publisher{
 	
 	public void publishContainerMetric(ContainerMetric c) {
 		 try {
+			 String eventAsJson = parser.toJson(c);
 			 ProducerRecord<String, String> record = new ProducerRecord<String, String>(
-               topic,null,parser.toJson(c));
+               topic,null,eventAsJson);
        
 			 // Send record asynchronously
 			 Future<RecordMetadata> future = kafkaProducer.send(record);
       
 			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
-			 System.out.println(" -> sent" + recordMetadata.offset());
+			 System.out.println(" Container Event " + eventAsJson + " sent -> offset:" + recordMetadata.offset());
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
-		} finally {
-           kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
-       }
+		} 
+	}
+	
+	public void close() {
+		 kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
 	}
 }

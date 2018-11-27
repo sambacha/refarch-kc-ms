@@ -1,5 +1,6 @@
 package ibm.labs.kc.app.rest;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -35,11 +36,12 @@ public class ShipService {
 	 * @return the ship
 	 */
 	@POST
-	@Path(value="/simulation")
+	@Path(value="/simulate")
 	@ApiOperation(value = "Start a simulation on the given ship name")
 	@ApiResponses({ @ApiResponse(code = 200, message = "simulation started", response = Ship.class),
 	@ApiResponse(code = 404, message = "Ship not found") })
-   @Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
 	public Response performSimulation(ShipSimulationControl ctl) {
 		Ship s = dao.getShipByName(ctl.getShipName());
 		if (s == null) {
@@ -48,6 +50,12 @@ public class ShipService {
 		s.loadContainers(s.getNumberOfContainers());
 		if (ShipSimulationControl.CONTAINER_FIRE.equals(ctl.getCommand())) {
 			BadEventSimulator.fireContainers(s, ctl.getNumberOfContainers());
+		}
+		if (ShipSimulationControl.HEAT_WAVE.equals(ctl.getCommand())) {
+			BadEventSimulator.heatWave(s);
+		}
+		if (ShipSimulationControl.REEFER_DOWN.equals(ctl.getCommand())) {
+			BadEventSimulator.reeferDown(s);
 		}
 		ShipSimulator simulator = new ShipSimulator(this.usePublish);
 		simulator.start(s,ctl.getNumberOfMinutes());

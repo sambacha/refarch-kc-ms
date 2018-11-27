@@ -1,13 +1,13 @@
 package ibm.labs.kc.simulator;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import ibm.labs.kc.event.model.ContainerMetric;
 import ibm.labs.kc.model.Container;
 import ibm.labs.kc.model.Ship;
 
 public class BadEventSimulator {	
+	
 	public static void fireContainers(Ship s, int numberOfContainers) {
 	    if (numberOfContainers >= 4) {
 	    	Container c = s.getContainers().get(0).get(2);
@@ -33,7 +33,7 @@ public class BadEventSimulator {
 	}
 	    
 	
-	public static ContainerMetric buildContainerMetric(Container c, String currentWorldTime) {
+	public static ContainerMetric buildContainerMetric(String shipId,Container c, String currentWorldTime) {
 		switch(c.getStatus()) {
 			case Container.STATUS_FIRE:
 				c.setTemperature(c.getTemperature() + 50);
@@ -46,7 +46,37 @@ public class BadEventSimulator {
 				break;
 		}
 	
-		ContainerMetric cm = new ContainerMetric(c.getId(),c.getTemperature(),c.getAmp(),currentWorldTime);
+		ContainerMetric cm = new ContainerMetric(shipId,c.getId(),c.getTemperature(),c.getAmp(),currentWorldTime);
+		
 		return cm;
+	}
+
+
+	public static void reeferDown(Ship s) {
+		Container c = s.getContainers().get(0).get(3);
+    	c.setStatus(Container.STATUS_DOWN);
+    	c.setAmp(0);
+	}
+
+
+	public static void heatWave(Ship s) {
+		int topContainerCount = 0;
+		long lastIndex = 0;
+		for (Container c : s.getContainers().get(s.getMaxRow())) {
+			c.setStatus(Container.STATUS_HEAT);
+			c.setTemperature(40);
+			topContainerCount++;
+			lastIndex = c.getColumn();
+		}
+		if (topContainerCount < s.getMaxColumn()) {
+			for (Container c : s.getContainers().get(s.getMaxRow()-1)) {
+				if (c.getColumn() >= lastIndex) {
+					c.setStatus(Container.STATUS_HEAT);
+					c.setTemperature(40);
+					topContainerCount++;
+				}
+			}
+		}
+		
 	}
 }

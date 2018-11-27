@@ -1,9 +1,13 @@
 package ibm.labs.kc.event.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ShipPosition {
+	@SerializedName("shipId")
 	protected String shipID;
 	protected String latitude;
 	protected String longitude;
+	@SerializedName("ts")
 	protected String timeStamp;
 	
 	public ShipPosition() {
