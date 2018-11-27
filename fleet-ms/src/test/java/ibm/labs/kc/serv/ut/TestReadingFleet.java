@@ -6,11 +6,11 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import ibm.labs.kc.app.rest.FleetService;
+import ibm.labs.kc.dao.FleetDAO;
+import ibm.labs.kc.dao.FleetDAOMockup;
 import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.model.Ship;
-import ibm.labs.kc.serv.FleetDAO;
-import ibm.labs.kc.serv.FleetDAOMockup;
-import ibm.labs.kc.serv.FleetService;
 
 public class TestReadingFleet {
 
@@ -20,8 +20,6 @@ public class TestReadingFleet {
 	@BeforeClass
 	public static void init() {
 		serv = new FleetService();
-		dao = new FleetDAOMockup();
-		serv.setFleetDAO(dao);
 	}
 	
 	@Test
@@ -33,17 +31,15 @@ public class TestReadingFleet {
 	
 	@Test
 	public void testGetFleetByName() {
-		Fleet f = serv.getFleetByName("KC-Fleet North");
+		Fleet f = serv.getFleetByName("KC-FleetNorth");
 		Assert.assertNotNull(f);
-		Assert.assertTrue("KC-Fleet North".equals(f.getName()));
+		Assert.assertTrue("KC-FleetNorth".equals(f.getName()));
 		f = serv.getFleetByName("wrongname");
 		Assert.assertNull(f);
 	}
 
 	@Test
 	public void testGetAllFleetsFromFile() {
-		dao = new FleetDAOMockup("Fleet.json");
-		serv.setFleetDAO(dao);
 		List<Fleet> fl = serv.getFleets();
 		Assert.assertNotNull(fl);
 		Assert.assertTrue(fl.size() >= 1);

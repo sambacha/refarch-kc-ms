@@ -1,4 +1,4 @@
-package ibm.labs.kc.serv;
+package ibm.labs.kc.dao;
 
 import java.util.Collection;
 

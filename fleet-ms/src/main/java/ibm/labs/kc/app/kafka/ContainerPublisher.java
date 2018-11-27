@@ -10,33 +10,31 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
-import com.google.gson.Gson;
+import ibm.labs.kc.event.model.ContainerMetric;
 
-import ibm.labs.kc.event.model.ShipPosition;
+public class ContainerPublisher extends Publisher{
 
-public class PositionPublisher extends Publisher{
-
-	 
-	 public PositionPublisher() {
+	public ContainerPublisher() {
 		 Properties p = config.buildProducerProperties();
 		 kafkaProducer = new KafkaProducer<String, String>(p);
-	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
-	 }
-
-	public void publishShipPosition(ShipPosition sp) {
+	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
+	}
+	
+	
+	public void publishContainerMetric(ContainerMetric c) {
 		 try {
 			 ProducerRecord<String, String> record = new ProducerRecord<String, String>(
-                topic,null,parser.toJson(sp));
-        
+               topic,null,parser.toJson(c));
+       
 			 // Send record asynchronously
 			 Future<RecordMetadata> future = kafkaProducer.send(record);
-       
+      
 			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
 			 System.out.println(" -> sent" + recordMetadata.offset());
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
 		} finally {
-            kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
-        }
+           kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
+       }
 	}
 }

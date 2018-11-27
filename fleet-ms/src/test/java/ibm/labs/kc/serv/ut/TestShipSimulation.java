@@ -1,37 +1,53 @@
 package ibm.labs.kc.serv.ut;
 
-import ibm.labs.kc.model.Fleet;
-import ibm.labs.kc.model.FleetControl;
-import ibm.labs.kc.serv.FleetDAO;
-import ibm.labs.kc.serv.FleetDAOMockup;
-import ibm.labs.kc.serv.FleetService;
-import ibm.labs.kc.serv.FleetSimulator;
+import java.util.List;
 
-public class TestShipSimulation {
+import javax.ws.rs.core.Response;
+
+import ibm.labs.kc.app.rest.ShipService;
+import ibm.labs.kc.dto.model.ShipSimulationControl;
+import ibm.labs.kc.model.Container;
+import ibm.labs.kc.model.Ship;
+
+/**
+ * simulate the ship movement and the container
+ * @author jeromeboyer
+ *
+ */
+public class TestShipSimulation extends ShipService {
+    
 	
-	public static void pureSimulator() {
-		FleetSimulator fleetSimulator = new FleetSimulator();
+	 public TestShipSimulation(String fn) {
+		 super(fn);
+	 }
+	 
+	public Response performSimulation(ShipSimulationControl ctl, boolean publish) {
+		this.usePublish = publish;
+		return performSimulation(ctl);
+	}
+	
+	
+	public static void main(String[] args) {
+		TestShipSimulation serv =  new TestShipSimulation("Fleet.json");
+		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.CONTAINER_FIRE);
+		ctl.setNumberOfContainers(4);
+		ctl.setNumberOfMinutes(1);
+		Response res = serv.performSimulation(ctl,false);
+		Ship s = (Ship)res.getEntity();
+		/*
+		BadEventSimulator simul = new BadEventSimulator();
 		FleetDAO dao = new FleetDAOMockup("Fleet.json");
-		Fleet f = dao.getFleetByName("KC-Fleet North");
-		fleetSimulator.start(f, .25);
-		fleetSimulator.stop(f);
+		Fleet f = dao.getFleetByName("KC-FleetSouth");
+		Ship s = f.getShips().get(0);
+		s.loadContainers(s.getNumberOfContainers());
+		simul.fireContainers(s, 4);
+		*/
+		for (List<Container> row : s.getContainers()) {
+			for (Container c : row) {
+				System.out.print(c.toString() + " --- ");
+			}
+			System.out.println("\n---------------------");
+		}
 	}
 
-	public static void main(String args[]) throws InterruptedException {
-		// pureSimulator();
-		
-		// Via Service 
-		FleetService serv = new FleetService();
-		
-		
-		Fleet f = serv.getFleetByName("KC-Fleet North");
-		FleetControl ctl = new FleetControl();
-		ctl.setCommand("START");
-		ctl.setFleetName("KC-Fleet North");
-		ctl.setNumberOfMinutes(.5);
-		serv.simulateFleet(ctl);
-		ctl.setCommand("STOP");
-		serv.simulateFleet(ctl);
-
-	}
 }

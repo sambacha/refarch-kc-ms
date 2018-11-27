@@ -1,4 +1,4 @@
-package ibm.labs.kc.serv;
+package ibm.labs.kc.app.rest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import ibm.labs.kc.dao.DAOFactory;
+import ibm.labs.kc.dao.FleetDAO;
+import ibm.labs.kc.dao.FleetDAOMockup;
+import ibm.labs.kc.dto.model.FleetControl;
 import ibm.labs.kc.model.Fleet;
-import ibm.labs.kc.model.FleetControl;
+import ibm.labs.kc.simulator.FleetSimulator;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -22,17 +26,12 @@ import io.swagger.annotations.ApiResponses;
 public class FleetService {
 	
 	protected FleetDAO dao;
-	protected static FleetSimulator fleetSimulator = new FleetSimulator();
+	protected static FleetSimulator fleetSimulator = new FleetSimulator(true);
 	
 	public FleetService() {
-		dao = new FleetDAOMockup("Fleet.json");
-		
+		dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");	
 	}
 	
-	public void setFleetDAO(FleetDAO fleetDAO) {
-		this.dao = fleetDAO;
-		
-	}
 	
     @GET
     @Produces(MediaType.APPLICATION_JSON)

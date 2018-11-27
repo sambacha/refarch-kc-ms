@@ -1,28 +1,54 @@
 package ibm.labs.kc.model;
 
+import java.util.ArrayList;
+
 public class Ship {
-	protected String id;
 	protected String name;
 	protected String latitude;
 	protected String longitude;
 	protected String status;
 	protected String port;
 	protected String type;
+	protected int maxRow;
+	protected int maxColumn;
+	protected int numberOfContainers;
+	protected ArrayList<ArrayList<Container>> containers;
 	
 	public Ship(String name) {
 		this.name = name;
+		containers = new ArrayList<ArrayList<Container>>();
 	}
 
 	public String toString() {
-		return getId() + " " + getName() + " " + getStatus();
+		String s = getName() + " " + getStatus() + " " + getLatitude() + " " + getLongitude();
+		if (numberOfContainers > 0) {
+			
+		}
+		return s;
 	}
-	public String getId() {
-		return id;
+	
+	public void loadContainers(int toLoad) {
+		int row = 0 , column = 0;
+		for (int i = 0; i < toLoad; i++) {
+			Container c = new Container();
+			c.setId("c_" + i);
+			c.setTemperature(Math.round(Math.random()*60+15));
+			c.setAmp(Math.round(Math.random()*40 + 10));
+			c.setShipId(this.getName());
+			c.setType("Reefer");
+			c.setRow(row);
+			c.setColumn(column);
+			this.getContainers().get(row).add(c);
+			if ( column < this.getMaxColumn()) {
+				column ++;	
+			} else {
+				row++;
+				column = 0;
+			}
+			
+		}
 	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+	
 
 	public String getName() {
 		return name;
@@ -70,6 +96,44 @@ public class Ship {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public int getMaxRow() {
+		return maxRow;
+	}
+
+	public void setMaxRow(int maxRow) {
+		this.maxRow = maxRow;
+	}
+
+	public int getMaxColumn() {
+		return maxColumn;
+	}
+
+	public void setMaxColumn(int maxColumn) {
+		this.maxColumn = maxColumn;
+	}
+
+	public int getNumberOfContainers() {
+		return numberOfContainers;
+	}
+
+	public void setNumberOfContainers(int numberOfContainer) {
+		this.numberOfContainers = numberOfContainer;
+	}
+
+	public ArrayList<ArrayList<Container>> getContainers() {
+		if (containers == null) {
+			containers = new ArrayList<ArrayList<Container>>();
+			for (int i = 0; i < this.maxRow; i++) {
+				containers.add( new ArrayList<Container>());
+			}
+		}
+		return containers;
+	}
+
+	public void setContainers(ArrayList<ArrayList<Container>> containers) {
+		this.containers = containers;
 	}
 
 }

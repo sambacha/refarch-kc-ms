@@ -1,4 +1,4 @@
-package ibm.labs.kc.serv;
+package ibm.labs.kc.dao;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,14 +14,21 @@ import ibm.labs.kc.model.Ship;
 public class FleetDAOMockup implements FleetDAO {
 	
 	private static HashMap<String,Fleet> fleet = new HashMap<String,Fleet>();
-
+    private static FleetDAO instance;
+	
 	public FleetDAOMockup() {
 		Fleet f = createNorth();
 		fleet.put(f.getName(),f);
 		Fleet f2 = new Fleet("KC- Fleet South");
 		fleet.put(f2.getName(),f2);
 	}
+	// only one of this factory method to be used
 	
+	
+	/**
+	 * When using the fleet definition from json file 
+	 * @param fleetFileName
+	 */
 	public FleetDAOMockup(String fleetFileName) {
 		InputStream fin= getClass().getClassLoader().getResourceAsStream(fleetFileName);
 		Reader json = new InputStreamReader(fin);
@@ -36,18 +43,23 @@ public class FleetDAOMockup implements FleetDAO {
 		Ship s = new Ship("Marie Rose");
 		s.setStatus("Docked");
 		s.setPort("Oakland");
-		s.setId("s1");
 		s.setLatitude("37.8044");
 		s.setLongitude("-122.2711");
 		s.setType("Carrier");
+		s.setMaxRow(3);
+		s.setMaxColumn(7);
+		s.loadContainers(20);
 		f.getShips().add(s);
+		
 		s = new Ship("BlackBear");
 		s.setStatus("AtSea");
 		s.setPort(null);
-		s.setId("s2");
 		s.setLatitude("36.8044");
 		s.setLongitude("-140.2711");
 		s.setType("Carrier");
+		s.setMaxRow(3);
+		s.setMaxColumn(7);
+		s.loadContainers(10);
 		f.getShips().add(s);
 		return f;
 	}

@@ -5,9 +5,9 @@ import java.util.Collection;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import ibm.labs.kc.dao.FleetDAO;
+import ibm.labs.kc.dao.FleetDAOMockup;
 import ibm.labs.kc.model.Fleet;
-import ibm.labs.kc.serv.FleetDAO;
-import ibm.labs.kc.serv.FleetDAOMockup;
 
 public class PrepareData {
 	static Gson parser = new GsonBuilder().setPrettyPrinting().create();

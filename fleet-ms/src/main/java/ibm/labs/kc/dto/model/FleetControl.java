@@ -1,4 +1,4 @@
-package ibm.labs.kc.model;
+package ibm.labs.kc.dto.model;
 
 public class FleetControl {
 	public String fleetName;
