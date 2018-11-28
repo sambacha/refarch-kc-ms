@@ -34,8 +34,16 @@ public class BluewaterProblemConsumer extends BaseKafkaConsumer {
 		System.out.println("# Consume Bluewater event / problems    #");
 		System.out.println("#########################################");
 		BluewaterProblemConsumer consumer = new BluewaterProblemConsumer();
-		for ( BluewaterProblem p : consumer.consume()) {
-			System.out.println(p.toString());
+		while (true) {
+			for ( BluewaterProblem p : consumer.consume()) {
+				System.out.println(p.toString());
+			}
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

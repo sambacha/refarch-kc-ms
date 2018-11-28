@@ -4,12 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class BluewaterProblem {
 	protected String issue;
-	protected long weatherC;
+	protected double weatherC;
 	protected String containerId;
 	protected String status;
 	@SerializedName("tempC")
-	protected long temperature;
-	protected long amp;
+	protected double temperature;
+	protected double amp;
 	protected String shipId;
 	protected String latitude;
 	protected String longitude;
@@ -20,6 +20,11 @@ public class BluewaterProblem {
 	
    public BluewaterProblem() {
    }
+   
+   public String toString() {
+	   return "Shipid:" + getShipId() + " " + getContainerId() + " " + getStatus() + " " + getIssue() 
+	   + " " + getSeverity() + " lat:" + getLatitude() + " long:" + getLongitude() + " " + getTimeStamp();
+   }
 
 public String getIssue() {
 	return issue;
@@ -29,11 +34,11 @@ public void setIssue(String issue) {
 	this.issue = issue;
 }
 
-public long getWeatherC() {
+public double getWeatherC() {
 	return weatherC;
 }
 
-public void setWeatherC(long weatherC) {
+public void setWeatherC(double weatherC) {
 	this.weatherC = weatherC;
 }
 
@@ -53,19 +58,19 @@ public void setStatus(String status) {
 	this.status = status;
 }
 
-public long getTemperature() {
+public double getTemperature() {
 	return temperature;
 }
 
-public void setTemperature(long temperature) {
+public void setTemperature(double temperature) {
 	this.temperature = temperature;
 }
 
-public long getAmp() {
+public double getAmp() {
 	return amp;
 }
 
-public void setAmp(long amp) {
+public void setAmp(double amp) {
 	this.amp = amp;
 }
 
