@@ -1,5 +1,6 @@
 package ibm.labs.kc.serv.ut;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Assert;
@@ -12,6 +13,13 @@ import ibm.labs.kc.dao.FleetDAOMockup;
 import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.model.Ship;
 
+/**
+ * Starting with TDD we want to test the following operations
+ * - read from file the fleet definition
+ * 
+ * @author jeromeboyer
+ *
+ */
 public class TestReadingFleet {
 
 	public static FleetService serv ;
@@ -19,8 +27,10 @@ public class TestReadingFleet {
 	
 	@BeforeClass
 	public static void init() {
-		serv = new FleetService();
+		dao = new FleetDAOMockup("fleet.json");
+		serv = new FleetService(dao);
 	}
+	
 	
 	@Test
 	public void testGetAllFleets() {
@@ -39,7 +49,7 @@ public class TestReadingFleet {
 	}
 
 	@Test
-	public void testGetAllFleetsFromFile() {
+	public void testGetAllShipsFromFile() {
 		List<Fleet> fl = serv.getFleets();
 		Assert.assertNotNull(fl);
 		Assert.assertTrue(fl.size() >= 1);

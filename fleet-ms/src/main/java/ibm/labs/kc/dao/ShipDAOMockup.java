@@ -1,5 +1,6 @@
 package ibm.labs.kc.dao;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import ibm.labs.kc.model.Ship;
@@ -17,8 +18,14 @@ public class ShipDAOMockup implements ShipDAO {
 	}
 
 	@Override
-	public void save(Ship s) {
+	public Ship save(Ship s) {
 		ships.put(s.getName(), s);
+		return s;
+	}
+
+	@Override
+	public Collection<Ship> getAllShips() {
+		return ships.values();
 	}
 
 }

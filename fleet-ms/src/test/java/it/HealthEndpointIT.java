@@ -21,8 +21,6 @@ public class HealthEndpointIT extends BaseIntegrationTest {
    
     private String endpoint = "/health";
     private String url = baseUrl + endpoint;
-
-   
     
     @Test
     public void testEndpoint() throws Exception {

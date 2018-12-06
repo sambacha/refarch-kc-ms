@@ -12,7 +12,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import ibm.labs.kc.app.kafka.ApplicationConfig;
 import ibm.labs.kc.event.model.ContainerMetric;
 
-public class ContainerEventConsumer extends BaseKafkaConsumer {
+public class ContainerEventConsumer extends BaseKafkaConsumer implements Runnable {
     
     public ContainerEventConsumer() {
     	 super();
@@ -32,5 +32,16 @@ public class ContainerEventConsumer extends BaseKafkaConsumer {
 	    }
     	return buffer;
     }
+
+
+	@Override
+	public void run() {
+		while (true) {
+			for (ContainerMetric cm: consume()) {
+				System.out.println(cm.toString());
+			}
+		}
+		
+	}
     
 }

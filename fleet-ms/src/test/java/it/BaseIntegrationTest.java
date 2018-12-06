@@ -8,8 +8,6 @@ import javax.ws.rs.core.Response;
 
 import org.junit.Before;
 
-import ibm.labs.kc.dto.model.ShipSimulationControl;
-
 public class BaseIntegrationTest {
 	 protected String port = System.getProperty("liberty.test.port");
 	 protected String warContext = System.getProperty("war.context");
@@ -27,7 +25,12 @@ public class BaseIntegrationTest {
 	    		baseUrl = "http://localhost:" + port + "/" + warContext;
 	    	}
 	    }
-	  
+	    public String getBaseUrl() {
+	    	if (this.baseUrl.contains("null")) {
+	    		baseUrl = "http://localhost:9080/fleetms";
+	    	}
+	    	return this.baseUrl;
+	    }
 	   protected int makeGetRequest(String url) {
 	      Client client = ClientBuilder.newClient();
 	      Invocation.Builder invoBuild = client.target(url).request();
@@ -37,12 +40,10 @@ public class BaseIntegrationTest {
 	      return responseCode;
 	   }
 	   
-	   protected int makePostRequest(String url, String json) {
+	   protected Response makePostRequest(String url, String json) {
 		   Client client = ClientBuilder.newClient();
 		   Invocation.Builder invoBuild = client.target(url).request();
 		   Response response = invoBuild.post(Entity.json(json));
-		   int responseCode = response.getStatus();
-		   response.close();
-		   return responseCode; 
+		   return response; 
 	   }
 }

@@ -1,11 +1,15 @@
 package ibm.labs.kc.dao;
 
+import java.util.Collection;
+
 import ibm.labs.kc.model.Ship;
 
 public interface ShipDAO {
 
-	Ship getShipByName(String shipName);
+	public Ship getShipByName(String shipName);
 
-	void save(Ship s);
+	public Ship save(Ship s);
+	
+	public Collection<Ship> getAllShips();
 
 }

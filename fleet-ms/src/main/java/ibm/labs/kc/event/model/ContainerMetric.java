@@ -3,6 +3,7 @@ package ibm.labs.kc.event.model;
 import com.google.gson.annotations.SerializedName;
 
 public class ContainerMetric {
+	// used when the event does not match the Java Bean used.
 	@SerializedName("containerId")
 	protected String id;
 	@SerializedName("tempC")

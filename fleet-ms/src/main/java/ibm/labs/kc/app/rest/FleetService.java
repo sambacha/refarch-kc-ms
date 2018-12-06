@@ -12,17 +12,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.SchemaType;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+
 import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dao.FleetDAO;
-import ibm.labs.kc.dao.FleetDAOMockup;
 import ibm.labs.kc.dto.model.FleetControl;
 import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.simulator.FleetSimulator;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+
 
 @Path("fleets")
+
 public class FleetService {
 	
 	protected FleetDAO dao;
@@ -32,21 +38,48 @@ public class FleetService {
 		dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");	
 	}
 	
+	public FleetService(FleetDAO fdao) {
+		this.dao = fdao;
+	}
+	
 	
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-	public List<Fleet> getFleets() {
+    @Operation(summary = "Retrieve all Fleets",description=" Retrieve the fleets defined in the service.")
+    @APIResponses(
+            value = {
+                @APIResponse(
+                    responseCode = "200",
+                    description = "All fleets from datasource",
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Fleet[].class))) })
+    public List<Fleet> getFleets() {
 		// TODO decide to remove ship or not
 		return new ArrayList<Fleet>(dao.getFleets());
 	}
 
     @GET
-	 @Path(value="/{fleetName}")
-	 @ApiOperation(value = "Get fleet by fleet name")
-	 @ApiResponses({ @ApiResponse(code = 200, message = "fleet retrieved", response = Fleet.class),
-	 @ApiResponse(code = 404, message = "fleet not found") })
+	@Path(value="/{fleetName}")
     @Produces(MediaType.APPLICATION_JSON)
-	public Fleet getFleetByName(@PathParam("fleetName") String fleetName) {
+    @Operation(summary = "Get fleet by fleet name",description=" Retrieve a fleet with ships from is unique name")
+    @APIResponses(
+            value = {
+            	@APIResponse(
+                    responseCode = "404", 
+                    description = "fleet not found",
+                    content = @Content(mediaType = "text/plain")),
+                @APIResponse(
+                    responseCode = "200",
+                    description = "fleet retrieved",
+                    content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Fleet.class))) })
+	public Fleet getFleetByName(
+			@Parameter(
+		            description = "The fleetname to get ships data",
+		            required = true, 
+		            example = "KC-NorthFleet", 
+		            schema = @Schema(type = SchemaType.STRING)) 
+			@PathParam("fleetName") String fleetName) {
 		return dao.getFleetByName(fleetName);
 	}
 
@@ -54,6 +87,18 @@ public class FleetService {
     @Path(value="/simulate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "Start simulating ship movement within a fleet",description="Start a fleet simulation by moving each ship of the fleet on the see")
+    @APIResponses(
+            value = {
+            	@APIResponse(
+                    responseCode = "404", 
+                    description = "fleet not found",
+                    content = @Content(mediaType = "text/plain")),
+                @APIResponse(
+                    responseCode = "200",
+                    description = "status started",
+                    content = @Content(mediaType = "application/json"))
+            	})
     public Response simulateFleet(FleetControl ctl) {
     	if ("START".equals(ctl.getCommand().toUpperCase())) {
     		Fleet f = dao.getFleetByName(ctl.getFleetName());
@@ -71,6 +116,5 @@ public class FleetService {
 	public static FleetSimulator getFleetSimulator() {
 		return fleetSimulator;
 	}
-   
     
 }

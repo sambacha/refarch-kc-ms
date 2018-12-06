@@ -1,7 +1,8 @@
 package ibm.labs.kc.dto.model;
 
 /**
- * Exchange control information for ship simulation
+ * Exchange control information for ship simulation. This is a DTO for controlling the 
+ * simulation behavior.
  * @author jerome boyer
  *
  */

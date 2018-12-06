@@ -7,15 +7,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
+
 import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dao.ShipDAO;
 import ibm.labs.kc.dto.model.ShipSimulationControl;
 import ibm.labs.kc.model.Ship;
 import ibm.labs.kc.simulator.BadEventSimulator;
 import ibm.labs.kc.simulator.ShipSimulator;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 @Path("ships")
 public class ShipService {
@@ -37,11 +39,20 @@ public class ShipService {
 	 */
 	@POST
 	@Path(value="/simulate")
-	@ApiOperation(value = "Start a simulation on the given ship name")
-	@ApiResponses({ @ApiResponse(code = 200, message = "simulation started", response = Ship.class),
-	@ApiResponse(code = 404, message = "Ship not found") })
 	@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+	 @Operation(summary = "Start a simulation on the given ship name",description="Start a ship simulation by moving the ship and send container metrics events according to the scenarion selected")
+    @APIResponses(
+            value = {
+            	@APIResponse(
+                    responseCode = "404", 
+                    description = "ship not found",
+                    content = @Content(mediaType = "text/plain")),
+                @APIResponse(
+                    responseCode = "200",
+                    description = "simulation started",
+                    content = @Content(mediaType = "application/json"))
+            	})
 	public Response performSimulation(ShipSimulationControl ctl) {
 		Ship s = dao.getShipByName(ctl.getShipName());
 		if (s == null) {

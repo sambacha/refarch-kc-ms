@@ -14,7 +14,6 @@ import ibm.labs.kc.model.Ship;
 public class FleetDAOMockup implements FleetDAO {
 	
 	private static HashMap<String,Fleet> fleet = new HashMap<String,Fleet>();
-    private static FleetDAO instance;
 	
 	public FleetDAOMockup() {
 		Fleet f = createNorth();

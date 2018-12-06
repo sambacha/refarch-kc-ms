@@ -7,6 +7,10 @@ public class DAOFactory {
 	 private static FleetDAO fleetDAO = null;
 	 private static ShipDAO shipDAO = null;
 	 
+	 /**
+	  * This method may change to use a DAO implementation going to a real DB as default
+	  * @return
+	  */
 	 public static FleetDAO buildOrGetFleetDAO() {
 		if (fleetDAO == null) {
 			 fleetDAO = new FleetDAOMockup();
