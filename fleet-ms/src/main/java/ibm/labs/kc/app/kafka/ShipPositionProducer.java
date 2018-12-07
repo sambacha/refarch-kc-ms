@@ -13,14 +13,19 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 import ibm.labs.kc.event.model.ShipPosition;
 
-public class PositionPublisher extends Publisher{
-
+public class ShipPositionProducer extends BaseProducer{
+	 private static  KafkaProducer<String, String> kafkaProducer;
+	 private static ShipPositionProducer instance = new ShipPositionProducer();
 	 
-	 public PositionPublisher() {
+	 private ShipPositionProducer() {
 		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID));
 		 kafkaProducer = new KafkaProducer<String, String>(p);
 	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
 	 }
+	 
+		public static ShipPositionProducer getInstance() {
+			return instance;
+		}
 
 	public void publishShipPosition(ShipPosition sp) {
 		 try {
@@ -48,4 +53,6 @@ public class PositionPublisher extends Publisher{
 	public void close() {
 		kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
 	}
+
+
 }

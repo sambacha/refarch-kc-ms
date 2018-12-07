@@ -4,8 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import ibm.labs.kc.app.kafka.ContainerPublisher;
-import ibm.labs.kc.app.kafka.PositionPublisher;
+import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
+import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.event.model.ContainerMetric;
 import ibm.labs.kc.event.model.ShipPosition;
 import ibm.labs.kc.model.Container;
@@ -14,15 +14,17 @@ import ibm.labs.kc.model.Ship;
 
 /**
  * This is the Ship Simulator. For each ship it sends position and its containers states to
- * remote topic. It is 
+ * remote topic. 
+ * It uses thread to execute the ship movement in parallel. THIS is not mandatory it could have been done
+ * sequentially
  * @author jerome boyer
  *
  */
 public class ShipRunner implements Runnable {
 	public static final long WORLD_TIME_STEP = 45; // in minutes
 	
-	protected PositionPublisher positionPublisher;
-	protected ContainerPublisher containerPublisher;
+	protected ShipPositionProducer positionPublisher;
+	protected ContainerMetricsProducer containerPublisher;
 	protected static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	protected Thread t;
@@ -32,11 +34,11 @@ public class ShipRunner implements Runnable {
 	protected double numberOfMinutes;
 	
 	public ShipRunner() {
-		 this.positionPublisher = new PositionPublisher();
-	     this.containerPublisher = new ContainerPublisher();
+		 this.positionPublisher = ShipPositionProducer.getInstance();
+	     this.containerPublisher = ContainerMetricsProducer.getInstance();
 	}
 	
-	public ShipRunner(PositionPublisher pb,ContainerPublisher cb) {
+	public ShipRunner(ShipPositionProducer pb,ContainerMetricsProducer cb) {
 		this.positionPublisher = pb;
 		this.containerPublisher = cb;
 	}
@@ -95,10 +97,10 @@ public class ShipRunner implements Runnable {
 	}
 
 	public void stop() {
-		System.out.println("Stopping " +  shipName );
-	      if (t == null) {
-	         t.interrupt();
-	      }
+	  System.out.println("Stopping " +  shipName );
+      if (t == null) {
+         t.interrupt();
+      }
 	}
 	
 	

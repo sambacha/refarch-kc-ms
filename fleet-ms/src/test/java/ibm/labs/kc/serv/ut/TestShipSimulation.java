@@ -12,8 +12,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import ibm.labs.kc.app.kafka.ContainerPublisher;
-import ibm.labs.kc.app.kafka.PositionPublisher;
+import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
+import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.app.rest.ShipService;
 import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dto.model.ShipSimulationControl;
@@ -30,9 +30,9 @@ import ibm.labs.kc.simulator.ShipSimulator;
 public class TestShipSimulation  {
    
 	 @Mock
-	 static PositionPublisher positionPublisherMock;
+	 static ShipPositionProducer positionProducerMock;
 	 @Mock
-	 static ContainerPublisher containerPublisherMock;
+	 static ContainerMetricsProducer containerProducerMock;
 	 
 	 @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
 	 
@@ -41,7 +41,7 @@ public class TestShipSimulation  {
 	
 	@Before
 	public  void init() {
-		 ShipRunner sr = new ShipRunner(positionPublisherMock, containerPublisherMock);
+		 ShipRunner sr = new ShipRunner(positionProducerMock, containerProducerMock);
 		 ShipSimulator s = new ShipSimulator(sr);
 		 serv =  new ShipService(DAOFactory.buildOrGetShipDAOInstance("Fleet.json"),s);
 	}

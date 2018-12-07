@@ -1,12 +1,10 @@
 package ibm.labs.kc.app.kafka;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-
 import com.google.gson.Gson;
 
-public abstract class Publisher {
+public abstract class BaseProducer {
 	 protected ApplicationConfig  config = new ApplicationConfig();;
-	 protected  KafkaProducer<String, String> kafkaProducer;
+	
 	 protected  String topic;
 	 protected  Gson parser = new Gson();
 	 
@@ -16,12 +14,8 @@ public abstract class Publisher {
 	public void setConfig(ApplicationConfig config) {
 		this.config = config;
 	}
-	public KafkaProducer<String, String> getKafkaProducer() {
-		return kafkaProducer;
-	}
-	public void setKafkaProducer(KafkaProducer<String, String> kafkaProducer) {
-		this.kafkaProducer = kafkaProducer;
-	}
+	
+
 	public String getTopic() {
 		return topic;
 	}

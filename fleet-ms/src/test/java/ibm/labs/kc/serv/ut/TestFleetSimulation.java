@@ -6,8 +6,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import ibm.labs.kc.app.kafka.ContainerPublisher;
-import ibm.labs.kc.app.kafka.PositionPublisher;
+import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
+import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dao.FleetDAO;
 import ibm.labs.kc.model.Fleet;
@@ -20,9 +20,9 @@ import ibm.labs.kc.simulator.FleetSimulator;
  */
 public class TestFleetSimulation {
 	 @Mock
-	 static PositionPublisher positionPublisherMock;
+	 static ShipPositionProducer positionPublisherMock;
 	 @Mock
-	 static ContainerPublisher containerPublisherMock;
+	 static ContainerMetricsProducer containerPublisherMock;
 	 
 	 @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
 	 

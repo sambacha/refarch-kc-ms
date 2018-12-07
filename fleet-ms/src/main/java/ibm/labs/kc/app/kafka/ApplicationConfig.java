@@ -30,6 +30,8 @@ public class ApplicationConfig {
 	public static final String KAFKA_GROUPID = "kafka.groupid";
 	public static final String KAFKA_CONSUMER_CLIENTID = "kafka.consumer.clientid";
 	public static final String KAFKA_PRODUCER_CLIENTID = "kafka.producer.clientid";
+	public static final String KAFKA_ACK = "kafka.ack";
+	public static final String KAFKA_RETRIES = "kafka.retries";
 	public static final String KAFKA_USER = "kafka.user";
 	public static final String KAFKA_PWD = "kafka.password";
 	public static final String KAFKA_APIKEY = "kafka.api_key";
@@ -111,7 +113,8 @@ public class ApplicationConfig {
 		properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 		properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
 		properties.put(ProducerConfig.CLIENT_ID_CONFIG, clientId);
-		properties.put(ProducerConfig.ACKS_CONFIG, "-1");
+		properties.put(ProducerConfig.ACKS_CONFIG, getProperties().getProperty(ApplicationConfig.KAFKA_ACK));
+		properties.put(ProducerConfig.RETRIES_CONFIG,getProperties().getProperty(ApplicationConfig.KAFKA_RETRIES));
         return properties;
 	}
 	

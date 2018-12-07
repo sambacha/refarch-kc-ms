@@ -12,7 +12,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import com.google.gson.Gson;
 
 import ibm.labs.kc.app.kafka.ApplicationConfig;
-import ibm.labs.kc.app.kafka.PositionPublisher;
+import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.event.model.ShipPosition;
 
 
@@ -42,7 +42,7 @@ public class ShipPositionConsumer extends BaseKafkaConsumer {
 	public static void main(String[] args) {
 		
 		ShipPosition sp = new ShipPosition("MyBoat","45.0900","-122.15050");
-		PositionPublisher positionPublisher = new PositionPublisher();
+		ShipPositionProducer positionPublisher = new ShipPositionProducer();
 		positionPublisher.publishShipPosition(sp);
 		
 		ShipPositionConsumer consumer = new ShipPositionConsumer();

@@ -1,5 +1,6 @@
 package ibm.labs.kc.app.rest;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -27,7 +28,9 @@ import ibm.labs.kc.simulator.ShipSimulator;
 
 @Path("ships")
 public class ShipService {
+	
 	protected ShipDAO dao;
+	
 	protected ShipSimulator simulator;
 	
 	public ShipService() {

@@ -12,14 +12,20 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 
 import ibm.labs.kc.event.model.ContainerMetric;
 
-public class ContainerPublisher extends Publisher{
-
-	public ContainerPublisher() {
-		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID)+"_container");
+public class ContainerMetricsProducer extends BaseProducer{
+	
+	private static  KafkaProducer<String, String> kafkaProducer;
+	private static ContainerMetricsProducer instance = new ContainerMetricsProducer();
+	
+	private ContainerMetricsProducer() {
+		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID)+"_container");
 		 kafkaProducer = new KafkaProducer<String, String>(p);
 	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
 	}
 	
+	public static ContainerMetricsProducer getInstance() {
+		return instance;
+	}
 	
 	public void publishContainerMetric(ContainerMetric c) {
 		 try {
@@ -28,7 +34,7 @@ public class ContainerPublisher extends Publisher{
                topic,null,eventAsJson);
        
 			 // Send record asynchronously
-			 Future<RecordMetadata> future = kafkaProducer.send(record);
+			 Future<RecordMetadata> future = getKafkaProducer().send(record);
 			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
 			 System.out.println(" Container Event " + eventAsJson + " sent -> offset:" + recordMetadata.offset());
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -39,4 +45,9 @@ public class ContainerPublisher extends Publisher{
 	public void close() {
 		 kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
 	}
+	
+	public KafkaProducer<String, String> getKafkaProducer() {
+		return kafkaProducer;
+	}
+	
 }
