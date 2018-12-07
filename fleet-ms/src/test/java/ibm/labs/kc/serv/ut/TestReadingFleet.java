@@ -1,17 +1,21 @@
 package ibm.labs.kc.serv.ut;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import ibm.labs.kc.app.rest.FleetService;
 import ibm.labs.kc.dao.FleetDAO;
 import ibm.labs.kc.dao.FleetDAOMockup;
 import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.model.Ship;
+import ibm.labs.kc.simulator.FleetSimulator;
 
 /**
  * Starting with TDD we want to test the following operations
@@ -21,6 +25,11 @@ import ibm.labs.kc.model.Ship;
  *
  */
 public class TestReadingFleet {
+	 @Mock
+	 static FleetSimulator simulator;
+
+	 
+	 @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
 
 	public static FleetService serv ;
 	public static FleetDAO dao;
@@ -28,7 +37,7 @@ public class TestReadingFleet {
 	@BeforeClass
 	public static void init() {
 		dao = new FleetDAOMockup("fleet.json");
-		serv = new FleetService(dao);
+		serv = new FleetService(dao,simulator);
 	}
 	
 	

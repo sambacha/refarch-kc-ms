@@ -19,13 +19,25 @@ import ibm.labs.kc.model.Ship;
 import ibm.labs.kc.simulator.BadEventSimulator;
 import ibm.labs.kc.simulator.ShipSimulator;
 
+/**
+ * REST resource for ships
+ * @author jeromeboyer
+ *
+ */
+
 @Path("ships")
 public class ShipService {
 	protected ShipDAO dao;
-	protected boolean usePublish = true;
+	protected ShipSimulator simulator;
 	
 	public ShipService() {
 	  dao = DAOFactory.buildOrGetShipDAOInstance();	
+	  simulator = new ShipSimulator();
+	}
+	
+	public ShipService(ShipDAO d,ShipSimulator s) {
+		simulator = s;
+		dao = d;	
 	}
 	
 	public ShipService(String fileName) {
@@ -68,7 +80,7 @@ public class ShipService {
 		if (ShipSimulationControl.REEFER_DOWN.equals(ctl.getCommand())) {
 			BadEventSimulator.reeferDown(s);
 		}
-		ShipSimulator simulator = new ShipSimulator(this.usePublish);
+		
 		simulator.start(s,ctl.getNumberOfMinutes());
 		return Response.ok().entity(s).build();
 	}

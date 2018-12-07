@@ -13,7 +13,8 @@ import ibm.labs.kc.model.Position;
 import ibm.labs.kc.model.Ship;
 
 /**
- * This is the Ship Simulator. For each ship it send position and its containers state
+ * This is the Ship Simulator. For each ship it sends position and its containers states to
+ * remote topic. It is 
  * @author jerome boyer
  *
  */
@@ -29,27 +30,29 @@ public class ShipRunner implements Runnable {
 	protected Ship ship;
 	protected List<Position> positions;
 	protected double numberOfMinutes;
-	protected boolean usePublish = false;
 	
-	public ShipRunner(Ship s, List<Position> list, double numberOfMinutes, boolean usePublish) {
+	public ShipRunner() {
+		 this.positionPublisher = new PositionPublisher();
+	     this.containerPublisher = new ContainerPublisher();
+	}
+	
+	public ShipRunner(PositionPublisher pb,ContainerPublisher cb) {
+		this.positionPublisher = pb;
+		this.containerPublisher = cb;
+	}
+	
+	public void init(Ship s, List<Position> list, double numberOfMinutes) {
 		this.shipName = s.getName();
 		this.positions = list;
 		this.ship = s;
 		this.numberOfMinutes = numberOfMinutes;
-		this.usePublish = usePublish;
 	}
 
 	public void start() {
 		System.out.println("Starting " +  shipName );
-	      if (t == null) {
-	    	  if ( this.usePublish) {
-	    		 positionPublisher = new PositionPublisher();
-	 	    	 containerPublisher = new ContainerPublisher();
-	    	  }
-	    	
+	    if (t == null) {
 	         t = new Thread (this, shipName);
 	         t.start ();
-	         
 	      }
 	}
 	
@@ -61,20 +64,13 @@ public class ShipRunner implements Runnable {
 			for (Position p : this.positions) {
 				// ships publish their position to a queue 
 				ShipPosition sp = new ShipPosition(this.shipName,p.getLatitude(),p.getLongitude());
-				if ( this.usePublish)
-					positionPublisher.publishShipPosition(sp);
-				else 
-					System.out.println (this.shipName +  
-			                  " position " + p.getLatitude() + " " + p.getLongitude());
+				positionPublisher.publishShipPosition(sp);
 				
 				// Then publish the state of their containers
 				for (List<Container> row :  ship.getContainers()) {
 					for (Container c : row) {
 						ContainerMetric cm = BadEventSimulator.buildContainerMetric(this.shipName,c,dateFormat.format(currentWorldTime));
-						if ( this.usePublish)
-							containerPublisher.publishContainerMetric(cm);
-						else 
-							System.out.println (cm.toString());
+						containerPublisher.publishContainerMetric(cm);
 					}
 				}
 				currentWorldTime=modifyTime(currentWorldTime);
@@ -85,8 +81,10 @@ public class ShipRunner implements Runnable {
         } catch (InterruptedException e) { 
             System.out.println ("ShipRunner stopped"); 
         } finally {
-        	containerPublisher.close();
-        	positionPublisher.close();
+        	if (containerPublisher != null)
+        		containerPublisher.close();
+        	if (positionPublisher != null)
+        		positionPublisher.close();
         }
 	}
 	

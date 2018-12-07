@@ -1,5 +1,13 @@
 package ibm.labs.kc.serv.ut;
 
+import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+
+import ibm.labs.kc.app.kafka.ContainerPublisher;
+import ibm.labs.kc.app.kafka.PositionPublisher;
 import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dao.FleetDAO;
 import ibm.labs.kc.model.Fleet;
@@ -11,12 +19,19 @@ import ibm.labs.kc.simulator.FleetSimulator;
  *
  */
 public class TestFleetSimulation {
-
-	public static void main(String args[]) throws InterruptedException {
-		FleetSimulator fleetSimulator = new FleetSimulator(false);
-		FleetDAO dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");
-		Fleet f = dao.getFleetByName("KC-FleetNorth");
-		fleetSimulator.start(f, .25);
-		fleetSimulator.stop(f);
-	}
+	 @Mock
+	 static PositionPublisher positionPublisherMock;
+	 @Mock
+	 static ContainerPublisher containerPublisherMock;
+	 
+	 @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
+	 
+	 @Test
+	 public void testStartFleet() {
+		 FleetSimulator fleetSimulator = new FleetSimulator(positionPublisherMock,containerPublisherMock);
+		 FleetDAO dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");
+			Fleet f = dao.getFleetByName("KC-FleetNorth");
+			fleetSimulator.start(f, .25);
+			fleetSimulator.stop(f);
+	 }
 }

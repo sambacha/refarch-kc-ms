@@ -32,14 +32,16 @@ import ibm.labs.kc.simulator.FleetSimulator;
 public class FleetService {
 	
 	protected FleetDAO dao;
-	protected static FleetSimulator fleetSimulator = new FleetSimulator(true);
+	protected static FleetSimulator fleetSimulator;
 	
 	public FleetService() {
 		dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");	
+		fleetSimulator = new FleetSimulator();
 	}
 	
-	public FleetService(FleetDAO fdao) {
+	public FleetService(FleetDAO fdao,FleetSimulator fleetSimulator) {
 		this.dao = fdao;
+		this.fleetSimulator = fleetSimulator;
 	}
 	
 	

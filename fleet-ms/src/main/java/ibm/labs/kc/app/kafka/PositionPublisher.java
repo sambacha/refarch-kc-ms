@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
@@ -27,11 +28,18 @@ public class PositionPublisher extends Publisher{
 			 ProducerRecord<String, String> record = new ProducerRecord<String, String>(
                 topic,null,eventAsJson);
         
-			 // Send record asynchronously
-			 Future<RecordMetadata> future = kafkaProducer.send(record);
+			 // Send record asynchronously, process acknowledge within callback
+			 Future<RecordMetadata> future = kafkaProducer.send(record, new Callback() {
+                 public void onCompletion(RecordMetadata metadata, Exception e) {
+                     if(e != null) {
+                        e.printStackTrace();
+                     } else {
+                        System.out.println("The offset of the record we just sent is: " + metadata.offset());
+                     }
+                 }
+             });
        
 			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
-			 System.out.println(eventAsJson + " event sent -> offet: " + recordMetadata.offset());
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
 		} 

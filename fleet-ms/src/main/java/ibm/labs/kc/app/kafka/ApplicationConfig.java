@@ -1,6 +1,9 @@
 package ibm.labs.kc.app.kafka;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.kafka.clients.CommonClientConfigs;
@@ -10,8 +13,16 @@ import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.serialization.StringDeserializer;
 
+/**
+ * This class is to read configuration from properties file and keep in a properties object.
+ * It also provides a set of method to define kafka config parameters 
+ * 
+ * @author jerome boyer
+ *
+ */
 public class ApplicationConfig {
 		
+	public static final String KAFKA_ENV = "kafka.env";
 	public static final String KAFKA_BOOTSTRAP_SERVERS = "kafka.bootstrap.servers";
 	public static final String KAFKA_SHIP_TOPIC_NAME = "kafka.ship.topic.name";
 	public static final String KAFKA_CONTAINER_TOPIC_NAME = "kafka.container.topic.name";
@@ -25,16 +36,23 @@ public class ApplicationConfig {
 	public static final String KAFKA_POLL_DURATION = "kafka.poll.duration";
 	public static final String VERSION = "version";
 	
-	
-	
-	private Properties p;
+	private Properties properties = new Properties();
 		
 	public ApplicationConfig() {
-		InputStream input = null;
-		p = new Properties();
+		loadProperties();
+	}
+	
+	public ApplicationConfig(String fileName) {
+		loadProperties(fileName);
+	}
+	
+	public void loadProperties() {
+		loadPropertiesFromStream(getClass().getClassLoader().getResourceAsStream("config.properties"));
+	}
+	
+	private void loadPropertiesFromStream(InputStream input){
 		try {
-			input = getClass().getClassLoader().getResourceAsStream("config.properties");
-			p.load(input);
+			properties.load(input);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			setDefaults();
@@ -49,8 +67,17 @@ public class ApplicationConfig {
 		}
 	}
 	
+	private void loadProperties(String fn) {
+		try {
+			loadPropertiesFromStream(new FileInputStream(fn));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			setDefaults();
+		}
+	}
+	
 	public Properties getProperties() {
-		return p;
+		return properties;
 	}
 
 	public Properties buildConsumerProperties(String clientID) {
@@ -89,11 +116,20 @@ public class ApplicationConfig {
 	}
 	
 	
+	/**
+	 * Take into account the environment variables if set
+	 * @return common kafka properties
+	 */
 	private Properties buildCommonProperties() {
 		Properties properties = new Properties();
-        properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, 
-        		getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
-        if (! getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS).startsWith("gc-kafka")) {
+		Map<String,String> env=System.getenv();
+		if (env.get("KAFKA_BROKERS") != null) {
+			properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,env.get("KAFKA_BROKERS"));
+		} else {
+			properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, 
+	        		getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
+		}
+		if ("IBMCLOUD".equals(env.get("KAFKA_ENV"))) {
         	properties.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
             properties.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
             properties.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"token\" password=\"" 
@@ -107,10 +143,10 @@ public class ApplicationConfig {
 	}
 	
 	private  void setDefaults() {	 
-		 p.setProperty(KAFKA_BOOTSTRAP_SERVERS, "gc-kafka-0.gc-kafka-hl-svc.greencompute.svc.cluster.local:32224");
-		 p.setProperty(KAFKA_SHIP_TOPIC_NAME,"ship");
-		 p.setProperty(KAFKA_GROUPID,"kcgroup");
-		 p.setProperty(KAFKA_POLL_DURATION, "10000");
-		 p.setProperty(VERSION, "v0.0.1");
+		properties.setProperty(KAFKA_BOOTSTRAP_SERVERS, "gc-kafka-0.gc-kafka-hl-svc.greencompute.svc.cluster.local:32224");
+		properties.setProperty(KAFKA_SHIP_TOPIC_NAME,"ship");
+		properties.setProperty(KAFKA_GROUPID,"kcgroup");
+		properties.setProperty(KAFKA_POLL_DURATION, "10000");
+		properties.setProperty(VERSION, "v0.0.1");
 	}
 }

@@ -29,7 +29,6 @@ public class ContainerPublisher extends Publisher{
        
 			 // Send record asynchronously
 			 Future<RecordMetadata> future = kafkaProducer.send(record);
-      
 			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
 			 System.out.println(" Container Event " + eventAsJson + " sent -> offset:" + recordMetadata.offset());
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {

@@ -1,9 +1,7 @@
 package ibm.labs.kc.simulator;
 
-import java.util.HashMap;
 import java.util.List;
 
-import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.model.Position;
 import ibm.labs.kc.model.Ship;
 
@@ -13,14 +11,18 @@ import ibm.labs.kc.model.Ship;
  *
  */
 public class ShipSimulator extends KCSimulator{
-	HashMap<String,ShipRunner> shipThreads;
-	private boolean usePublish = false;
-
-	public ShipSimulator(boolean b) {
-		this.usePublish = b;
+	ShipRunner shipRunner;
+	
+	public ShipSimulator() {
+		shipRunner = new ShipRunner();
 	}
 	
 	
+	public ShipSimulator(ShipRunner r) {
+		this.shipRunner = r;
+	}
+
+
 	/**
 	 * Simulate the ship movement for n minutes. Each 5 s represents 2 hours of boat running
 	 * @param ship
@@ -29,15 +31,13 @@ public class ShipSimulator extends KCSimulator{
 	public void start(Ship s, double numberOfMinutes) {
 		List<Position> shipPositions = readShipPositions(s.getName());
 		// start a thread per ship for the duration specified in number of minutes
-		shipThreads = new HashMap<String,ShipRunner>(); 
-		ShipRunner runner = new ShipRunner(s,shipPositions,numberOfMinutes,usePublish);
-		shipThreads.put(s.getName(), runner);
-		runner.start();
+		shipRunner.init(s,shipPositions,numberOfMinutes);
+		shipRunner.start();
 	}
 	
 	public void stop(Ship s) {
-		if (shipThreads != null) {
-				shipThreads.get(s.getName()).stop();
+		if (shipRunner != null) {
+			shipRunner.stop();
 		}
 	}
 }

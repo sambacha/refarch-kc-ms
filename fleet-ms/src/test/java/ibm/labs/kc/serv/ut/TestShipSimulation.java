@@ -5,35 +5,54 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import ibm.labs.kc.app.kafka.ContainerPublisher;
+import ibm.labs.kc.app.kafka.PositionPublisher;
 import ibm.labs.kc.app.rest.ShipService;
+import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dto.model.ShipSimulationControl;
 import ibm.labs.kc.model.Container;
 import ibm.labs.kc.model.Ship;
+import ibm.labs.kc.simulator.ShipRunner;
+import ibm.labs.kc.simulator.ShipSimulator;
 
 /**
  * simulate the ship movement and the container
  * @author jeromeboyer
  *
  */
-public class TestShipSimulation extends ShipService {
-    
-	 public static TestShipSimulation serv;
-	
-	 public TestShipSimulation() {
-		 super("Fleet.json");
-	 }
+public class TestShipSimulation  {
+   
+	 @Mock
+	 static PositionPublisher positionPublisherMock;
+	 @Mock
+	 static ContainerPublisher containerPublisherMock;
 	 
-	public Response performSimulation(ShipSimulationControl ctl, boolean publish) {
-		this.usePublish = publish;
-		return performSimulation(ctl);
+	 @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
+	 
+	 public static ShipService serv;
+	
+	
+	@Before
+	public  void init() {
+		 ShipRunner sr = new ShipRunner(positionPublisherMock, containerPublisherMock);
+		 ShipSimulator s = new ShipSimulator(sr);
+		 serv =  new ShipService(DAOFactory.buildOrGetShipDAOInstance("Fleet.json"),s);
 	}
 	
-	@BeforeClass
-	public static void init() {
-		 serv =  new TestShipSimulation();
+	public void printShip(Ship s) {
+		for (List<Container> row : s.getContainers()) {
+			for (Container c : row) {
+				System.out.println(c.toString() + " --- ");
+			}
+			System.out.println("\n---------------------");
+		}
 	}
 	
 	@Test
@@ -42,15 +61,10 @@ public class TestShipSimulation extends ShipService {
 		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.CONTAINER_FIRE);
 		ctl.setNumberOfContainers(4);
 		ctl.setNumberOfMinutes(1);
-		Response res = serv.performSimulation(ctl,false);
-		Ship s = (Ship)res.getEntity();
-		for (List<Container> row : s.getContainers()) {
-			for (Container c : row) {
-				System.out.print(c.toString() + " --- ");
-			}
-			System.out.println("\n---------------------");
-		}
+		Response res = serv.performSimulation(ctl);
+		Ship s = (Ship)res.getEntity();	
 		Assert.assertTrue(s.getContainers().get(0).get(2).getStatus().equals(Container.STATUS_FIRE));
+		//verify(positionPublisherMock).publishShipPosition(null);
 	}
 
 	@Test
@@ -58,14 +72,9 @@ public class TestShipSimulation extends ShipService {
 		System.out.println("Validate  containers down");
 		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.REEFER_DOWN);
 		ctl.setNumberOfMinutes(1);
-		Response res = serv.performSimulation(ctl,false);
+		Response res = serv.performSimulation(ctl);
 		Ship s = (Ship)res.getEntity();
-		for (List<Container> row : s.getContainers()) {
-			for (Container c : row) {
-				System.out.print(c.toString() + " --- ");
-			}
-			System.out.println("\n---------------------");
-		}
+		printShip(s);
 		Assert.assertTrue(s.getContainers().get(0).get(3).getStatus().equals(Container.STATUS_DOWN));
 	}
 	
@@ -74,14 +83,9 @@ public class TestShipSimulation extends ShipService {
 		System.out.println("Validate  heat wave on top containers");
 		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.HEAT_WAVE);
 		ctl.setNumberOfMinutes(1);
-		Response res = serv.performSimulation(ctl,false);
+		Response res = serv.performSimulation(ctl);
 		Ship s = (Ship)res.getEntity();
-		for (List<Container> row : s.getContainers()) {
-			for (Container c : row) {
-				System.out.print(c.toString() + " --- ");
-			}
-			System.out.println("\n---------------------");
-		}
+		
 		Assert.assertTrue(s.getContainers().get(s.getMaxRow()).get(0).getStatus().equals(Container.STATUS_HEAT));
 	}
 }

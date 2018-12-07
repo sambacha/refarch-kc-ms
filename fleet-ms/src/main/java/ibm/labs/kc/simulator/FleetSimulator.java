@@ -1,23 +1,33 @@
 package ibm.labs.kc.simulator;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import ibm.labs.kc.app.kafka.ContainerPublisher;
+import ibm.labs.kc.app.kafka.PositionPublisher;
 import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.model.Position;
 import ibm.labs.kc.model.Ship;
 
+/**
+ * Simulate all the ships of a fleet. This means it keeps a map of ship, thread
+ * 
+ * @author jerome boyer
+ *
+ */
 public class FleetSimulator extends KCSimulator {
 	HashMap<String,ShipRunner> shipThreads;
-	private boolean usePublish = false;
-
-	public FleetSimulator(boolean b) {
-		this.usePublish = b;
+	private PositionPublisher positionPublisher;
+	private ContainerPublisher containerPublisher;
+	
+	public FleetSimulator() {
+		 this.positionPublisher = new PositionPublisher();
+	     this.containerPublisher = new ContainerPublisher();
+	}
+	
+	public FleetSimulator(PositionPublisher pb,ContainerPublisher cb) {
+		this.positionPublisher = pb;
+		this.containerPublisher = cb;
 	}
 	
 	/**
@@ -30,7 +40,8 @@ public class FleetSimulator extends KCSimulator {
 		// start a thread per ship for the duration specified in number of minutes
 		shipThreads = new HashMap<String,ShipRunner>(); 
 		for (Ship s : f.getShips()) {
-			ShipRunner runner = new ShipRunner(s,shipsPositions.get(s.getName()),d,usePublish);
+			ShipRunner runner = new ShipRunner(this.positionPublisher,this.containerPublisher);
+			runner.init(s,shipsPositions.get(s.getName()),d);
 			shipThreads.put(s.getName(), runner);
 			runner.start();
 		}
