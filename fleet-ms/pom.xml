@@ -282,6 +282,21 @@
                     <reportsDirectory>${project.build.directory}/test-reports/it</reportsDirectory>
                 </configuration>
             </plugin>
+            <plugin>
+			 <groupId>org.codehaus.mojo</groupId>
+			 <artifactId>exec-maven-plugin</artifactId>
+			 <executions>
+				 <execution>
+						 <id>ProblemConsumer</id>
+						 <goals>
+							 <goal>java</goal>
+						 </goals>
+						 <configuration>
+								 <mainClass>util.BluewaterProblemConsumer</mainClass>
+						 </configuration>
+				 </execution>
+			</executions>
+			</plugin>
         </plugins>
     </build>
 

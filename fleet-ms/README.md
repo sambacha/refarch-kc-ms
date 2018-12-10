@@ -27,23 +27,25 @@ We recommend also reading the [producer design and coding considerations article
 A fleet will have one to many ships. Fleet has id and name. Ship has ID, name, status, position, port and type. Ship carries containers. Container has id, and metrics like amp, temperature. Here is an example of JSON document illustrating this model:
 ```json
  {
-    id: "f1",
-    name: "KC-FleetNorth",
-    ships: [
+    {"id": "f1",
+    "name": "KC-NorthAtlantic",
+    "ships": [
       {
-         name: "MarieRose",
-        latitude: "37.8044",
-        longitude: "-122.2711",
-        status: "Docked",
-        port: "Oakland",
-        type: "Carrier",
-        maxRow: 3,
-        maxColumn: 7,
-         numberOfContainers : 17
-         containers: [
-             {id:"c_2",type:"Reefer",temperature:10,amp:46,status:"RUN",row:0,column:2,shipId:"MarieRose"},
-         ]
-      },
+         "name": "MarieRose",
+        "latitude": "37.8044",
+        "longitude": "-122.2711",
+        "status": "Docked",
+        "port": "Oakland",
+        "type": "Carrier",
+        "maxRow": 3,
+        "maxColumn": 7,
+         "numberOfContainers" : 17,
+         "containers": [
+             {"id":"c_2","type":"Reefer","temperature":10,"amp":46,"status":"RUN","row":0,"column":2,"shipId":"MarieRose"}
+         ],
+      }],
+    }
+}
 ```
 
 ## Code
@@ -64,34 +66,34 @@ We are listing here the basic features to support:
 
 #### Start simple
 
-As an example of TDD applied to this project we describe the "get the list of fleets" feature. As this code is built by iteration, the first iteration is to get the fleet definition and ships definition from files. The `src/main/resources` include json files to define fleet. 
+As an example of TDD applied to this project we describe the "get the list of fleets" feature. As this code is built by iteration, the first iteration is to get the fleet definition and ships definition from files. The `src/main/resources` folder includes json files to define the fleet.
 
-The json is an array of fleet definition, somehing like:
+The json is an array of fleet definitions, something like:
 ```json
 [
   {
     "id": "f1",
-    "name": "KC-FleetNorth",
+    "name": "KC-NorthAtlantic",
     "ships": [ ]
   }
 ]
 ```
 
-So starting from the test we implemented in `src/test/java` the `TestReadingFleet` class to test a FleetService. The service will provide the business interface and it will use a data access object to go to the datasource. 
+So starting from the test, we implemented in `src/test/java` the `TestReadingFleet` class to test a FleetService. The service will provide the business interface and it will use a data access object to go to the datasource. 
 
-The first test may look like the basic code below
+The first test may look like the basic code below:
 
 ```java
 public void testGetAllFleets() {
-    dao = new FleetDAOMockup("fleet.json");
-	serv = new FleetService(dao);
+    FleetDAO dao = new FleetDAOMockup("fleet.json");
+	FleetService serv = new FleetService(dao);
     List<Fleet> f = serv.getFleets();
 	Assert.assertNotNull(f);
 	Assert.assertTrue(f.size() >= 1);
 }
 ```
 
-From there we need to code DAO and Service operations.
+After generating class placeholder and java interface, executing the test fails, and we need to implement the DAO and the service operations. In the FleetService we simply delegate to the DAO.
 
 ```java
 public List<Fleet> getFleets() {
@@ -99,13 +101,11 @@ public List<Fleet> getFleets() {
 	}
 ```
 
-The method is just calling the DAO, but in fact, in the future, we may want to filter out the ships or separate fleet from ship in different json files so some logic may be added in this function. The DAO is defined via an interface, and we add a Factory to build DAO implementation depending on the configuration.
-
-We can do the same for all the getFleetByName operation.
+In the future, we may want to filter out the ships or separate fleet from ship in different json files so some logic may be added in this function. The DAO is defined via an interface, and we add a Factory to build DAO implementation depending on the configuration. The DAO implemenations at first is loadding data from file.
 
 To execute all the tests outside of Eclipse IDE we can use the `maven test`. 
 
-The Fleet service need to be exposed as REST api, so we add the JAXRS annotations to the method we want to expose.
+The Fleet service needs to be exposed as REST api, so we add the JAXRS annotations to the method we want to expose.
 
 ```java
 @Path("fleets")
@@ -117,17 +117,17 @@ public class FleetService {
 }
 ```
 
-Ok we need to test that. This is where **IBM Microclimate** is coming handy as it created a nice example with HealthEndpointIT test class. All integration tests are defined in a `it` java package so we can control the maven life cycle and execute the integration tests when the environment is ready. The pom.xml defines using the `maven Failsafe Plugin` which is designed to run integration tests. This Maven plugin has four phases for running integration tests:
+Ok we need to test that. This is where **IBM Microclimate** is coming handy as it created a nice example with `HealthEndpointIT` test class. All integration tests are defined in a `it` java package so we can control the maven life cycle and execute the integration tests when the environment is ready. The `pom.xml` defines configuration using the `maven Failsafe Plugin` which is designed to run integration tests. This Maven plugin has four phases for running integration tests:
 
 * pre-integration-test for setting up the integration test environment.
 * integration-test for running the integration tests.
 * post-integration-test for tearing down the integration test environment.
 * verify for checking the results of the integration tests.
 
-The pre-integration-test phase will load liberty server via another maven plugin: [liberty-maven-app-parent](https://github.com/WASdev/ci.maven/blob/master/docs/parent-pom.md) 
-To execute the integration tests do a `mvn verify`
+The pre-integration-test phase loads IBM Liberty server via another maven plugin: [liberty-maven-app-parent](https://github.com/WASdev/ci.maven/blob/master/docs/parent-pom.md) 
+To execute the integration tests do a `mvn verify`.
 
-By using the same code approach we created a `TestFleetAPIsIT` junit test class.
+By using the same code approach as `HealthEndpointIT` we created a `TestFleetAPIsIT` junit test class.
 
 The environment properties are set in the pom file. 
 
@@ -147,10 +147,10 @@ If you need to debug this test inside Eclipse, you need to start liberty server 
 
 #### Ship Simulator
 
-The simulation of the different container events is done in the class `BadEventSimulator`. But this class is used in a Runner, the ShipRunner. The approach in this `ShipRunner` is to move the ship to the next position as defined in the separate csv file, and then send the new ship position, and then the container metrics at that position. So the simulator uses two producers, one for the ship position and one for the container metrics.
-The topic names are defined in the `src/main/resource/config.properties` as well as the Kafka parameters.
+The simulation of the different container events is done in the class `BadEventSimulator`. But this class is used in a Runner, the `ShipRunner`. The approach is to move the ship to the next position as defined in the separate csv file (named by the ship's name), then to send the new ship position, and the container metrics at that position as events. So the simulator uses two Kafka producers, one for the ship position and one for the container metrics.
+The topic names are defined in the `src/main/resource/config.properties` as well as the Kafka parameters. If you did not configure your kafka server, we have a script to create those topics [here]()
 
-Here is a code snippet for the run method of the ShipRunner: The ship positions are loaded from the class loader. It can be externalized later on.
+Here is a code snippet for the run method of the `ShipRunner`: The ship positions are loaded from the class loader. They can be externalized later on.
 ```
 try  { 
     for (Position p : this.positions) {
@@ -173,9 +173,20 @@ try  {
 } catch (InterruptedException e) { 
 ```
 
-The `positionPublisher` and `containerPublisher` are standard Kafka producer.
+The `positionPublisher` and `containerPublisher` are standard Kafka producers.
 
-As we need to add a ship movement event producer and we want to avoid using kafka for unit test, we can use mockito to mockup the producer behavior. We encourage to read this [Mockito tutorial](http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects).
+As we need to add a ship movement event producer and we want to avoid using kafka for unit tests, we can use mockito to mockup the producer behavior. We encourage to read this [Mockito tutorial](https://javacodehouse.com/blog/mockito-tutorial/) and [this one.](http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects). We added the following dependency in the `pom.xml`.
+
+```xml
+	<dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>2.23.4</version>
+        <scope>test</scope>
+    </dependency>
+```
+
+
 The test can use mockup at the simulator level or at the producer level. Here is an example of settings for producer:
 ```java
  @Mock
@@ -188,6 +199,7 @@ The test can use mockup at the simulator level or at the producer level. Here is
 
  @Test
  public void validateContainerFire() {
+     // use dependency injection via constructor.
     ShipRunner sr = new ShipRunner(positionPublisherMock, containerPublisherMock);
 	ShipSimulator s = new ShipSimulator(sr);
     serv =  new ShipService(DAOFactory.buildOrGetShipDAOInstance("Fleet.json"),s);
@@ -272,7 +284,7 @@ The pom.xml uses those variables to use the local kafka for the integration test
         </environmentVariables>
 ```
 
-One interesting integration test is defined in the class `it.FireContainerSimulationIT.java` as it starts a Thread running a ContainerConsumer (bullet 1 in figure below) which uses Kafka api to get `Container events` (class `ibm.labs.kc.event.model.ContainerMetric`) from `container-topic`, and then calls the POST HTTP end point (2): `http://localhost:9080/fleetms/ships/simulate` with a simulator control object ( `ibm.labs.kc.dto.model.ShipSimulationControl`). The application is producing ship position event and container metrics events at each time slot (3). The consumer is getting multiple events (4) from the topic showing some containers are burning:
+One interesting integration test is defined in the class `it.FireContainerSimulationIT.java` as it starts a Thread running a ContainerConsumer (bullet 1 in figure below) which uses Kafka api to get `Container events` (class `ibm.labs.kc.event.model.ContainerMetric`) from `container-topic`, and then calls the POST HTTP end point (2): `http://localhost:9080/fleetms/ships/simulate` with a simulator control object (`ibm.labs.kc.dto.model.ShipSimulationControl`). The application is producing ship position events and container metrics events at each time slot (3). The consumer is getting multiple events (4) from the topic showing some containers are burning:
 
 ```json
 {"id":"c_2","type":"Reefer","temperature":150,"amp":46,"status":"FIRE","row":0,"column":2,"shipId":"JimminyCricket"},

@@ -14,7 +14,7 @@ public class TestFleetDAO {
 
 	@Test
 	public void testDAOReadFleets() {
-		FleetDAO dao = new FleetDAOMockup("fleet.json");
+		FleetDAO dao = new FleetDAOMockup("Fleet.json");
 		Collection<Fleet> f = dao.getFleets();
 		Assert.assertNotNull(f);
 		Assert.assertTrue(f.size() >= 1);

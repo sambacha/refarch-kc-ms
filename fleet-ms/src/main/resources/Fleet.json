@@ -1,7 +1,7 @@
 [
   {
     "id": "f1",
-    "name": "KC-FleetNorth",
+    "name": "KC-NorthAtlantic",
     "ships": [
       {
          "name": "MarieRose",
@@ -28,7 +28,7 @@
   },
   {
   	"id": "f2",
-    "name": "KC-FleetSouth",
+    "name": "KC-NorthPacific",
     "ships": [{
         "name": "JimminyCricket",
         "latitude": "36.8044",
@@ -39,5 +39,10 @@
         "maxColumn": 8,
         "numberOfContainers" : 30
       }]
+  },
+  {
+  	"id": "f2",
+    "name": "KC-SouthPacific",
+    "ships": []
   }
 ]

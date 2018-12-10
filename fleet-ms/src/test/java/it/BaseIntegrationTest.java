@@ -25,12 +25,14 @@ public class BaseIntegrationTest {
 	    		baseUrl = "http://localhost:" + port + "/" + warContext;
 	    	}
 	    }
+	  
 	    public String getBaseUrl() {
-	    	if (this.baseUrl.contains("null")) {
+	    	if (! this.baseUrl.contains("fleetms")) {
 	    		baseUrl = "http://localhost:9080/fleetms";
 	    	}
 	    	return this.baseUrl;
 	    }
+	    
 	   protected int makeGetRequest(String url) {
 	      Client client = ClientBuilder.newClient();
 	      Invocation.Builder invoBuild = client.target(url).request();

@@ -50,9 +50,9 @@ public class TestReadingFleet {
 	
 	@Test
 	public void testGetFleetByName() {
-		Fleet f = serv.getFleetByName("KC-FleetNorth");
+		Fleet f = serv.getFleetByName("KC-NorthAtlantic");
 		Assert.assertNotNull(f);
-		Assert.assertTrue("KC-FleetNorth".equals(f.getName()));
+		Assert.assertTrue("KC-NorthAtlantic".equals(f.getName()));
 		f = serv.getFleetByName("wrongname");
 		Assert.assertNull(f);
 	}

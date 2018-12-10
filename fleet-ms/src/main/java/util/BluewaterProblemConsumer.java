@@ -8,7 +8,6 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 
 import ibm.labs.kc.app.kafka.ApplicationConfig;
 import ibm.labs.kc.event.model.BluewaterProblem;
-import it.BaseKafkaConsumer;
 
 public class BluewaterProblemConsumer extends BaseKafkaConsumer {
 	

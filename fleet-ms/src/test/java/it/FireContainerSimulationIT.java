@@ -19,10 +19,11 @@ import ibm.labs.kc.dto.model.ShipSimulationControl;
 public class FireContainerSimulationIT extends BaseIntegrationTest {
 
 	private String endpoint = "/ships/simulate";
-    private String url = baseUrl + endpoint;
+    private String url = getBaseUrl() + endpoint;
 
     @Test
     public void testFireFourContainers() throws Exception {
+    	
     	System.out.println("Start Kafka container event Consumer " + url);
     	ContainerEventConsumer consumer = new ContainerEventConsumer();
     	Thread t = new Thread(consumer);

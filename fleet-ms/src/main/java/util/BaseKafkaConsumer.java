@@ -1,4 +1,4 @@
-package it;
+package util;
 
 import java.util.Arrays;
 import java.util.Properties;

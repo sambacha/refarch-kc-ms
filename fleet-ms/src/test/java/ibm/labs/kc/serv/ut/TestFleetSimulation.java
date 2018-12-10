@@ -30,7 +30,7 @@ public class TestFleetSimulation {
 	 public void testStartFleet() {
 		 FleetSimulator fleetSimulator = new FleetSimulator(positionPublisherMock,containerPublisherMock);
 		 FleetDAO dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");
-			Fleet f = dao.getFleetByName("KC-FleetNorth");
+			Fleet f = dao.getFleetByName("KC-NorthAtlantic");
 			fleetSimulator.start(f, .25);
 			fleetSimulator.stop(f);
 	 }
