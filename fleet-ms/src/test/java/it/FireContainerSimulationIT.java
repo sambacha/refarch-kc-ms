@@ -24,7 +24,7 @@ public class FireContainerSimulationIT extends BaseIntegrationTest {
     @Test
     public void testFireFourContainers() throws Exception {
     	
-    	System.out.println("Start Kafka container event Consumer " + url);
+    	System.out.println("Start Kafka container event Consumer ");
     	ContainerEventConsumer consumer = new ContainerEventConsumer();
     	Thread t = new Thread(consumer);
     	t.start();

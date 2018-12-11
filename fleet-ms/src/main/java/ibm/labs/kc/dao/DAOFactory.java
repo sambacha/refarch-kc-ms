@@ -29,7 +29,7 @@ public class DAOFactory {
 	public static ShipDAO buildOrGetShipDAOInstance() {
 		if (shipDAO == null) {
 			shipDAO = new ShipDAOMockup();
-			for (Fleet f : buildOrGetFleetDAO().getFleets()) {
+			for (Fleet f : DAOFactory.buildOrGetFleetDAO().getFleets()) {
 				for (Ship s : f.getShips()) {
 					shipDAO.save(s);
 				}
@@ -41,7 +41,7 @@ public class DAOFactory {
 	public static ShipDAO buildOrGetShipDAOInstance(String fileName) {
 		if (shipDAO == null) {
 			shipDAO = new ShipDAOMockup();
-			for (Fleet f : buildOrGetFleetDAO(fileName).getFleets()) {
+			for (Fleet f : DAOFactory.buildOrGetFleetDAO(fileName).getFleets()) {
 				for (Ship s : f.getShips()) {
 					shipDAO.save(s);
 				}

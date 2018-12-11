@@ -56,8 +56,15 @@ public class FleetService {
                     content = @Content(mediaType = "application/json",
                     schema = @Schema(implementation = Fleet[].class))) })
     public List<Fleet> getFleets() {
-		// TODO decide to remove ship or not
-		return new ArrayList<Fleet>(dao.getFleets());
+    	List<Fleet> l = new ArrayList<Fleet>();
+    	for (Fleet f : dao.getFleets()) {
+    		Fleet nf = new Fleet(f.getName());
+    		nf.setId(f.getId());
+    		nf.setColor(f.getColor());
+    		nf.setShips(null);
+    		l.add(nf);
+    	}
+		return l;
 	}
 
     @GET

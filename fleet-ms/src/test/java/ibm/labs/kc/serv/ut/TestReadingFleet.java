@@ -36,7 +36,7 @@ public class TestReadingFleet {
 	
 	@BeforeClass
 	public static void init() {
-		dao = new FleetDAOMockup("fleet.json");
+		dao = new FleetDAOMockup("Fleet.json");
 		serv = new FleetService(dao,simulator);
 	}
 	
@@ -53,21 +53,13 @@ public class TestReadingFleet {
 		Fleet f = serv.getFleetByName("KC-NorthAtlantic");
 		Assert.assertNotNull(f);
 		Assert.assertTrue("KC-NorthAtlantic".equals(f.getName()));
-		f = serv.getFleetByName("wrongname");
-		Assert.assertNull(f);
-	}
-
-	@Test
-	public void testGetAllShipsFromFile() {
-		List<Fleet> fl = serv.getFleets();
-		Assert.assertNotNull(fl);
-		Assert.assertTrue(fl.size() >= 1);
-		for (Fleet f : fl) {
-			System.out.println(f.toString());
-			for (Ship s : f.getShips()) {
-				System.out.println("\t"+s.toString());
-			}
+		for (Ship s : f.getShips()) {
+			System.out.println("\t"+s.toString());
 		}
 		
+		f = serv.getFleetByName("wrongname");
+		Assert.assertNull(f);
+		
 	}
+
 }
