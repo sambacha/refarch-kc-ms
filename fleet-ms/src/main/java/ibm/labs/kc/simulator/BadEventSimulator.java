@@ -47,7 +47,6 @@ public class BadEventSimulator {
 		}
 	
 		ContainerMetric cm = new ContainerMetric(shipId,c.getId(),c.getTemperature(),c.getAmp(),currentWorldTime);
-		
 		return cm;
 	}
 

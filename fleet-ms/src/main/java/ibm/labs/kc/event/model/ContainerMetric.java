@@ -9,6 +9,9 @@ public class ContainerMetric {
 	@SerializedName("tempC")
 	protected long temperature;
 	protected long amp;
+	protected float cumulativePowerConsumption;
+	protected int contentType;
+ 	protected long	Tproduce;
 	@SerializedName("ts")
 	protected String timeStamp;
 	protected String shipId;
@@ -47,6 +50,42 @@ public class ContainerMetric {
 
 	public void setShipId(String shipId) {
 		this.shipId = shipId;
+	}
+
+	public float getCumulativePowerConsumption() {
+		return cumulativePowerConsumption;
+	}
+
+	public void setCumulativePowerConsumption(float cumulativePowerConsumption) {
+		this.cumulativePowerConsumption = cumulativePowerConsumption;
+	}
+
+	public int getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(int contentType) {
+		this.contentType = contentType;
+	}
+
+	public long getTproduce() {
+		return Tproduce;
+	}
+
+	public void setTproduce(long tproduce) {
+		Tproduce = tproduce;
+	}
+
+	public void setTemperature(long temperature) {
+		this.temperature = temperature;
+	}
+
+	public void setAmp(long amp) {
+		this.amp = amp;
+	}
+
+	public void setTimeStamp(String timeStamp) {
+		this.timeStamp = timeStamp;
 	}
 
 }
