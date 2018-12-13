@@ -57,35 +57,40 @@ public class TestShipSimulation  {
 	
 	@Test
 	public void validateContainerFire() {
-		System.out.println("Validate  containers fire");
-		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.CONTAINER_FIRE);
+		System.out.println("Validate containers fire");
+		ShipSimulationControl ctl = new ShipSimulationControl("BlackBear", ShipSimulationControl.CONTAINER_FIRE);
 		ctl.setNumberOfContainers(4);
 		ctl.setNumberOfMinutes(1);
 		Response res = serv.performSimulation(ctl);
 		Ship s = (Ship)res.getEntity();	
 		Assert.assertTrue(s.getContainers().get(0).get(2).getStatus().equals(Container.STATUS_FIRE));
 		//verify(positionPublisherMock).publishShipPosition(null);
+		ctl = new ShipSimulationControl("BlackBear", ShipSimulationControl.STOP);
+		res = serv.performSimulation(ctl);
 	}
 
 	@Test
 	public void validateContainerDown() {
-		System.out.println("Validate  containers down");
+		System.out.println("Validate containers down");
 		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.REEFER_DOWN);
 		ctl.setNumberOfMinutes(1);
 		Response res = serv.performSimulation(ctl);
 		Ship s = (Ship)res.getEntity();
-		printShip(s);
+		//printShip(s);
 		Assert.assertTrue(s.getContainers().get(0).get(3).getStatus().equals(Container.STATUS_DOWN));
+		ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.STOP);
+		res = serv.performSimulation(ctl);
 	}
 	
 	@Test
 	public void validateHeatWave() {
-		System.out.println("Validate  heat wave on top containers");
+		System.out.println("Validate heat wave on top containers");
 		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.HEAT_WAVE);
 		ctl.setNumberOfMinutes(1);
 		Response res = serv.performSimulation(ctl);
 		Ship s = (Ship)res.getEntity();
-		
 		Assert.assertTrue(s.getContainers().get(s.getMaxRow()).get(0).getStatus().equals(Container.STATUS_HEAT));
+		ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.STOP);
+		res = serv.performSimulation(ctl);
 	}
 }

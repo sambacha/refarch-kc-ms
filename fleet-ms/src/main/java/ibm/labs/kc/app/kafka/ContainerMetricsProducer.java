@@ -15,7 +15,7 @@ import ibm.labs.kc.event.model.ContainerMetric;
 public class ContainerMetricsProducer extends BaseProducer{
 	
 	private static  KafkaProducer<String, String> kafkaProducer;
-	private static ContainerMetricsProducer instance = new ContainerMetricsProducer();
+	private static ContainerMetricsProducer instance;
 	
 	private ContainerMetricsProducer() {
 		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID)+"_container");
@@ -24,6 +24,7 @@ public class ContainerMetricsProducer extends BaseProducer{
 	}
 	
 	public static ContainerMetricsProducer getInstance() {
+		if (instance == null) instance = new ContainerMetricsProducer();
 		return instance;
 	}
 	

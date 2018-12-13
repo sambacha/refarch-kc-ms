@@ -15,7 +15,7 @@ import ibm.labs.kc.event.model.ShipPosition;
 
 public class ShipPositionProducer extends BaseProducer{
 	 private static  KafkaProducer<String, String> kafkaProducer;
-	 private static ShipPositionProducer instance = new ShipPositionProducer();
+	 private static ShipPositionProducer instance;
 	 
 	 private ShipPositionProducer() {
 		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID));
@@ -24,6 +24,7 @@ public class ShipPositionProducer extends BaseProducer{
 	 }
 	 
 		public static ShipPositionProducer getInstance() {
+			if (instance == null) instance = new ShipPositionProducer();
 			return instance;
 		}
 

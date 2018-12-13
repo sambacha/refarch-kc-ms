@@ -10,6 +10,7 @@ public class ShipSimulationControl {
 	public static final String CONTAINER_FIRE = "CONTAINER_FIRE";
 	public static final String HEAT_WAVE = "HEAT_WAVE";
 	public static final String REEFER_DOWN = "REEFER_DOWN";
+	public static final String STOP = "STOP";
 	protected String shipName;
 	protected String command;
 	private int numberOfContainers;

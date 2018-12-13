@@ -73,6 +73,10 @@ public class ShipService {
 		if (s == null) {
 			return Response.status(404).build();
 		}
+		if (ShipSimulationControl.STOP.equals(ctl.getCommand())) {
+			simulator.stop(s);
+			return Response.ok().entity(s).build();
+		}
 		s.loadContainers(s.getNumberOfContainers());
 		if (ShipSimulationControl.CONTAINER_FIRE.equals(ctl.getCommand())) {
 			BadEventSimulator.fireContainers(s, ctl.getNumberOfContainers());
@@ -83,7 +87,6 @@ public class ShipService {
 		if (ShipSimulationControl.REEFER_DOWN.equals(ctl.getCommand())) {
 			BadEventSimulator.reeferDown(s);
 		}
-		
 		simulator.start(s,ctl.getNumberOfMinutes());
 		return Response.ok().entity(s).build();
 	}

@@ -295,6 +295,15 @@
 								 <mainClass>util.BluewaterProblemConsumer</mainClass>
 						 </configuration>
 				 </execution>
+				  <execution>
+						 <id>ContainerConsumer</id>
+						 <goals>
+							 <goal>java</goal>
+						 </goals>
+						 <configuration>
+								 <mainClass>util.ContainerConsumer</mainClass>
+						 </configuration>
+				 </execution>
 			</executions>
 			</plugin>
         </plugins>

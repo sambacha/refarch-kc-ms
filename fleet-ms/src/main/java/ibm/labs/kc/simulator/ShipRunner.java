@@ -51,8 +51,8 @@ public class ShipRunner implements Runnable {
 	}
 
 	public void start() {
-		System.out.println("Starting " +  shipName );
 	    if (t == null) {
+	    	 System.out.println("Starting " +  shipName );
 	         t = new Thread (this, shipName);
 	         t.start ();
 	      }
@@ -80,8 +80,10 @@ public class ShipRunner implements Runnable {
 				Thread.sleep(Math.round(this.numberOfMinutes*60000/this.positions.size()));
 				
 			}
-        } catch (InterruptedException e) { 
+        } catch (Exception e) { 
+        	e.printStackTrace();
             System.out.println ("ShipRunner stopped"); 
+            stop();
         } finally {
         	if (containerPublisher != null)
         		containerPublisher.close();
