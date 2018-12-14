@@ -11,13 +11,12 @@ This repository addresses the implementation of the yellow boxes in the figure b
 
 * The `fleet-ms` folder contains the Java App developed using microprofile and deployed on Open Liberty. It uses Kafka API to produce events. See [the readme for details](./fleet-ms/README.md) about deployment and code explanations.
 
-
-
 ## Project Status
 [12/2018] Just started
 
 ## Contributors
+If you want to contribute please read [this note.](CONTRIBUTING.md)
 * Lead development [Jerome Boyer](https://www.linkedin.com/in/jeromeboyer/)
-* [Hemankita Perabathini](https://www.linkedin.com/in/hemankita-perabathini/)
+* Developer [Hemankita Perabathini](https://www.linkedin.com/in/hemankita-perabathini/)
 
 Please [contact me](mailto:boyerje@us.ibm.com) for any questions.
