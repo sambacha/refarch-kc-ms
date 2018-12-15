@@ -276,7 +276,7 @@
                 <configuration>
                     <environmentVariables>
                       <KAFKA_ENV>LOCAL</KAFKA_ENV>
-                      <KAFKA_BROKERS>gc-kafka-0.gc-kafka-hl-svc.greencompute.svc.cluster.local:32224</KAFKA_BROKERS>
+                      <KAFKA_BROKERS>localhost:9092</KAFKA_BROKERS>
                     </environmentVariables>
                     <summaryFile>${project.build.directory}/test-reports/it/failsafe-summary.xml</summaryFile>
                     <reportsDirectory>${project.build.directory}/test-reports/it</reportsDirectory>

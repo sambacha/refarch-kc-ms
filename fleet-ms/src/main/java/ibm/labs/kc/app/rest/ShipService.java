@@ -1,6 +1,5 @@
 package ibm.labs.kc.app.rest;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

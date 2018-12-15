@@ -3,17 +3,16 @@ package ibm.labs.kc.app.kafka;
 import com.google.gson.Gson;
 
 public abstract class BaseProducer {
-	 protected ApplicationConfig  config = new ApplicationConfig();;
+	 private static ApplicationConfig  config;
 	
 	 protected  String topic;
 	 protected  Gson parser = new Gson();
 	 
 	public ApplicationConfig getConfig() {
+		if (config == null) config = new ApplicationConfig();
 		return config;
 	}
-	public void setConfig(ApplicationConfig config) {
-		this.config = config;
-	}
+
 	
 
 	public String getTopic() {

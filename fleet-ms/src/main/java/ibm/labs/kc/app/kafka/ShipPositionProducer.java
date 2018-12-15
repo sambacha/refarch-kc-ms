@@ -18,9 +18,9 @@ public class ShipPositionProducer extends BaseProducer{
 	 private static ShipPositionProducer instance;
 	 
 	 private ShipPositionProducer() {
-		 Properties p = config.buildProducerProperties(config.getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID));
+		 Properties p = getConfig().buildProducerProperties(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID));
 		 kafkaProducer = new KafkaProducer<String, String>(p);
-	     topic = config.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
+	     topic = getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
 	 }
 	 
 		public static ShipPositionProducer getInstance() {

@@ -169,9 +169,10 @@ From a test point of view we want to create a simulation controller instance, ca
         Assert.assertTrue(s.getContainers().get(0).get(3).getStatus().equals(Container.STATUS_DOWN));
     }
 ```
-Event after adding the ShipSimulationControl Java Bean and the operation performSimulation... we have a problem... How to unit tests without send message to Kafka.
+Event after adding the ShipSimulationControl Java Bean and the operation performSimulation into the service... we have a problem... How to unit tests without sending message to Kafka?.
 
-Here is a code snippet for the run method of the `ShipRunner`: The ship positions are loaded from the class loader. They can be externalized later on.
+The ShipRunner is a Runnable class and uses the `positionPublisher` and `containerPublisher` which are standard Kafka producers.
+Here is a code snippet for the run method of the `ShipRunner`: The ship positions are loaded from the class loader and then for each container in the boat, send metrics.
 
 ```java
 try  { 
@@ -195,9 +196,7 @@ try  {
 } catch (InterruptedException e) { 
 ```
 
-The `positionPublisher` and `containerPublisher` are standard Kafka producers.
-
-As we need to add a ship movement event producer and we want to avoid using kafka for unit tests, we can use mockito to mockup the producer behavior. We encourage to read this [Mockito tutorial](https://javacodehouse.com/blog/mockito-tutorial/) and [this one.](http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects). We added the following dependency in the `pom.xml`.
+So to avoid using kafka for unit tests, we can use mockito to mockup the producers. We encourage to read this [Mockito tutorial](https://javacodehouse.com/blog/mockito-tutorial/) and [this one.](http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects). We added the following dependency in the `pom.xml`.
 
 ```xml
 	<dependency>
@@ -208,8 +207,7 @@ As we need to add a ship movement event producer and we want to avoid using kafk
     </dependency>
 ```
 
-
-The test can use mockup at the simulator level or at the producer level. Here is an example of settings for producer:
+Add a constructor in ShipRunner so we can inject those producer. The test can use mockup at the simulator level or at the producer level. Here is an example of settings for producer:
 ```java
  @Mock
  static PositionPublisher positionPublisherMock;
@@ -229,13 +227,11 @@ The test can use mockup at the simulator level or at the producer level. Here is
     Response res = serv.performSimulation(ctl);
 }
 ```
-
+Now the tests succeed and do not send any message to Kafka.
 
 ### APIs definition
 
-We can define the API using yaml file and generates code from there, or using a TDD approach start from the code, add API annotations and generate API definition. We used the second approach, but it is still possible to get the API in Liberty.
-
-The MicroProfile OpenAPI specification provides a set of Java interfaces and programming models that allow Java developers to natively produce OpenAPI v3 documents from their JAX-RS applications. We added annotations to the resource classes to support API documentation. Here is an example of microprofile openapi annotations.
+We can define the API using yaml file and generates code from there, but  we are using a TDD approach we start by the code: so we need to add API annotations to get the Swagger generated for us. The MicroProfile OpenAPI specification provides a set of Java interfaces and programming models that allow Java developers to natively produce OpenAPI v3 documents from their JAX-RS applications. We added annotations to the resource classes to support API documentation. Here is an example of microprofile openapi annotations.
 
 ```java
 @Operation(summary = "Get fleet by fleet name",description=" Retrieve a fleet with ships from is unique name")
@@ -266,13 +262,11 @@ In the Liberty configuration file: `src/main/liberty/server.xml` we added the fo
       <feature>openapi-3.0</feature>
       <feature>restConnector-2.0</feature>
 ```
-Once the server is restarted, we first go to http://localhost:9080/api/explorer to access the API definitions and be able to test it:
+Once the server is restarted, we first go to http://localhost:9080/api/explorer to access the API definitions and even we are able to test it:
 
 ![](docs/fleets-api.png)
 
-
 A summary of the operations defined for this simulator are:
-
 
  | API | Description |   
  | --- | --- |   
@@ -285,9 +279,9 @@ A summary of the operations defined for this simulator are:
 
 ## Running integration tests with Kafka
 
-By adding simulation tests we need to have kafka running. We have deployed Kafka and Zookeeper to Kubernetes on Docker Edge for Mac and are able to connect to `docker-for-desktop` cluster. We have described this deployment [in this note for Kafka](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/kafka/README.md) and [for zookeeper](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/zookeeper/README.md)
+By adding simulation tests we need to have kafka running now. We have deployed Kafka and Zookeeper to Kubernetes on Docker Edge for Mac and are able to connect to `docker-for-desktop` cluster. We have described this deployment [in this note for Kafka](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/kafka/README.md) and [for zookeeper](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/zookeeper/README.md)
 
-As an alternate you can use the docker image from [confluent.io](https://docs.confluent.io/current/installation/docker/docs/installation/single-node-client.html#single-node-basic).
+As an alternate you can use the docker image from [confluent.io](https://docs.confluent.io/current/installation/docker/docs/installation/single-node-client.html#single-node-basic) and docker-compose to start zookeeper and kafka single broker.
 
 We use environment variables to control the configuration:
 
@@ -306,7 +300,7 @@ The pom.xml uses those variables to use the local kafka for the integration test
         </environmentVariables>
 ```
 
-One interesting integration test is defined in the class `it.FireContainerSimulationIT.java` as it starts a Thread running a ContainerConsumer (bullet 1 in figure below) which uses Kafka api to get `Container events` (class `ibm.labs.kc.event.model.ContainerMetric`) from `container-topic`, and then calls the POST HTTP end point (2): `http://localhost:9080/fleetms/ships/simulate` with a simulator control object (`ibm.labs.kc.dto.model.ShipSimulationControl`). The application is producing ship position events and container metrics events at each time slot (3). The consumer is getting multiple events (4) from the topic showing some containers are burning:
+One interesting integration test is defined in the class `it.FireContainerSimulationIT.java` as it starts a Thread running a ContainerConsumer (bullet 1 in figure below) which uses Kafka api to get `Container events` (class `ibm.labs.kc.event.model.ContainerMetric`) from the `bluewaterContainer` topic, and then calls the POST HTTP end point (2): `http://localhost:9080/fleetms/ships/simulate` with a simulator control object (`ibm.labs.kc.dto.model.ShipSimulationControl`). The application is producing ship position events and container metrics events at each time slot (3). The consumer is getting multiple events (4) from the topic showing some containers are burning:
 
 ```json
 {"id":"c_2","type":"Reefer","temperature":150,"amp":46,"status":"FIRE","row":0,"column":2,"shipId":"JimminyCricket"},
@@ -330,19 +324,24 @@ These capabilities are provided through dependencies in the `pom.xml` file and L
 ### Run Locally
 
 To get all the dependencies build and tests run execute:  
+```
+# Go to the parent repository refarch-kc and docker folder
+$ cd ../refarch-kc/docker
+$ docker-compose -f backbone-compose.yml up
+# Go back to this project to build
+$ mvn install
+$ docker build -t ibmcase/fleetms .
+```
 
- `mvn install`
-
-To test and run the application server:
+To run the application server you can use:
 
 `mvn liberty:run-server`
 
-To run the application in Docker use the Docker file called `Dockerfile` in this main folder. If you do not want to install Maven locally you can use `Dockerfile-tools` to build a container with Maven installed.
+or
+`docker run -p 9080:9080 -p 9443:9443 ibmcase/fleetms`
 
-```
-docker build -t ibmase/kc-ms .
-docker run -p 9080:9080 -p 9443:9443 ibmase/kc-ms
-```
+If you do not want to install Maven locally you can use `Dockerfile-tools` to build a container with Maven installed.
+
 
 ### Run on IBM Cloud Private
 

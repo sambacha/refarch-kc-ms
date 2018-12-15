@@ -11,6 +11,7 @@ import ibm.labs.kc.model.Ship;
  *
  */
 public class ShipSimulator extends KCSimulator{
+
 	ShipRunner shipRunner;
 	
 	public ShipSimulator() {
@@ -29,6 +30,7 @@ public class ShipSimulator extends KCSimulator{
 	 * @param numberOfMinutes
 	 */
 	public void start(Ship s, double numberOfMinutes) {
+		
 		List<Position> shipPositions = readShipPositions(s.getName());
 		// start a thread per ship for the duration specified in number of minutes
 		shipRunner.init(s,shipPositions,numberOfMinutes);
