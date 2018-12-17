@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -21,6 +22,7 @@ import org.apache.kafka.common.serialization.StringDeserializer;
  *
  */
 public class ApplicationConfig {
+	public static Logger logger = Logger.getLogger(ApplicationConfig.class.getName());
 		
 	public static final String KAFKA_ENV = "kafka.env";
 	public static final String KAFKA_BOOTSTRAP_SERVERS = "kafka.bootstrap.servers";
@@ -127,12 +129,15 @@ public class ApplicationConfig {
 		Properties properties = new Properties();
 		Map<String,String> env=System.getenv();
 		if (env.get("KAFKA_BROKERS") != null) {
-			properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,env.get("KAFKA_BROKERS"));
-		} else {
-			properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, 
+			getProperties().setProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS,env.get("KAFKA_BROKERS"));
+		} 
+		properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, 
 	        		getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
-		}
-		if ("IBMCLOUD".equals(env.get("KAFKA_ENV"))) {
+		
+		if (env.get("KAFKA_APIKEY") != null) {
+				getProperties().setProperty(ApplicationConfig.KAFKA_APIKEY, env.get("KAFKA_APIKEY"));
+		} 
+		if ("IBMCLOUD".equals(env.get("KAFKA_ENV")) || "ICP".equals(env.get("KAFKA_ENV"))) {
         	properties.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
             properties.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
             properties.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"token\" password=\"" 
@@ -141,7 +146,7 @@ public class ApplicationConfig {
             properties.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, "TLSv1.2");
             properties.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS");
         }
-        
+		logger.info("Brokers " + getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
         return properties;
 	}
 	

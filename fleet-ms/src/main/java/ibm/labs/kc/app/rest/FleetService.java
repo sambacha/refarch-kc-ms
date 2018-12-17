@@ -32,7 +32,7 @@ import ibm.labs.kc.simulator.FleetSimulator;
 public class FleetService {
 	
 	protected FleetDAO dao;
-	protected static FleetSimulator fleetSimulator;
+	protected  FleetSimulator fleetSimulator;
 	
 	public FleetService() {
 		dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");	
@@ -122,7 +122,7 @@ public class FleetService {
     	return  Response.ok("{\"status\":\"Nothing done\"}").build();
     }
 
-	public static FleetSimulator getFleetSimulator() {
+	public  FleetSimulator getFleetSimulator() {
 		return fleetSimulator;
 	}
     

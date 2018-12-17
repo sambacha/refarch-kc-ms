@@ -3,7 +3,9 @@ package ibm.labs.kc.simulator;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
+import ibm.labs.kc.app.kafka.ApplicationConfig;
 import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
 import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.event.model.ContainerMetric;
@@ -21,6 +23,7 @@ import ibm.labs.kc.model.Ship;
  *
  */
 public class ShipRunner implements Runnable {
+	public Logger logger = Logger.getLogger(ShipRunner.class.getName());
 	public static final long WORLD_TIME_STEP = 45; // in minutes
 	
 	protected ShipPositionProducer positionPublisher;
@@ -52,7 +55,7 @@ public class ShipRunner implements Runnable {
 
 	public void start() {
 	    if (t == null) {
-	    	 System.out.println("Starting " +  shipName );
+	    	 logger.info("Start simulation " + shipName );
 	         t = new Thread (this, shipName);
 	         t.start ();
 	      }

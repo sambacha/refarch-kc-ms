@@ -2,7 +2,7 @@
 
 This microservice is responsible to manage fleet of container carrier ships. It exposes simple REST API to support getting ships and fleets, and start and stop simulator to emulate ship movements and container metrics events generation.
 
-## What you will learn:
+## What you will learn
 
 * Using JAXRS API to define REST resources
 * Using microprofile for API documentation
@@ -10,7 +10,7 @@ This microservice is responsible to manage fleet of container carrier ships. It 
 * Kafka producer code example
 * Test Driven Development with JAXRS and Integration test with Kafka
 
-We recommend also reading the [producer design and coding considerations article]()
+We recommend also reading the [producer design and coding considerations article](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/docs/kafka/producers.md)
 
 ## Pre-Requisites
 
@@ -27,7 +27,7 @@ We recommend also reading the [producer design and coding considerations article
 A fleet will have one to many ships. Fleet has id and name. Ship has ID, name, status, position, port and type. Ship carries containers. Container has id, and metrics like amp, temperature. Here is an example of JSON document illustrating this model:
 ```json
  {
-    {"id": "f1",
+    "id": "f1",
     "name": "KC-NorthAtlantic",
     "ships": [
       {
@@ -44,7 +44,6 @@ A fleet will have one to many ships. Fleet has id and name. Ship has ID, name, s
              {"id":"c_2","type":"Reefer","temperature":10,"amp":46,"status":"RUN","row":0,"column":2,"shipId":"MarieRose"}
          ],
       }],
-    }
 }
 ```
 
@@ -63,10 +62,12 @@ We are listing here the basic features to support:
 * Generate, at each position update, the n container metric events for all container carried in the moving ship
 
 ### Test Driven Development
+Test driven development should be used to develop microservice as it helps to develop by contract and think about how each function should work from a client point of view. [This article](https://cloudcontent.mybluemix.net/cloud/garage/content/code/practice_test_driven_development) introduces the practice.
+To apply TDD we want to describe our approach for this project, by starting by the tests.
 
 #### Start simple
 
-As an example of TDD applied to this project we describe the "get the list of fleets" feature. As this code is built by iteration, the first iteration is to get the fleet definition and ships definition from files. The `src/main/resources` folder includes json files to define the fleet.
+As an example of TDD applied to this project, we want to test the "get the list of fleets" feature. As this code is built by iteration, the first iteration is to get the fleet definition and ships definition from files. The `src/main/resources` folder includes a json file to define the fleets. 
 
 The json is an array of fleet definitions, something like:
 ```json
@@ -79,7 +80,7 @@ The json is an array of fleet definitions, something like:
 ]
 ```
 
-So starting from the test, we implemented in `src/test/java` the `TestReadingFleet` class to test a FleetService. The service will provide the business interface and it will use a data access object to go to the datasource. 
+So starting from the test, we implemented in `src/test/java` the `TestReadingFleet` class to test a FleetService. The service will provide the business interface and it will use a data access object to go to the datasource.
 
 The first test may look like the basic code below:
 
@@ -93,7 +94,7 @@ public void testGetAllFleets() {
 }
 ```
 
-After generating class placeholder and java interface, executing the test fails, and we need to implement the DAO and the service operations. In the FleetService we simply delegate to the DAO.
+After generating class placeholder and java interface, executing the test fails, and we need to implement the DAO and the service operation `getFleets()`. In the FleetService we simply delegate to the DAO.
 
 ```java
 public List<Fleet> getFleets() {
@@ -103,9 +104,11 @@ public List<Fleet> getFleets() {
 
 In the future, we may want to filter out the ships or separate fleet from ship in different json files so some logic may be added in this function. The DAO is defined via an interface, and we add a Factory to build DAO implementation depending on the configuration. The DAO implemenations at first is loadding data from file.
 
-To execute all the tests outside of Eclipse IDE we can use the `maven test`. 
+To execute all the tests outside of Eclipse IDE we can use the `mvn test`. 
 
-The Fleet service needs to be exposed as REST api, so we add the JAXRS annotations to the method we want to expose.
+Quickly we can see that the DAO may be more complex than expected so we add unit tests for the DAO too. After 10, 15 minutes we have a service component and a DAO with Factory and Mockup implementation created and tested. 
+
+The Fleet service needs to be exposed as REST api, so we add the JAXRS annotations inside the service class to the method we want to expose.
 
 ```java
 @Path("fleets")
@@ -117,19 +120,20 @@ public class FleetService {
 }
 ```
 
-Ok we need to test that. This is where **IBM Microclimate** is coming handy as it created a nice example with `HealthEndpointIT` test class. All integration tests are defined in a `it` java package so we can control the maven life cycle and execute the integration tests when the environment is ready. The `pom.xml` defines configuration using the `maven Failsafe Plugin` which is designed to run integration tests. This Maven plugin has four phases for running integration tests:
+So now if we want to test at the API level, we need to do integration tests. This is where **IBM Microclimate** is coming handy as it created a nice example with `HealthEndpointIT` test class to get up started. All integration tests are defined in the `it` java package so we can control the maven life cycle and execute the integration tests when the environment is ready. The `pom.xml` defines configuration using the `maven Failsafe Plugin` which is designed to run integration tests. This Maven plugin has four phases for running integration tests:
 
 * pre-integration-test for setting up the integration test environment.
 * integration-test for running the integration tests.
 * post-integration-test for tearing down the integration test environment.
 * verify for checking the results of the integration tests.
 
-The pre-integration-test phase loads IBM Liberty server via another maven plugin: [liberty-maven-app-parent](https://github.com/WASdev/ci.maven/blob/master/docs/parent-pom.md) 
+The pre-integration-test phase loads IBM Liberty server via another maven plugin: [liberty-maven-app-parent](https://github.com/WASdev/ci.maven/blob/master/docs/parent-pom.md) so that the API can be tested from the app server.
+
 To execute the integration tests do a `mvn verify`.
 
-By using the same code approach as `HealthEndpointIT` we created a `TestFleetAPIsIT` junit test class.
+By using the same code approach as `HealthEndpointIT` we created a `TestFleetAPIsIT` Junit test class.
 
-The environment properties are set in the pom file. 
+The environment properties are set in the `pom.xml` file. 
 
 ```java
     protected String port = System.getProperty("liberty.test.port");
@@ -143,15 +147,34 @@ The environment properties are set in the pom file.
     //..
 ```
 
-If you need to debug this test inside Eclipse, you need to start liberty server before using `mvn liberty:run-server`.
+If you need to debug this test inside Eclipse, you need to start the liberty server as an external process by using `mvn liberty:run-server`.
+
+The second logic we want to TDD is the simulations.
 
 #### Ship Simulator
 
 The simulation of the different container events is done in the class `BadEventSimulator`. But this class is used in a Runner, the `ShipRunner`. The approach is to move the ship to the next position as defined in the separate csv file (named by the ship's name), then to send the new ship position, and the container metrics at that position as events. So the simulator uses two Kafka producers, one for the ship position and one for the container metrics.
-The topic names are defined in the `src/main/resource/config.properties` as well as the Kafka parameters. If you did not configure your kafka server, we have a script to create those topics [here]()
+The topic names are defined in the `src/main/resource/config.properties` as well as the Kafka parameters. If you did not configure your kafka server, we have a script to create those topics [here](https://github.com/ibm-cloud-architecture/refarch-kc/tree/master/scripts/createLocalTopics.sh)
 
-Here is a code snippet for the run method of the `ShipRunner`: The ship positions are loaded from the class loader. They can be externalized later on.
+From a test point of view we want to create a simulation controller instance, call the service simultation operation and verify the impacted container:
+
+```java
+@Test
+	public void validateContainerDown() {
+        serv =  new ShipService();
+		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.REEFER_DOWN);
+		ctl.setNumberOfMinutes(1);
+		Response res = serv.performSimulation(ctl);
+        Ship s = (Ship)res.getEntity();
+        Assert.assertTrue(s.getContainers().get(0).get(3).getStatus().equals(Container.STATUS_DOWN));
+    }
 ```
+Event after adding the ShipSimulationControl Java Bean and the operation performSimulation into the service... we have a problem... How to unit tests without sending message to Kafka?.
+
+The ShipRunner is a Runnable class and uses the `positionPublisher` and `containerPublisher` which are standard Kafka producers.
+Here is a code snippet for the run method of the `ShipRunner`: The ship positions are loaded from the class loader and then for each container in the boat, send metrics.
+
+```java
 try  { 
     for (Position p : this.positions) {
         // ships publish their position to a queue 
@@ -173,9 +196,7 @@ try  {
 } catch (InterruptedException e) { 
 ```
 
-The `positionPublisher` and `containerPublisher` are standard Kafka producers.
-
-As we need to add a ship movement event producer and we want to avoid using kafka for unit tests, we can use mockito to mockup the producer behavior. We encourage to read this [Mockito tutorial](https://javacodehouse.com/blog/mockito-tutorial/) and [this one.](http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects). We added the following dependency in the `pom.xml`.
+So to avoid using kafka for unit tests, we can use mockito to mockup the producers. We encourage to read this [Mockito tutorial](https://javacodehouse.com/blog/mockito-tutorial/) and [this one.](http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects). We added the following dependency in the `pom.xml`.
 
 ```xml
 	<dependency>
@@ -186,8 +207,7 @@ As we need to add a ship movement event producer and we want to avoid using kafk
     </dependency>
 ```
 
-
-The test can use mockup at the simulator level or at the producer level. Here is an example of settings for producer:
+Add a constructor in ShipRunner so we can inject those producer. The test can use mockup at the simulator level or at the producer level. Here is an example of settings for producer:
 ```java
  @Mock
  static PositionPublisher positionPublisherMock;
@@ -207,13 +227,11 @@ The test can use mockup at the simulator level or at the producer level. Here is
     Response res = serv.performSimulation(ctl);
 }
 ```
-
+Now the tests succeed and do not send any message to Kafka.
 
 ### APIs definition
 
-We can define the API using yaml file and generates code from there, or using a TDD approach start from the code, add API annotations and generate API definition. We used the second approach, but it is still possible to get the API in Liberty.
-
-The MicroProfile OpenAPI specification provides a set of Java interfaces and programming models that allow Java developers to natively produce OpenAPI v3 documents from their JAX-RS applications. We added annotations to the resource classes to support API documentation. Here is an example of microprofile openapi annotations.
+We can define the API using yaml file and generates code from there, but  we are using a TDD approach we start by the code: so we need to add API annotations to get the Swagger generated for us. The MicroProfile OpenAPI specification provides a set of Java interfaces and programming models that allow Java developers to natively produce OpenAPI v3 documents from their JAX-RS applications. We added annotations to the resource classes to support API documentation. Here is an example of microprofile openapi annotations.
 
 ```java
 @Operation(summary = "Get fleet by fleet name",description=" Retrieve a fleet with ships from is unique name")
@@ -244,13 +262,11 @@ In the Liberty configuration file: `src/main/liberty/server.xml` we added the fo
       <feature>openapi-3.0</feature>
       <feature>restConnector-2.0</feature>
 ```
-Once the server is restarted, we first go to http://localhost:9080/api/explorer to access the API definitions and be able to test it:
+Once the server is restarted, we first go to http://localhost:9080/api/explorer to access the API definitions and even we are able to test it:
 
 ![](docs/fleets-api.png)
 
-
 A summary of the operations defined for this simulator are:
-
 
  | API | Description |   
  | --- | --- |   
@@ -263,9 +279,9 @@ A summary of the operations defined for this simulator are:
 
 ## Running integration tests with Kafka
 
-By adding simulation tests we need to have kafka running. We have deployed Kafka and Zookeeper to Kubernetes on Docker Edge for Mac and are able to connect to `docker-for-desktop` cluster. We have described this deployment [in this note for Kafka](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/kafka/README.md) and [for zookeeper](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/zookeeper/README.md)
+By adding simulation tests we need to have kafka running now. We have deployed Kafka and Zookeeper to Kubernetes on Docker Edge for Mac and are able to connect to `docker-for-desktop` cluster. We have described this deployment [in this note for Kafka](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/kafka/README.md) and [for zookeeper](https://github.com/ibm-cloud-architecture/refarch-eda/blob/master/deployments/zookeeper/README.md)
 
-As an alternate you can use the docker image from [confluent.io](https://docs.confluent.io/current/installation/docker/docs/installation/single-node-client.html#single-node-basic).
+As an alternate you can use the docker image from [confluent.io](https://docs.confluent.io/current/installation/docker/docs/installation/single-node-client.html#single-node-basic) and docker-compose to start zookeeper and kafka single broker.
 
 We use environment variables to control the configuration:
 
@@ -284,7 +300,7 @@ The pom.xml uses those variables to use the local kafka for the integration test
         </environmentVariables>
 ```
 
-One interesting integration test is defined in the class `it.FireContainerSimulationIT.java` as it starts a Thread running a ContainerConsumer (bullet 1 in figure below) which uses Kafka api to get `Container events` (class `ibm.labs.kc.event.model.ContainerMetric`) from `container-topic`, and then calls the POST HTTP end point (2): `http://localhost:9080/fleetms/ships/simulate` with a simulator control object (`ibm.labs.kc.dto.model.ShipSimulationControl`). The application is producing ship position events and container metrics events at each time slot (3). The consumer is getting multiple events (4) from the topic showing some containers are burning:
+One interesting integration test is defined in the class `it.FireContainerSimulationIT.java` as it starts a Thread running a ContainerConsumer (bullet 1 in figure below) which uses Kafka api to get `Container events` (class `ibm.labs.kc.event.model.ContainerMetric`) from the `bluewaterContainer` topic, and then calls the POST HTTP end point (2): `http://localhost:9080/fleetms/ships/simulate` with a simulator control object (`ibm.labs.kc.dto.model.ShipSimulationControl`). The application is producing ship position events and container metrics events at each time slot (3). The consumer is getting multiple events (4) from the topic showing some containers are burning:
 
 ```json
 {"id":"c_2","type":"Reefer","temperature":150,"amp":46,"status":"FIRE","row":0,"column":2,"shipId":"JimminyCricket"},
@@ -308,24 +324,32 @@ These capabilities are provided through dependencies in the `pom.xml` file and L
 ### Run Locally
 
 To get all the dependencies build and tests run execute:  
+```
+# Go to the parent repository refarch-kc and docker folder
+$ cd ../refarch-kc/docker
+$ docker-compose -f backbone-compose.yml up
+# Go back to this project to build
+$ mvn install
+$ docker build -t ibmcase/fleetms .
+```
 
- `mvn install`
-
-To test and run the application server:
+To run the application server you can use:
 
 `mvn liberty:run-server`
 
-To run the application in Docker use the Docker file called `Dockerfile` in this main folder. If you do not want to install Maven locally you can use `Dockerfile-tools` to build a container with Maven installed.
+or
+`docker run -p 9080:9080 -p 9443:9443 ibmcase/fleetms`
 
-```
-docker build -t ibmase/kc-ms .
-docker run -p 9080:9080 -p 9443:9443 ibmase/kc-ms
-```
+If you do not want to install Maven locally you can use `Dockerfile-tools` to build a container with Maven installed.
+
 
 ### Run on IBM Cloud Private
 
 
 ### Run on IBM Cloud 
-To deploy this application to IBM Cloud using a toolchain click the **Create Toolchain** button.
+
+### DevOps
+
+To deploy this application to IBM Cloud using a DevOps toolchain click the **Create Toolchain** button below.
 [![Create Toolchain](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.ng.bluemix.net/devops/setup/deploy/)
 
