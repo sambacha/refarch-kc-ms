@@ -88,10 +88,12 @@ public class ShipRunner implements Runnable {
             System.out.println ("ShipRunner stopped"); 
             stop();
         } finally {
+        	/** do not want to close as producers are thread safe and reusable.
         	if (containerPublisher != null)
         		containerPublisher.close();
         	if (positionPublisher != null)
         		positionPublisher.close();
+        	*/
         }
 	}
 	
