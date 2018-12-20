@@ -36,6 +36,8 @@ $ mvn package
 $ ./scripts/run.sh
 # Start the Fire in containers simulation
 $ ./scripts/startContainerFireSimulation.sh
+.... the simulation can run for a minute if you want to stop use the following command
+$ ./scripts/stopContainerSimulation.sh
 # Another sinulation: Start the Container power off simulation
 $ 
 ```
