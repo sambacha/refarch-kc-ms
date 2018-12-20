@@ -147,6 +147,10 @@ public class ApplicationConfig {
             properties.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS");
         }
 		logger.info("Brokers " + getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
+		logger.info("apikey " + getProperties().getProperty(ApplicationConfig.KAFKA_APIKEY));
+		System.out.println("Brokers " + getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
+		System.out.println("apikey " + getProperties().getProperty(ApplicationConfig.KAFKA_APIKEY));
+		
         return properties;
 	}
 	

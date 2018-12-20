@@ -47,7 +47,8 @@ public class ShipService {
 	}
 	
 	/**
-	 * Given the ship name perform moving the ship and event on container
+	 * Given the ship name perform moving the ship and create the base condition for
+	 * each container impacted by the simulation 
 	 * @param simulation controller
 	 * @return the ship
 	 */
@@ -76,17 +77,8 @@ public class ShipService {
 			simulator.stop(s);
 			return Response.ok().entity(s).build();
 		}
-		s.loadContainers(s.getNumberOfContainers());
-		if (ShipSimulationControl.CONTAINER_FIRE.equals(ctl.getCommand())) {
-			BadEventSimulator.fireContainers(s, ctl.getNumberOfContainers());
-		}
-		if (ShipSimulationControl.HEAT_WAVE.equals(ctl.getCommand())) {
-			BadEventSimulator.heatWave(s);
-		}
-		if (ShipSimulationControl.REEFER_DOWN.equals(ctl.getCommand())) {
-			BadEventSimulator.reeferDown(s);
-		}
-		simulator.start(s,ctl.getNumberOfMinutes());
+		s=dao.loadContainersForTheShip(s);
+		simulator.start(s,ctl);
 		return Response.ok().entity(s).build();
 	}
 	

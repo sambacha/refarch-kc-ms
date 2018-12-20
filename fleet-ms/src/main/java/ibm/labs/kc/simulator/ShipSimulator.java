@@ -2,6 +2,7 @@ package ibm.labs.kc.simulator;
 
 import java.util.List;
 
+import ibm.labs.kc.dto.model.ShipSimulationControl;
 import ibm.labs.kc.model.Position;
 import ibm.labs.kc.model.Ship;
 
@@ -10,7 +11,7 @@ import ibm.labs.kc.model.Ship;
  * @author jerome boyer
  *
  */
-public class ShipSimulator extends KCSimulator{
+public class ShipSimulator extends KCSimulator {
 
 	ShipRunner shipRunner;
 	
@@ -27,19 +28,30 @@ public class ShipSimulator extends KCSimulator{
 	/**
 	 * Simulate the ship movement for n minutes. Each 5 s represents 2 hours of boat running
 	 * @param ship
-	 * @param numberOfMinutes
+	 * @param simulation controller
 	 */
-	public void start(Ship s, double numberOfMinutes) {
-		
+	public void start(Ship s, ShipSimulationControl ctl) {
+		if (ShipSimulationControl.CONTAINER_FIRE.equals(ctl.getCommand())) {
+			BadEventSimulator.fireContainers(s, ctl.getNumberOfContainers());
+		}
+		if (ShipSimulationControl.HEAT_WAVE.equals(ctl.getCommand())) {
+			BadEventSimulator.heatWave(s);
+		}
+		if (ShipSimulationControl.REEFER_DOWN.equals(ctl.getCommand())) {
+			BadEventSimulator.reeferDown(s);
+		}
 		List<Position> shipPositions = readShipPositions(s.getName());
-		// start a thread per ship for the duration specified in number of minutes
-		shipRunner.init(s,shipPositions,numberOfMinutes);
+		shipRunner.init(s,shipPositions,ctl.getNumberOfMinutes());
 		shipRunner.start();
 	}
+
 	
 	public void stop(Ship s) {
 		if (shipRunner != null) {
 			shipRunner.stop();
 		}
 	}
+
+
+
 }

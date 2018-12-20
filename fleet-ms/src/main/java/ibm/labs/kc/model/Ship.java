@@ -27,28 +27,6 @@ public class Ship {
 		return s;
 	}
 	
-	public void loadContainers(int toLoad) {
-		int row = 0 , column = 0;
-		for (int i = 0; i < toLoad; i++) {
-			Container c = new Container();
-			c.setId("c_" + i);
-			c.setTemperature(Math.round(Math.random()*60+15));
-			c.setAmp(Math.round(Math.random()*40 + 10));
-			c.setShipId(this.getName());
-			c.setType("Reefer");
-			c.setRow(row);
-			c.setColumn(column);
-			this.getContainers().get(row).add(c);
-			if ( column < this.getMaxColumn()) {
-				column ++;	
-			} else {
-				row++;
-				column = 0;
-			}	
-		}
-		this.setMaxRow(row);
-	}
-	
 
 	public String getName() {
 		return name;

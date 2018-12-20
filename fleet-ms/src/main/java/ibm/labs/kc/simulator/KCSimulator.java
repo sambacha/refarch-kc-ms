@@ -12,6 +12,14 @@ import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.model.Position;
 import ibm.labs.kc.model.Ship;
 
+/**
+ * Top class for the KS simulation. Offers APIs to load ship position for a fleet, or for a ship giving its name.
+ * 
+ * Ship's positions are in a csv file in the class path with the name of the ship as file name.
+ * 
+ * @author jerome boyer
+ *
+ */
 public class KCSimulator {
 	/**
 	 * load for each ship of the fleet their positions for their journey from csv file

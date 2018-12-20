@@ -21,6 +21,34 @@ We recommend also reading the [producer design and coding considerations article
     or [Download a Liberty server package](https://developer.ibm.com/assets/wasdev/#filter/assetTypeFilters=PRODUCT)
     that contains the IBM JDK (Windows, Linux)
 * We used [Eclipse 2018 edition](https://www.eclipse.org/downloads/) IDE for Java development.
+* Clone the parent project to get access to docker compose yml files: `git clone https://github.com/ibm-cloud-architecture/refarch-kc` 
+
+## Run
+
+If you are in a hurry and want to see the simulator running quickly on your local machine, you can do start our docker compose for the kafka node, start liberty server with the simulator app deployed and use one of the scenario to trigger a simulation. This can be summarized as the following steps
+```
+# Go to the parent repository refarch-kc and docker folder
+$ cd ../refarch-kc/docker
+$ docker-compose -f backbone-compose.yml up
+# Go back to this project to build
+$ mvn package
+# Start the libery server and the script below also set some Environment variables
+$ ./scripts/run.sh
+# Start the Fire in containers simulation
+$ ./scripts/startContainerFireSimulation.sh
+# Another sinulation: Start the Container power off simulation
+$ 
+```
+If you want to get a clear understanding of the traces see [this note](./docs/SimulatorTracing.md)
+
+If you want to run with our Event Streams backbone deployed on IBM Cloud, ask use the api key and then do the following:
+```
+export KAFKA_BROKERS="kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093"
+export KAFKA_ENV="IBMCLOUD"
+export KAFKA_APIKEY="<the super secret key we will give you>"
+mvn liberty:run-server
+```
+
 
 ## The model
 

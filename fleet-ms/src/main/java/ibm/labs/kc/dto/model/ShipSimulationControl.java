@@ -13,8 +13,8 @@ public class ShipSimulationControl {
 	public static final String STOP = "STOP";
 	protected String shipName;
 	protected String command;
-	private int numberOfContainers;
-	public double numberOfMinutes;
+	private int numberOfContainers = 1;
+	public double numberOfMinutes = 1;
 
 	public ShipSimulationControl() {}
 	

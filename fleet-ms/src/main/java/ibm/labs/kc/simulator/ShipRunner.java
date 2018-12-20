@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import ibm.labs.kc.app.kafka.ApplicationConfig;
 import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
 import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.event.model.ContainerMetric;
@@ -16,9 +15,10 @@ import ibm.labs.kc.model.Ship;
 
 /**
  * This is the Ship Simulator. For each ship it sends position and its containers states to
- * remote topic. 
+ * remote topic every x seconds.
+ * 
  * It uses thread to execute the ship movement in parallel. THIS is not mandatory it could have been done
- * sequentially
+ * sequentially. may be we need to revisit that.
  * @author jerome boyer
  *
  */
@@ -55,7 +55,7 @@ public class ShipRunner implements Runnable {
 
 	public void start() {
 	    if (t == null) {
-	    	 logger.info("Start simulation " + shipName );
+	    	System.out.println("Start simulation " + shipName );
 	         t = new Thread (this, shipName);
 	         t.start ();
 	      }
@@ -63,7 +63,7 @@ public class ShipRunner implements Runnable {
 	
 	@Override
 	public void run() {		
-		System.out.println("Running " +  shipName );
+		System.out.println("Ship Runner for " +  shipName );
 		Date currentWorldTime = new Date();
 		try  { 
 			for (Position p : this.positions) {
@@ -102,7 +102,7 @@ public class ShipRunner implements Runnable {
 	}
 
 	public void stop() {
-	  System.out.println("Stopping " +  shipName );
+	  System.out.println("Ship Runner stopping " +  shipName + "...");
       if (t == null) {
          t.interrupt();
       }
