@@ -38,6 +38,16 @@
         "maxRow": 4,
         "maxColumn": 8,
         "numberOfContainers" : 30
+      },
+      {
+        "name": "ChangSea",
+        "latitude": "31.065249528470705",
+        "longitude": "121.96742534637453",
+        "status": "AtSea",
+        "type": "Carrier",
+        "maxRow": 4,
+        "maxColumn": 8,
+        "numberOfContainers" : 30
       }]
   },
   {
