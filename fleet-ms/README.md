@@ -79,19 +79,21 @@ A fleet will have one to many ships. Fleet has id and name. Ship has ID, name, s
 
 ## Code
 
-The base of the project was created using IBM Microclimate using microprofile / Java EE template deployable in WebSphere Liberty. Once, the project template was generated, we applied a Test Driven Development approach to develop the application logic. 
+The base of the project was created using IBM Microclimate using microprofile / Java EE template deployable in WebSphere Liberty. Once, the project template was generated, we applied a Test Driven Development approach to develop the application logic. But first let define some use stories we want to support in this simulator.
 
 ### User stories
 
 We are listing here the basic features to support:
 
-* Support exposing REST api to be easily consumable from Back end for front end. 
+* Support simulate ship movement and refrigerated containers metrics simulation via  REST api to be easily consumable from Back end for front end using a POST verb. 
 * Support simulation of container fire, container down and heat wave so container metric events can be analyzed down stream.
 * Integrate with IBM Event Streams running on IBM public cloud  using api_key
-* Generate ship position event x seconds, to demonstrate ship movement representing x minutes of real time. Like a game.
+* Integrate with Kafka running locally.
+* Generate ship position event x seconds, to demonstrate ship movement representing x minutes of real time. Like in a video game.
 * Generate, at each position update, the n container metric events for all container carried in the moving ship
 
 ### Test Driven Development
+
 Test driven development should be used to develop microservice as it helps to develop by contract and think about how each function should work from a client point of view. [This article](https://cloudcontent.mybluemix.net/cloud/garage/content/code/practice_test_driven_development) introduces the practice.
 To apply TDD we want to describe our approach for this project, by starting by the tests.
 
@@ -353,13 +355,15 @@ These capabilities are provided through dependencies in the `pom.xml` file and L
 
 ### Run Locally
 
-To get all the dependencies build and tests run execute:  
+To get all the dependencies loaded locally, build the war file and execute the tests execute the following commands:  
 ```
 # Go to the parent repository refarch-kc and docker folder
 $ cd ../refarch-kc/docker
+# Start local kafka borkers
 $ docker-compose -f backbone-compose.yml up
-# Go back to this project to build
+# Go back to this project to build and package
 $ mvn install
+# build the docker images
 $ docker build -t ibmcase/fleetms .
 ```
 
@@ -370,13 +374,50 @@ To run the application server you can use:
 or
 `docker run -p 9080:9080 -p 9443:9443 ibmcase/fleetms`
 
-If you do not want to install Maven locally you can use `Dockerfile-tools` to build a container with Maven installed.
+If you do not want to install Maven locally you can use `Dockerfile-tools` to build a container with Maven installed inside it.
 
+### Run on IBM Cloud with Kubernetes Service
+
+We are deploying the simulator on the kubernetes service. To define your kubernetes service see our explanations [here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
+
+We use Helm to install the fleetms service. The commands are
+
+```
+# be sure to be connect to your kubernetes cluster:
+$ ibmcloud cs cluster-config <cluster-name>
+$ export KUBECONFIG=/Users/jeromeboyer/.bluemix/plugins/container-service/clusters/<cluster-name>/<kube-config-<cluster-name>.yml>
+$ kubectl get nodes
+$ helm version
+
+$ helm install fleetms/ --name kc-fleetms --namespace browncompute
+
+# if you have an issue and wants to uninstall do
+$ helm del --purge kc-fleetms --namespace browncompute
+```
+
+To get the IP address and port number of the fleetms API use:
+
+```
+$ kubectl get pods --namespace browncompute
+NAME                                  READY     STATUS    RESTARTS   AGE
+fleetms-deployment-85ccf47475-nj54q   1/1       Running   0          1h
+$ kubectl describe pod fleetms-deployment-85ccf47475-nj54q -n browncompute
+
+# Get port number for the exposed nodeport
+$ kubectl get service -n browncompute
+NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+fleetms-service   NodePort   172.21.151.255   <none>        9080:30951/TCP,9443:30931/TCP   1h
+
+# Get public address of the worker nodes:
+$ ibmcloud ks workers <cluster_name>
+```
+
+Test the deployed app is running using the URL: `http://<public-IP-address>:30951/fleetms/fleets`
 
 ### Run on IBM Cloud Private
 
 
-### Run on IBM Cloud 
+
 
 ### DevOps
 

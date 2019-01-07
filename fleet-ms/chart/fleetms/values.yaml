@@ -3,8 +3,8 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: fleetms
-  tag: v1.0.0
+  repository: ibmcase/fleetms
+  tag: latest
   pullPolicy: IfNotPresent
   resources:
     requests:
