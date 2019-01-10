@@ -16,7 +16,6 @@ import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dao.ShipDAO;
 import ibm.labs.kc.dto.model.ShipSimulationControl;
 import ibm.labs.kc.model.Ship;
-import ibm.labs.kc.simulator.BadEventSimulator;
 import ibm.labs.kc.simulator.ShipSimulator;
 
 /**
@@ -80,6 +79,13 @@ public class ShipService {
 		s=dao.loadContainersForTheShip(s);
 		simulator.start(s,ctl);
 		return Response.ok().entity(s).build();
+	}
+	
+	/**
+	 * The docker loads container on boat, so the operation is modeled here 
+	 */
+	public void loadContainerOnShip(String containerID, String shipID) {
+		
 	}
 	
 }

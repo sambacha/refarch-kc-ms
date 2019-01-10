@@ -55,7 +55,7 @@ public class ShipRunner implements Runnable {
 
 	public void start() {
 	    if (t == null) {
-	    	System.out.println("Start simulation " + shipName );
+	    	System.out.println("@@@@ Start simulation for the ship:" + shipName );
 	         t = new Thread (this, shipName);
 	         t.start ();
 	      }
@@ -63,7 +63,6 @@ public class ShipRunner implements Runnable {
 	
 	@Override
 	public void run() {		
-		System.out.println("Ship Runner for " +  shipName );
 		Date currentWorldTime = new Date();
 		try  { 
 			for (Position p : this.positions) {

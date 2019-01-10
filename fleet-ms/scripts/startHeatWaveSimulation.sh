@@ -4,4 +4,4 @@ if [[ $PWD = */scripts ]]; then
  cd ..
 fi
 
-curl -v -X POST -H "accept: */*" -H "Content-Type: application/json" -d @./scripts/shipCtlHeatWave.json http://localhost:9080/fleetms/ships/simulate
+curl -v  -H "accept: */*" -H "Content-Type: application/json" -d @./scripts/shipCtlHeatWave.json http://localhost:9080/fleetms/ships/simulate

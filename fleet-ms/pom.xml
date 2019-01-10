@@ -302,7 +302,11 @@
 							 <goal>java</goal>
 						 </goals>
 						 <configuration>
-								 <mainClass>util.ContainerConsumer</mainClass>
+								<mainClass>util.ContainerConsumer</mainClass>
+								<environmentVariables>
+			                      	<KAFKA_ENV>LOCAL</KAFKA_ENV>
+			                      	<KAFKA_BROKERS>localhost:9092</KAFKA_BROKERS>
+			             		</environmentVariables>
 						 </configuration>
 				 </execution>
 			</executions>

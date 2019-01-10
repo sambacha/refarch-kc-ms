@@ -28,7 +28,6 @@ import ibm.labs.kc.simulator.FleetSimulator;
 
 
 @Path("fleets")
-
 public class FleetService {
 	
 	protected FleetDAO dao;

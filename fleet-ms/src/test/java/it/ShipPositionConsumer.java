@@ -12,9 +12,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import com.google.gson.Gson;
 
 import ibm.labs.kc.app.kafka.ApplicationConfig;
+import ibm.labs.kc.app.kafka.BaseKafkaConsumer;
 import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.event.model.ShipPosition;
-import util.BaseKafkaConsumer;
 
 
 

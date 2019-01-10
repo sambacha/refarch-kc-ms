@@ -9,7 +9,6 @@ import java.util.HashMap;
 import com.google.gson.Gson;
 
 import ibm.labs.kc.model.Fleet;
-import ibm.labs.kc.model.Ship;
 
 public class FleetDAOMockup implements FleetDAO {
 	

@@ -127,7 +127,7 @@ public class ApplicationConfig {
 	 */
 	private Properties buildCommonProperties() {
 		Properties properties = new Properties();
-		Map<String,String> env=System.getenv();
+		Map<String,String> env = System.getenv();
 		if (env.get("KAFKA_BROKERS") != null) {
 			getProperties().setProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS,env.get("KAFKA_BROKERS"));
 		} 
@@ -136,6 +136,9 @@ public class ApplicationConfig {
 		
 		if (env.get("KAFKA_APIKEY") != null) {
 				getProperties().setProperty(ApplicationConfig.KAFKA_APIKEY, env.get("KAFKA_APIKEY"));
+		} 
+		if (env.get("KAFKA_ENV") != null) {
+			getProperties().setProperty(ApplicationConfig.KAFKA_ENV, env.get("KAFKA_ENV"));
 		} 
 		if ("IBMCLOUD".equals(env.get("KAFKA_ENV")) || "ICP".equals(env.get("KAFKA_ENV"))) {
         	properties.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
@@ -146,10 +149,9 @@ public class ApplicationConfig {
             properties.put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, "TLSv1.2");
             properties.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS");
         }
-		logger.info("Brokers " + getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
-		logger.info("apikey " + getProperties().getProperty(ApplicationConfig.KAFKA_APIKEY));
 		System.out.println("Brokers " + getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
-		System.out.println("apikey " + getProperties().getProperty(ApplicationConfig.KAFKA_APIKEY));
+		logger.info("Env " + getProperties().getProperty(ApplicationConfig.KAFKA_ENV));
+		logger.info("apikey " + getProperties().getProperty(ApplicationConfig.KAFKA_APIKEY));
 		
         return properties;
 	}

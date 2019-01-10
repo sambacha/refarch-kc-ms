@@ -1,4 +1,4 @@
-package util;
+package ibm.labs.kc.app.kafka;
 
 import java.util.Arrays;
 import java.util.Properties;
@@ -6,8 +6,6 @@ import java.util.Properties;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import com.google.gson.Gson;
-
-import ibm.labs.kc.app.kafka.ApplicationConfig;
 
 /**
  * Common to all consumers

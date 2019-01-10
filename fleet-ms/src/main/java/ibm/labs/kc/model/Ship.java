@@ -2,16 +2,27 @@ package ibm.labs.kc.model;
 
 import java.util.ArrayList;
 
+/**
+ * The unique identifier for the ship will be its name
+ */
 public class Ship {
+	// potential status
+	public final static String AT_SEA="AT_SEA";
+	public final static String AT_PORT="AT_PORT";
+	public final static String DOCKED="DOCKED";
+	public final static String NA="NOT_OPERATIONAL";
+	
 	protected String name;
 	protected String latitude;
 	protected String longitude;
 	protected String status;
 	protected String port;
 	protected String type;
+	// containers are in a matrix for simplification
 	protected int maxRow;
 	protected int maxColumn;
 	protected int numberOfContainers;
+	// container loaded on boat.
 	protected ArrayList<ArrayList<Container>> containers;
 	
 	public Ship(String name) {

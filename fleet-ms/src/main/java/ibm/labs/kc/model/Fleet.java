@@ -3,6 +3,12 @@ package ibm.labs.kc.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Group the ship per fleet, so it is easier to get dashboard view based on fleet.
+ * Also fleet represents a business ownership boundary
+ * @author jerome boyer
+ *
+ */
 public class Fleet {
 
 	protected String id;

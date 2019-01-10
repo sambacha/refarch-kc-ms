@@ -23,10 +23,10 @@ public class ShipPositionProducer extends BaseProducer{
 	     topic = getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
 	 }
 	 
-		public static ShipPositionProducer getInstance() {
-			if (instance == null) instance = new ShipPositionProducer();
-			return instance;
-		}
+	public static ShipPositionProducer getInstance() {
+		if (instance == null) instance = new ShipPositionProducer();
+		return instance;
+	}
 
 	public void publishShipPosition(ShipPosition sp) {
 		 try {

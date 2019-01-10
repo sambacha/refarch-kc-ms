@@ -10,8 +10,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
 import ibm.labs.kc.app.kafka.ApplicationConfig;
+import ibm.labs.kc.app.kafka.BaseKafkaConsumer;
 import ibm.labs.kc.event.model.ContainerMetric;
-import util.BaseKafkaConsumer;
 
 public class ContainerEventConsumer extends BaseKafkaConsumer implements Runnable {
     

@@ -11,6 +11,8 @@ public class ContainerMetric {
 	protected long amp;
 	protected float cumulativePowerConsumption;
 	protected int contentType;
+	protected float humidity;
+	protected float co2;
  	protected long	Tproduce;
 	@SerializedName("ts")
 	protected String timeStamp;
@@ -86,6 +88,22 @@ public class ContainerMetric {
 
 	public void setTimeStamp(String timeStamp) {
 		this.timeStamp = timeStamp;
+	}
+
+	public float getHumidity() {
+		return humidity;
+	}
+
+	public void setHumidity(float humidity) {
+		this.humidity = humidity;
+	}
+
+	public float getCo2() {
+		return co2;
+	}
+
+	public void setCo2(float co2) {
+		this.co2 = co2;
 	}
 
 }

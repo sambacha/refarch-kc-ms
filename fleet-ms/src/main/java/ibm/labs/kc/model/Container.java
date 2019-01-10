@@ -9,6 +9,8 @@ public class Container {
 	protected String id;
 	protected String type;
 	protected long temperature;
+	protected float humidity;
+	protected float co2;
 	protected long amp;
 	protected String status = STATUS_RUN;
     // this is the position of the container in the boat
@@ -86,5 +88,21 @@ public class Container {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public float getHumidity() {
+		return humidity;
+	}
+
+	public void setHumidity(float humidity) {
+		this.humidity = humidity;
+	}
+
+	public float getCo2() {
+		return co2;
+	}
+
+	public void setCo2(float co2) {
+		this.co2 = co2;
 	}
 }

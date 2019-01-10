@@ -7,9 +7,15 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 
 import ibm.labs.kc.app.kafka.ApplicationConfig;
-import ibm.labs.kc.event.model.BluewaterProblem;
+import ibm.labs.kc.app.kafka.BaseKafkaConsumer;
 import ibm.labs.kc.event.model.ContainerMetric;
 
+/**
+ * Simple Kafka topic consumer to get container metrics
+ * 
+ * @author jerome boyer
+ *
+ */
 public class ContainerConsumer extends BaseKafkaConsumer {
 	
 	public ContainerConsumer() {
@@ -34,6 +40,7 @@ public class ContainerConsumer extends BaseKafkaConsumer {
 		System.out.println("# Consume container metrics events    #");
 		System.out.println("#########################################");
 		ContainerConsumer consumer = new ContainerConsumer();
+		consumer.getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
 		while (true) {
 			for ( ContainerMetric p : consumer.consume()) {
 				System.out.println(p.toString());
