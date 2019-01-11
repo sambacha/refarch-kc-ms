@@ -1,6 +1,6 @@
 # KC Solution Microservices
 
-This repository includes a set of sub projects to implement the different microservices and funtions to support the simulation of container shipment as introduce by [this main repository](https://github.com/ibm-cloud-architecture/refarch-kc).
+This repository includes a set of sub projects to implement the different microservices and functions to support the simulation of container shipment as introduce by [this main repository](https://github.com/ibm-cloud-architecture/refarch-kc).
 
 This repository addresses the implementation of the yellow boxes in the figure below:  
 
