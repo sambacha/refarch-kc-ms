@@ -28,6 +28,19 @@ We recommend also reading the [producer design and coding considerations article
 * Clone the parent project to get access to docker compose yml files: `git clone https://github.com/ibm-cloud-architecture/refarch-kc`. Normally you should have access to this repository from the main reference implementation repository using the `clone.sh` script.
 * Have docker engine installed on your computer.
 
+## User stories
+This service keeps track of each of the container ships available for transporting containers. Each ship has a unique shipID. We limit the scope of a minimum viable product so the following user stories are implemented:
+
+* [x] The information about each ship is kept in a json file for a fleet. Ships are uniquely identified by their name (as shipID).
+* [x] The capacity of a ship is represented by a matrix, number of rows x number of columns to make it simpler. Therefore the total number of container is rows*columns.
+* [x] Support GPS lat/log position reports, as ship position event, of the position of the ship a different points in time. This is modeled as csv file with one row of lat,log pair, a row representing a time stamp. (1h?)
+* [ ] Generate ship event when leaving source port and when entering destination port, and when docked.
+* [ ] Define query of what happen to a ship from a given time to retrace its past voyages. 
+
+
+From the analysis and concepts explained [here](https://github.com/ibm-cloud-architecture/refarch-kc#fleetsships-microservice---concept) we did not implement the following:
+* 
+
 ## Run
 
 ### Run the fleet service on your laptop
@@ -64,15 +77,17 @@ $ ./scripts/startContainerPowerOffSimulation.sh
 If you want to get a clear understanding of the traces see [this note](./docs/SimulatorTracing.md)
 
 ### Run the demo on IBM Cloud
-As an alternate you can access to our deployed solution on IBM Cloud.
+As an alternate you can use our Event Stream backbone we have configured on IBM Cloud.
 
-If you want to run with our Event Streams backbone deployed on IBM Cloud, ask us the api key and then do the following:
+If you want to run with our Event Streams backbone deployed on IBM Cloud, ask us for the api key and then do the following:
 ```
 export KAFKA_BROKERS="kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093"
 export KAFKA_ENV="IBMCLOUD"
 export KAFKA_APIKEY="<the super secret key we will give you>"
 mvn liberty:run-server
 ```
+
+Also the complete solution is deployed on IBM Cloud.
 
 ## The model
 
@@ -391,14 +406,21 @@ We described the process in the [section above](#run-the-fleet-service-on-your-l
 
 ### Run on IBM Cloud with Kubernetes Service
 
-We are deploying the simulator on the kubernetes service. To define your kubernetes service see our explanations [here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
+We are deploying the simulator on the kubernetes service. To define your kubernetes service [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
 
 We use Helm to install the fleetms service. The commands are
 
 ```
 # be sure to be connect to your kubernetes cluster:
+$ ibmcloud login -a https://api.us-east.bluemix.net
+
+# Target the IBM Cloud Container Service region in which you want to work
+$ ibmcloud cs region-set us-east
+
 $ ibmcloud cs cluster-config <cluster-name>
 $ export KUBECONFIG=/Users/jeromeboyer/.bluemix/plugins/container-service/clusters/<cluster-name>/<kube-config-<cluster-name>.yml>
+
+# Verify you reach the cluster and get the nodes
 $ kubectl get nodes
 $ helm version
 
@@ -406,14 +428,19 @@ $ helm install fleetms/ --name kc-fleetms --namespace browncompute
 
 # if you have an issue and wants to uninstall do
 $ helm del --purge kc-fleetms --namespace browncompute
+
+# If you need to upgrade an existing deployed release use the command:
+$ helm upgrade kc-fleetms fleetms/ --namespace browncompute
 ```
 
-To get the IP address and port number of the fleetms API use:
+To get the IP address and port number of the `kc-fleetms` API use the commands:
 
 ```
 $ kubectl get pods --namespace browncompute
 NAME                                  READY     STATUS    RESTARTS   AGE
 fleetms-deployment-85ccf47475-nj54q   1/1       Running   0          1h
+
+
 $ kubectl describe pod fleetms-deployment-85ccf47475-nj54q -n browncompute
 
 # Get port number for the exposed nodeport

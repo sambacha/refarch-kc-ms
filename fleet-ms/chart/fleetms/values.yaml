@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: ibmcase/fleetms
+  repository: ibmcase/kc-fleetms
   tag: latest
   pullPolicy: IfNotPresent
   resources:
