@@ -1,1 +1,11 @@
-curl --header "Content-Type: application/json" --data @start-ctl.json http://localhost:9080/fleetms/fleets/simulate
+#!/bin/bash
+if [ $# -eq 1 ]
+then
+  hostn=$1
+else
+  hostn="localhost:9080"
+fi
+url="http://$hostn/fleetms/fleets/simulate"
+
+curl -v -H "accept: */*" -H "Content-Type: application/json" -d @./start-ctl.json $url
+

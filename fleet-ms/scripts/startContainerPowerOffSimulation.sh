@@ -1,7 +1,10 @@
-#/bin/bash
-set p = $(echo $PWD | awk -v h="scripts" '$0 ~h')
-if [[ $PWD = */scripts ]]; then
- cd ..
+#!/bin/bash
+if [ $# -eq 1 ]
+then
+  hostn=$1
+else
+  hostn="localhost:9080"
 fi
+url="http://$hostn/fleetms/ships/simulate"
 
-curl -v  -H "accept: */*" -H "Content-Type: application/json" -d @./scripts/shipCtlPowerOff.json http://localhost:9080/fleetms/ships/simulate
+curl -v -H "accept: */*" -H "Content-Type: application/json" -d @./shipCtlPowerOff.json $url
