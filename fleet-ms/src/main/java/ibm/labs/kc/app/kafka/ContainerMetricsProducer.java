@@ -37,7 +37,8 @@ public class ContainerMetricsProducer extends BaseProducer{
 			 // Send record asynchronously
 			 Future<RecordMetadata> future = getKafkaProducer().send(record);
 			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
-			 System.out.println(" Container Event " + eventAsJson + " sent -> offset:" + recordMetadata.offset());
+			 System.out.println("@@@ Container Event " + eventAsJson + " sent -> offset:" + recordMetadata.offset() + " on partition:" + recordMetadata.partition() );
+    
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
 		} 

@@ -33,7 +33,7 @@ This service keeps track of each of the container ships available for transporti
 
 * [x] The information about each ship is kept in a json file for a fleet. Ships are uniquely identified by their name (as shipID).
 * [x] The capacity of a ship is represented by a matrix, number of rows x number of columns to make it simpler. Therefore the total number of container is rows*columns.
-* [x] Support GPS lat/log position reports, as ship position event, of the position of the ship a different points in time. This is modeled as csv file with one row of lat,log pair, a row representing a time stamp. (1h?)
+* [x] Support GPS lat/log position reports, as ship position event, of the position of the ship a different point in time. This is modeled as csv file with one row of (lat,log) pair, a row representing a time stamp. (1h?)
 * [ ] Generate ship event when leaving source port and when entering destination port, and when docked.
 * [ ] Define query of what happen to a ship from a given time to retrace its past voyages. 
 
@@ -77,7 +77,7 @@ $ ./scripts/startContainerPowerOffSimulation.sh
 If you want to get a clear understanding of the traces see [this note](./docs/SimulatorTracing.md)
 
 ### Run the demo on IBM Cloud
-As an alternate you can use our Event Stream backbone we have configured on IBM Cloud.
+As an alternate you can use our Event Stream backbone we have configured on IBM Cloud and still run the fleet service on you laptop.
 
 If you want to run with our Event Streams backbone deployed on IBM Cloud, ask us for the api key and then do the following:
 ```

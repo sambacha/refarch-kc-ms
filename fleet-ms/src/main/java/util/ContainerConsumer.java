@@ -40,16 +40,17 @@ public class ContainerConsumer extends BaseKafkaConsumer {
 		System.out.println("# Consume container metrics events    #");
 		System.out.println("#########################################");
 		ContainerConsumer consumer = new ContainerConsumer();
-		consumer.getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
-		while (true) {
+		System.out.print("@@@ topic:"+consumer.getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME));
+		boolean cont = true;
+		while (cont) {
 			for ( ContainerMetric p : consumer.consume()) {
 				System.out.println(p.toString());
 			}
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				cont = false;
 			}
 		}
 	}

@@ -40,7 +40,7 @@ public class ShipPositionProducer extends BaseProducer{
                      if(e != null) {
                         e.printStackTrace();
                      } else {
-                        System.out.println("The offset of the record we just sent is: " + metadata.offset());
+                        System.out.println("@@@@ The offset: " + metadata.offset() + " on partition:" + metadata.partition() );
                      }
                  }
              });

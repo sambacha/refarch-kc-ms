@@ -42,7 +42,8 @@ public class ShipService {
 	}
 	
 	public ShipService(String fileName) {
-	   dao = DAOFactory.buildOrGetShipDAOInstance(fileName);	
+	   dao = DAOFactory.buildOrGetShipDAOInstance(fileName);
+	   simulator = new ShipSimulator();
 	}
 	
 	/**
