@@ -16,8 +16,18 @@
       },
       {
         "name": "BlackBear",
-        "latitude": "36.8044",
-        "longitude": "-140.2711",
+        "latitude": "26.10245",
+        "longitude": "29.07359",
+        "status": "AtSea",
+        "type": "Carrier",
+        "maxRow": 4,
+        "maxColumn": 8,
+        "numberOfContainers" : 30
+      },
+      {
+        "name": "SilverChanrock",
+        "latitude": "1.56676",
+        "longitude": "106.24156",
         "status": "AtSea",
         "type": "Carrier",
         "maxRow": 4,
@@ -48,11 +58,40 @@
         "maxRow": 4,
         "maxColumn": 8,
         "numberOfContainers" : 30
-      }]
+      },
+      {"name": "BlackBilloute",
+        "latitude": "38.07996",
+        "longitude": "-123.51529",
+        "status": "AtSea",
+        "type": "Carrier",
+        "maxRow": 6,
+        "maxColumn": 8,
+        "numberOfContainers" : 25 
+       },
+       {
+        "name": "BlueHorizon",
+        "latitude": "43.05525",
+        "longitude": "-139.62966",
+        "status": "AtSea",
+        "type": "Carrier",
+        "maxRow": 4,
+        "maxColumn": 8,
+        "numberOfContainers" : 30
+      }
+      ]
   },
   {
   	"id": "f3",
     "name": "KC-SouthPacific",
-    "ships": []
+    "ships": [{
+        "name": "GreenKangoroo",
+        "latitude": "-29.85372",
+        "longitude": "156.33.921",
+        "status": "AtSea",
+        "type": "Carrier",
+        "maxRow": 4,
+        "maxColumn": 8,
+        "numberOfContainers" : 30
+      }]
   }
 ]

@@ -27,7 +27,7 @@ public class ContainerMetric {
 	}
 
 	public String toString() {
-		return getId() + " " + getTemperature() + " " + getAmp() + " " + getTimeStamp();	
+		return getShipId()+ " " + getId() + " " + getTemperature() + " " + getAmp() + " " + getTimeStamp();	
 	}
 	
 	public String getId() {

@@ -37,6 +37,8 @@ public class ShipDAOMockup implements ShipDAO {
 			c.setId("c_" + i);
 			c.setTemperature(Math.round(Math.random()*60+15));
 			c.setAmp(Math.round(Math.random()*40 + 10));
+			c.setCo2(Math.round(Math.random()*100));
+			c.setHumidity(Math.round(Math.random()*100));
 			c.setShipId(s.getName());
 			c.setType("Reefer");
 			c.setRow(row);
