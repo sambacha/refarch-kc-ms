@@ -54,7 +54,7 @@ $ cd ../refarch-kc/docker
 $ docker-compose -f backbone-compose.yml up
 
 # Go back to this project to build it
-$ ./script/build.sh
+$ ./script/buildDocker.sh
 
 # Start the libery server. Note that this script defines environment variables to access kafka brokers 
 $ ./scripts/runDocker.sh
