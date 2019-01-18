@@ -1,7 +1,5 @@
 package ibm.labs.kc.simulator;
 
-import java.util.List;
-
 import ibm.labs.kc.event.model.ContainerMetric;
 import ibm.labs.kc.model.Container;
 import ibm.labs.kc.model.Ship;
@@ -60,18 +58,20 @@ public class BadEventSimulator {
 
 	public static void heatWave(Ship s) {
 		int topContainerCount = 0;
+		int topRowAllocated = s.getContainers().size() - 1;
 		long lastIndex = 0;
-		for (Container c : s.getContainers().get(s.getMaxRow())) {
+		for (Container c : s.getContainers().get(topRowAllocated)) {
 			c.setStatus(Container.STATUS_HEAT);
-			c.setTemperature(40);
+			c.setTemperature(50);
 			topContainerCount++;
 			lastIndex = c.getColumn();
 		}
+		// the top row may not be completed in this case the row under will have containers exposed to heat
 		if (topContainerCount < s.getMaxColumn()) {
-			for (Container c : s.getContainers().get(s.getMaxRow()-1)) {
+			for (Container c : s.getContainers().get(topRowAllocated-1)) {
 				if (c.getColumn() >= lastIndex) {
 					c.setStatus(Container.STATUS_HEAT);
-					c.setTemperature(40);
+					c.setTemperature(50);
 					topContainerCount++;
 				}
 			}

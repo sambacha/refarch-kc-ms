@@ -89,7 +89,8 @@ public class TestShipSimulation  {
 		ctl.setNumberOfMinutes(1);
 		Response res = serv.performSimulation(ctl);
 		Ship s = (Ship)res.getEntity();
-		Assert.assertTrue(s.getContainers().get(s.getMaxRow()).get(0).getStatus().equals(Container.STATUS_HEAT));
+		int topRowAllocated = s.getContainers().size() - 1;
+		Assert.assertTrue(s.getContainers().get(topRowAllocated).get(0).getStatus().equals(Container.STATUS_HEAT));
 		ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.STOP);
 		res = serv.performSimulation(ctl);
 	}

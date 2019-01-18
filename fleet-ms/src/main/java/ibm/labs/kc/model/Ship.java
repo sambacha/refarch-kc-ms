@@ -27,7 +27,7 @@ public class Ship {
 	
 	public Ship(String name) {
 		this.name = name;
-		containers = new ArrayList<ArrayList<Container>>();
+		//containers = new ArrayList<ArrayList<Container>>();
 	}
 
 	public String toString() {

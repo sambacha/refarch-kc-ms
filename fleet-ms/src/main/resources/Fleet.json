@@ -47,7 +47,7 @@
         "type": "Carrier",
         "maxRow": 4,
         "maxColumn": 8,
-        "numberOfContainers" : 30
+        "numberOfContainers" : 21
       },
       {
         "name": "ChangSea",

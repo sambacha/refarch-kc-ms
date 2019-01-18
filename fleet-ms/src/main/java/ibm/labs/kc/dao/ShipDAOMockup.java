@@ -32,7 +32,8 @@ public class ShipDAOMockup implements ShipDAO {
 	@Override
 	public Ship loadContainersForTheShip(Ship s) {
 		int row = 0 , column = 0;
-		for (int i = 0; i < s.getNumberOfContainers(); i++) {
+		s.setContainers(null);
+		for (int i = 0; i <= s.getNumberOfContainers(); i++) {
 			Container c = new Container();
 			c.setId("c_" + i);
 			c.setTemperature(Math.round(Math.random()*60+15));
@@ -43,16 +44,19 @@ public class ShipDAOMockup implements ShipDAO {
 			c.setType("Reefer");
 			c.setRow(row);
 			c.setColumn(column);
-			System.out.println("Containers " + s.getContainers().size());
 			s.getContainers().get(row).add(c);
-			if ( column < s.getMaxColumn()) {
+			if ( column < s.getMaxColumn() - 1) {
 				column ++;	
 			} else {
 				row++;
 				column = 0;
 			}	
 		}
-		s.setMaxRow(row);
+		for (int r=s.getMaxRow()-1;r>=0;r--) {
+			if (s.getContainers().get(r).size() == 0) {
+				s.getContainers().remove(r);
+			}
+		}
 		return s;
 	}
 
