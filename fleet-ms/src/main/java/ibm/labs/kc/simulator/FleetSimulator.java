@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
+import ibm.labs.kc.app.kafka.EventEmitter;
 import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.model.Fleet;
 import ibm.labs.kc.model.Position;
@@ -17,8 +18,8 @@ import ibm.labs.kc.model.Ship;
  */
 public class FleetSimulator extends KCSimulator {
 	HashMap<String,ShipRunner> shipThreads;
-	private ShipPositionProducer positionPublisher;
-	private ContainerMetricsProducer containerPublisher;
+	private EventEmitter positionPublisher;
+	private EventEmitter containerPublisher;
 	
 	public FleetSimulator() {
 		 this.positionPublisher = ShipPositionProducer.getInstance();

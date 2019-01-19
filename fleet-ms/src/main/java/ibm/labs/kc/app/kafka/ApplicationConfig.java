@@ -3,6 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -39,6 +40,11 @@ public class ApplicationConfig {
 	public static final String KAFKA_APIKEY = "kafka.api_key";
 	public static final String KAFKA_POLL_DURATION = "kafka.poll.duration";
 	public static final String VERSION = "version";
+	
+    public static final long PRODUCER_TIMEOUT_SECS = 10;
+    public static final String CONSUMER_GROUP_ID = "order-command-grp";
+    public static final Duration CONSUMER_POLL_TIMEOUT = Duration.ofSeconds(10);
+    public static final Duration CONSUMER_CLOSE_TIMEOUT = Duration.ofSeconds(10);
 	
 	private Properties properties = new Properties();
 		

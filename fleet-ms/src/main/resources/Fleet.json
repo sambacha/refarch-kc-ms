@@ -41,9 +41,10 @@
     "name": "KC-NorthPacific",
     "ships": [{
         "name": "JimminyCricket",
-        "latitude": "36.8044",
-        "longitude": "-140.2711",
-        "status": "AtSea",
+        "latitude": "37.8226902168957",
+        "longitude": "-122.3248956640928",
+        "status": "Docked",
+        "port": "Oakland",
         "type": "Carrier",
         "maxRow": 4,
         "maxColumn": 8,

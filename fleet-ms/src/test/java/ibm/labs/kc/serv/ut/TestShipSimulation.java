@@ -56,6 +56,11 @@ public class TestShipSimulation  {
 	}
 	
 	@Test
+	public void validateShipMove() {
+		
+	}
+	
+	@Test
 	public void validateContainerFire() {
 		System.out.println("Validate containers fire");
 		ShipSimulationControl ctl = new ShipSimulationControl("BlackBear", ShipSimulationControl.CONTAINER_FIRE);

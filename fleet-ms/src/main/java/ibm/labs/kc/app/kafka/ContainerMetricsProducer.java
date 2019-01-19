@@ -10,9 +10,10 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
+import ibm.labs.kc.event.model.BlueWaterEvent;
 import ibm.labs.kc.event.model.ContainerMetric;
 
-public class ContainerMetricsProducer extends BaseProducer{
+public class ContainerMetricsProducer extends BaseProducer implements EventEmitter {
 	
 	private static ContainerMetricsProducer instance;
 	private final KafkaProducer<String, String> kafkaProducer;
@@ -49,6 +50,12 @@ public class ContainerMetricsProducer extends BaseProducer{
 	
 	public void close() {
 		 kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
+	}
+
+	@Override
+	public void emit(BlueWaterEvent event) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

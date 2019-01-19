@@ -24,4 +24,12 @@ public class Position {
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		Position p = (Position)o;
+		return (this.getLatitude().equals(p.getLatitude()) && this.getLongitude().equals(p.getLongitude()));
+		
+	}
+	
 }

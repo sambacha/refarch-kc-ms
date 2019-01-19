@@ -2,7 +2,7 @@ package ibm.labs.kc.event.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ContainerMetric {
+public class ContainerMetric implements BlueWaterEvent {
 	// used when the event does not match the Java Bean used.
 	@SerializedName("containerId")
 	protected String id;
@@ -14,20 +14,21 @@ public class ContainerMetric {
 	protected float humidity;
 	protected float co2;
  	protected long	Tproduce;
-	@SerializedName("ts")
-	protected String timeStamp;
-	protected String shipId;
+	protected String shipID;
+	private long timestampMillis;
+	private String type;
+	private String version;
 	
-	public ContainerMetric(String shipId,String id, long t, long a, String ts) {
+	public ContainerMetric(String shipId,String id, long t, long a, long ts) {
 		this.id = id;
-		this.shipId = shipId;
+		this.shipID = shipId;
 		this.temperature = t;
 		this.amp = a;
-		this.timeStamp = ts;
+		this.timestampMillis = ts;
 	}
 
 	public String toString() {
-		return getShipId()+ " " + getId() + " " + getTemperature() + " " + getAmp() + " " + getTimeStamp();	
+		return getShipID()+ " " + getId() + " " + getTemperature() + " " + getAmp() + " " + getTimestampMillis();	
 	}
 	
 	public String getId() {
@@ -42,16 +43,12 @@ public class ContainerMetric {
 		return amp;
 	}
 
-	public String getTimeStamp() {
-		return timeStamp;
+	public String getShipID() {
+		return shipID;
 	}
 
-	public String getShipId() {
-		return shipId;
-	}
-
-	public void setShipId(String shipId) {
-		this.shipId = shipId;
+	public void setShipID(String shipId) {
+		this.shipID = shipId;
 	}
 
 	public float getCumulativePowerConsumption() {
@@ -86,9 +83,6 @@ public class ContainerMetric {
 		this.amp = amp;
 	}
 
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
-	}
 
 	public float getHumidity() {
 		return humidity;
@@ -106,4 +100,27 @@ public class ContainerMetric {
 		this.co2 = co2;
 	}
 
+	public long getTimestampMillis() {
+        return timestampMillis;
+    }
+
+    public void setTimestampMillis(long timestampMillis) {
+        this.timestampMillis = timestampMillis;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getVersion() {
+        return version;
+    }
 }

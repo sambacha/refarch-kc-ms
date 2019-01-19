@@ -9,29 +9,35 @@ import com.google.gson.annotations.SerializedName;
  * @author jerome boyer
  *
  */
-public class ShipPosition {
-	@SerializedName("shipId")
+public class ShipPosition implements BlueWaterEvent {
+	//@SerializedName("shipId")
 	protected String shipID;
 	protected String latitude;
 	protected String longitude;
 	protected int speed;
 	protected float ambiantTemperature;
 	protected int compass;
+	protected String status;
 	@SerializedName("ts")
 	protected String timeStamp;
+	private long timestampMillis;
+	private String type;
+	private String version;
+
 	
 	public ShipPosition() {
 		
 	}
 	
-	public ShipPosition(String shipName, String latitude, String longitude) {
+	public ShipPosition(String shipName, String latitude, String longitude, long ts) {
 		this.shipID = shipName;
 		this.latitude = latitude;
 		this.longitude = longitude;
+		this.timestampMillis = ts;
 	}
 
 	public String toString() {
-		return getShipID() + " " + getLatitude() + " " + getLongitude() + " @ " + getTimeStamp();
+		return getShipID() + " " +getStatus() + " La:" + getLatitude() + " Lo:" + getLongitude() + " @ " + getTimestampMillis();
 	}
 
 	public String getShipID() {
@@ -58,13 +64,6 @@ public class ShipPosition {
 		this.longitude = longitude;
 	}
 
-	public String getTimeStamp() {
-		return timeStamp;
-	}
-
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
-	}
 
 	public int getSpeed() {
 		return speed;
@@ -89,5 +88,37 @@ public class ShipPosition {
 	public void setCompass(int compass) {
 		this.compass = compass;
 	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public long getTimestampMillis() {
+        return timestampMillis;
+    }
+
+    public void setTimestampMillis(long timestampMillis) {
+        this.timestampMillis = timestampMillis;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getVersion() {
+        return version;
+    }
 	
 }

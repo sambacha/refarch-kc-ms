@@ -31,10 +31,13 @@ public class BadEventSimulator {
 	}
 	    
 	
-	public static ContainerMetric buildContainerMetric(String shipId,Container c, String currentWorldTime) {
-		switch(c.getStatus()) {
+	public static ContainerMetric buildContainerMetric(Ship ship,Container c, long currentWorldTime) {
+		if (ship.getStatus() == Ship.AT_SEA) {
+			switch(c.getStatus()) {
 			case Container.STATUS_FIRE:
 				c.setTemperature(c.getTemperature() + 50);
+				c.setHumidity(0);
+				c.setCo2(100);
 				break;
 			case Container.STATUS_HEAT:
 				c.setTemperature(c.getTemperature() + 2);
@@ -42,9 +45,9 @@ public class BadEventSimulator {
 			case Container.STATUS_DOWN:
 				c.setAmp(0);
 				break;
+			}
 		}
-	
-		ContainerMetric cm = new ContainerMetric(shipId,c.getId(),c.getTemperature(),c.getAmp(),currentWorldTime);
+		ContainerMetric cm = new ContainerMetric(ship.getName(),c.getId(),c.getTemperature(),c.getAmp(),currentWorldTime);
 		return cm;
 	}
 

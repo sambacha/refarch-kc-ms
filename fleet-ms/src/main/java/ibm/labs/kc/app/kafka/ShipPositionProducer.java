@@ -11,48 +11,46 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
 
+import ibm.labs.kc.event.model.BlueWaterEvent;
 import ibm.labs.kc.event.model.ShipPosition;
 
-public class ShipPositionProducer extends BaseProducer{
+public class ShipPositionProducer extends BaseProducer implements EventEmitter {
+	
 	 private static  KafkaProducer<String, String> kafkaProducer;
 	 private static ShipPositionProducer instance;
 	 
 	 private ShipPositionProducer() {
-		 Properties p = getConfig().buildProducerProperties(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID));
+		 Properties p = getConfig().buildProducerProperties(ShipPositionProducer.class.getName());
 		 kafkaProducer = new KafkaProducer<String, String>(p);
 	     topic = getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
 	 }
 	 
-	public static ShipPositionProducer getInstance() {
+	public synchronized static EventEmitter getInstance() {
 		if (instance == null) instance = new ShipPositionProducer();
 		return instance;
 	}
-
-	public void publishShipPosition(ShipPosition sp) {
-		 try {
-			 String eventAsJson = parser.toJson(sp);
-			 ProducerRecord<String, String> record = new ProducerRecord<String, String>(
-                topic,null,eventAsJson);
-        
-			 // Send record asynchronously, process acknowledge within callback
-			 Future<RecordMetadata> future = kafkaProducer.send(record, new Callback() {
-                 public void onCompletion(RecordMetadata metadata, Exception e) {
-                     if(e != null) {
-                        e.printStackTrace();
-                     } else {
-                        System.out.println("@@@@ The offset: " + metadata.offset() + " on partition:" + metadata.partition() );
-                     }
-                 }
-             });
-       
-			 RecordMetadata recordMetadata = future.get(5000, TimeUnit.MILLISECONDS);
-		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
-		} 
-	}
 	
 	public void close() {
-		kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
+		kafkaProducer.close(ApplicationConfig.PRODUCER_TIMEOUT_SECS, TimeUnit.SECONDS);
+	}
+
+	@Override
+	public void emit(BlueWaterEvent event) throws InterruptedException, ExecutionException, TimeoutException {
+		ShipPosition sp = (ShipPosition) event;
+		String eventAsJson = parser.toJson(sp);
+		String key = sp.getShipID();
+		ProducerRecord<String, String> record = new ProducerRecord<>(topic, key, eventAsJson);
+
+		Future<RecordMetadata> future = kafkaProducer.send(record, new Callback() {
+            public void onCompletion(RecordMetadata metadata, Exception e) {
+                if(e != null) {
+                   e.printStackTrace();
+                } else {
+                   System.out.println("@@@@ Ship Position event: " + eventAsJson + " " + topic + " -> the offset: " + metadata.offset() + " on partition:" + metadata.partition() );
+                }
+            }
+        });
+	    future.get(ApplicationConfig.PRODUCER_TIMEOUT_SECS, TimeUnit.SECONDS);
 	}
 
 
