@@ -32,8 +32,15 @@ public class ContainerMetricsProducer extends BaseProducer implements EventEmitt
 		return instance;
 	}
 	
-	public void publishContainerMetric(ContainerMetric c) {
+	
+	public void close() {
+		 kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
+	}
+
+	@Override
+	public void emit(BlueWaterEvent event) throws Exception {
 		 try {
+			 ContainerMetric c = (ContainerMetric)event;
 			 String eventAsJson = parser.toJson(c);
 			 ProducerRecord<String, String> record = new ProducerRecord<String, String>(
                topic,null,eventAsJson);
@@ -46,15 +53,7 @@ public class ContainerMetricsProducer extends BaseProducer implements EventEmitt
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
 			e.printStackTrace();
 		} 
-	}
-	
-	public void close() {
-		 kafkaProducer.close(5000, TimeUnit.MILLISECONDS);
-	}
 
-	@Override
-	public void emit(BlueWaterEvent event) throws Exception {
-		// TODO Auto-generated method stub
 		
 	}
 	

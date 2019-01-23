@@ -28,7 +28,7 @@ public class ContainerMetric implements BlueWaterEvent {
 	}
 
 	public String toString() {
-		return getShipID()+ " " + getId() + " " + getTemperature() + " " + getAmp() + " " + getTimestampMillis();	
+		return getShipID()+ " " + getId() + " T= " + getTemperature() + " A= " + getAmp() + " ts:" + getTimestampMillis();	
 	}
 	
 	public String getId() {
