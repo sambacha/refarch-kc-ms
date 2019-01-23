@@ -50,15 +50,14 @@ If you are in a hurry and want to see the simulator running quickly on your loca
 # Go to the parent repository refarch-kc/docker folder
 $ cd ../refarch-kc/docker
 
-# If not done previously, start kafka and zookeeper locally. Be sure the kafka topics were created. If not see this section: https://github.com/ibm-cloud-architecture/refarch-kc#run-locally.
+# If not done previously, start kafka and zookeeper locally. If not see this section: https://github.com/ibm-cloud-architecture/refarch-kc#run-locally.
 $ docker-compose -f backbone-compose.yml up
 
 # Go back to this project to build it
 $ ./script/buildDocker.sh
 
-# Start the libery server. Note that this script defines environment variables to access kafka brokers 
+# Start the liberty server. Note that this script defines environment variables to access kafka brokers 
 $ ./scripts/runDocker.sh
-# As an alternate the script/run.sh will run the liberty server outside of docker.
 
 # Workaround for NullPointerException when starting Docker :
 # run liberty locally (see command above) once.
