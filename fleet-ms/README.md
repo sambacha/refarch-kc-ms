@@ -68,12 +68,13 @@ $ ./scripts/runDocker.sh
 $ ./scripts/runContainerMetricConsumer.sh
 
 # Start the "Fire in containers" simulation
-$ ./scripts/startContainerFireSimulation.sh
+$ cd scripts
+$ ./startContainerFireSimulation.sh
 # .... the simulation can run for a minute if you want to stop use the following command
-$ ./scripts/stopContainerSimulation.sh
+$ ./stopContainerSimulation.sh
 
 # Another simulation: Start the Container power off simulation
-$ ./scripts/startContainerPowerOffSimulation.sh
+$ ./startContainerPowerOffSimulation.sh
 ```
 
 If you want to get a clear understanding of the traces see [this note](./docs/SimulatorTracing.md)
@@ -424,6 +425,7 @@ $ export KUBECONFIG=/Users/jeromeboyer/.bluemix/plugins/container-service/cluste
 
 # Verify you reach the cluster and get the nodes
 $ kubectl get nodes
+$ helm init
 $ helm version
 
 $ helm install fleetms/ --name kc-fleetms --namespace browncompute
@@ -454,7 +456,7 @@ fleetms-service   NodePort   172.21.151.255   <none>        9080:30951/TCP,9443:
 $ ibmcloud ks workers <cluster_name>
 ```
 
-Test the deployed app is running using the URL: `http://<public-IP-address>:30951/fleetms/fleets`
+Test the deployed app is running using the URL: `http://<public-IP-address>:<port>/fleetms/fleets`
 
 ### Run on IBM Cloud Private
 
