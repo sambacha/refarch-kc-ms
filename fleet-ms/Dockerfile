@@ -11,6 +11,9 @@ RUN installUtility install --acceptLicense defaultServer && installUtility insta
 RUN /opt/ibm/wlp/usr/extension/liberty_dc/bin/config_liberty_dc.sh -silent /opt/ibm/wlp/usr/extension/liberty_dc/bin/silent_config_liberty_dc.txt
 # Upgrade to production license if URL to JAR provided
 ARG LICENSE_JAR_URL
+ENV KAFKA_BROKERS kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093
+ENV KAFKA_ENV IBMCLOUD
+# ENV KAFKA_APIKEY <>
 RUN \ 
   if [ $LICENSE_JAR_URL ]; then \
     wget $LICENSE_JAR_URL -O /tmp/license.jar \
