@@ -1,15 +1,44 @@
 var express = require('express');
 
-var json = require("../../data/voyages.json")
+var voyagesList = require('../../data/voyages.json');
+var emitter = require('../utils/kafka.js');
 
 module.exports = function(app) {
   var router = express.Router();
 
+  // List all existing voyages
   router.get('/', function (req, res, next) {
-    res.send(json);
+    res.send(voyagesList);
   });
 
-  app.use("/voyage", router);
+  // Assign an order to a voyage
+  // Post data: {'orderID': 'qwerty', 'containers': 2'}
+  router.post('/:voyageID/assign/', function(req, res, next) {
+    console.log('assigning an order to voyage ' + voyageID);
+    var voyageID = req.params.voyageID;
+    console.log('body ' + JSON.stringify(req.body));
+    var orderID = req.body.orderID;
+    var containers = req.body.containers;
+    console.log('OrderID ' + orderID);
+    console.log('Containers ' + containers);
+    
+    var event = {
+      'timestamp':  Date.now(),
+      'type': 'OrderUpdated',
+      'version': '1',
+      'payload': {
+        'voyageID': voyageID,
+        'orderID': orderID
+      }
+    }
+    console.log('built' + JSON.stringify(event));
+    emitter.emit(event);
+    res.json(event);
+    console.log('sent' + event);
+
+  });
+
+  app.use('/voyage', router);
 }
 
 

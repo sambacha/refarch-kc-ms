@@ -19,12 +19,12 @@ logger.level = process.env.LOG_LEVEL || 'info'
 const app = express();
 const server = http.createServer(app);
 
+app.use(express.json());
 app.use(log4js.connectLogger(logger, { level: logger.level }));
+
 const serviceManager = require('./services/service-manager');
 require('./services/index')(app);
 require('./routers/index')(app, server);
-
-// Add your code here
 
 const port = process.env.PORT || localConfig.port;
 server.listen(port, function(){
