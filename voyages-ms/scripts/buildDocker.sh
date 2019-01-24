@@ -1,1 +1,2 @@
-docker build -t ibmcase/voyagesms .
+npm install
+docker build -t ibmcase/kc-voyagesms .
