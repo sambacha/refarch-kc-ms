@@ -1,0 +1,5 @@
+[ 
+    {"voyageID":"100", "shipID":"ship1", "srcPort":"NYC", "plannedDeparture":"2019-02-01T20:20Z", "destPort":"LON", "plannedArrival":"2019-02-10T20:20Z"},
+    {"voyageID":"200", "shipID":"ship2", "srcPort":"NYC", "plannedDeparture":"2019-02-01T20:20Z", "destPort":"LON", "plannedArrival":"2019-02-10T20:20Z"},
+    {"voyageID":"300", "shipID":"ship3", "srcPort":"NYC", "plannedDeparture":"2019-02-01T20:20Z", "destPort":"LON", "plannedArrival":"2019-02-10T20:20Z"}
+]
