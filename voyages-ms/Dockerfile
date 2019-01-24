@@ -1,3 +1,23 @@
-FROM websphere-liberty:webProfile7
-ENV LICENSE accept
-RUN /opt/ibm/wlp/usr/extension/liberty_dc/bin/config_liberty_dc.sh -silent /opt/ibm/wlp/usr/extension/liberty_dc/bin/silent_config_liberty_dc.txt
+FROM node:8-stretch
+
+# Change working directory
+WORKDIR "/app"
+
+# Update packages and install dependency packages for services
+RUN apt-get update \
+ && apt-get dist-upgrade -y \
+ && apt-get clean \
+ && echo 'Finished installing dependencies'
+
+# Install npm production packages
+COPY package.json /app/
+RUN cd /app && npm install --production
+
+COPY . /app
+
+ENV NODE_ENV production
+ENV PORT 3000
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
