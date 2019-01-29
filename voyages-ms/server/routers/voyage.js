@@ -50,22 +50,26 @@ const cb = (message) => {
   var event = JSON.parse(message.value.toString());
   console.log(event);
   if (event.type === 'OrderCreated') {
-    var voyageID = 123;
-    var event = {
-      'timestamp':  Date.now(),
-      'type': 'OrderAssigned',
-      'version': '1',
-      'payload': {
-        'voyageID': voyageID,
-        'orderID': event.payload.orderID
+    // For UI demo purpose, wait 10 secs before assigning this order to a voyage
+    setTimeout(function() {
+      var voyageID = 123;
+      var event = {
+        'timestamp':  Date.now(),
+        'type': 'OrderAssigned',
+        'version': '1',
+        'payload': {
+          'voyageID': voyageID,
+          'orderID': event.payload.orderID
+        }
       }
-    }
-    console.log('built' + JSON.stringify(event));
-    kafka.emit(event).then (function(fulfilled) {
-      console.log('fulfilled' + event);  
-    }).catch(function(err){
-      console.log('rejected' + err);  
-    });
+      console.log('built' + JSON.stringify(event));
+      kafka.emit(event).then (function(fulfilled) {
+        console.log('fulfilled' + event);  
+      }).catch(function(err){
+        console.log('rejected' + err);  
+      });
+    }, 10000)
+   
   }
 }
 
