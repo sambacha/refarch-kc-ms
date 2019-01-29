@@ -1,7 +1,7 @@
 var express = require('express');
 
 var voyagesList = require('../../data/voyages.json');
-var emitter = require('../utils/kafka.js');
+var kafka = require('../utils/kafka.js');
 
 module.exports = function(app) {
   var router = express.Router();
@@ -24,7 +24,7 @@ module.exports = function(app) {
     
     var event = {
       'timestamp':  Date.now(),
-      'type': 'OrderUpdated',
+      'type': 'OrderAssigned',
       'version': '1',
       'payload': {
         'voyageID': voyageID,
@@ -32,7 +32,7 @@ module.exports = function(app) {
       }
     }
     console.log('built' + JSON.stringify(event));
-    emitter.emit(event).then (function(fulfilled) {
+    kafka.emit(event).then (function(fulfilled) {
       console.log('fulfilled' + event);  
       res.json(event);
     }).catch(function(err){
@@ -44,6 +44,37 @@ module.exports = function(app) {
 
   app.use('/voyage', router);
 }
+
+const cb = (message) => {
+  console.log('received a message');
+  var payload = message.value.toString();
+  console.log(payload);
+  if (payload.type == 'OrderCreated') {
+    var voyageID = 123;
+    var event = {
+      'timestamp':  Date.now(),
+      'type': 'OrderAssigned',
+      'version': '1',
+      'payload': {
+        'voyageID': voyageID,
+        'orderID': payload.orderID
+      }
+    }
+    console.log('built' + JSON.stringify(event));
+    kafka.emit(event).then (function(fulfilled) {
+      console.log('fulfilled' + event);  
+      res.json(event);
+    }).catch(function(err){
+      console.log('rejected' + err);  
+      res.status(500).send('Error occured');
+    });
+  }
+}
+
+kafka.listen({
+  'topic':'orders',
+  'callback': cb
+});
 
 
 
