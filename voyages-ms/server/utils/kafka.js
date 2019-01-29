@@ -1,6 +1,16 @@
 var kafka = require('node-rdkafka');
 var config = require('../utils/config.js')
 
+const getCloudConfig = () => {
+    return {
+        'security.protocol': 'sasl_ssl',
+        'ssl.ca.location': config.getCertsPath(),
+        'sasl.mechanisms': 'plain',
+        'sasl.username': 'token',
+        'sasl.password': config.getKafkaApiKey()
+    };
+}
+
 const getProducerConfig = () => {
     console.log('in getProducerConfig');
     var producerConfig = {
@@ -12,19 +22,33 @@ const getProducerConfig = () => {
         'dr_msg_cb': true // Enable delivery reports with message payload
     };
     if (config.getKafkaEnvironment() == "IBMCLOUD") {
-        eventStreamsConfig = {
-            'security.protocol': 'sasl_ssl',
-            'ssl.ca.location': config.getCertsPath(),
-            'sasl.mechanisms': 'plain',
-            'sasl.username': 'token',
-            'sasl.password': config.getKafkaApiKey()
-        }
+        eventStreamsConfig = getCloudConfig()
         for (var key in eventStreamsConfig) { 
             producerConfig[key] = eventStreamsConfig[key];
         }
     }
     console.log('producer configs' + JSON.stringify(producerConfig));
     return producerConfig;
+}
+
+const getConsumerConfig = () => {
+    console.log('in getConsumerConfig');
+    var consumerConfig = {
+        'debug': 'all',
+        'metadata.broker.list': config.getKafkaBrokers(),
+        'broker.version.fallback': '0.10.2.1',
+        'log.connection.close' : false,
+        'client.id': 'voyage-consumer',
+        'group.id': 'voyage-consumer-group'
+    };
+    if (config.getKafkaEnvironment() == "IBMCLOUD") {
+        eventStreamsConfig = getCloudConfig()
+        for (var key in eventStreamsConfig) { 
+            consumerConfig[key] = eventStreamsConfig[key];
+        }
+    }
+    console.log('consumer configs' + JSON.stringify(consumerConfig));
+    return consumerConfig;
 }
 
 console.log('before creating producer');
@@ -38,7 +62,7 @@ producer.setPollInterval(100);
 producer.connect();
 var ready = false;
 producer.on('ready', async () => {
-    console.log('Connected to Kafka');
+    console.log('Producer connected to Kafka');
     ready = true;
 });
 
@@ -51,6 +75,8 @@ producer.on('delivery-report', (err, report) => {
         console.error(report);
     }
 });
+
+var consumer = new kafka.KafkaConsumer(getConsumerConfig());
 
 const emit = (event) => {
     console.log('emitting ' + JSON.stringify(event));
@@ -82,6 +108,21 @@ const emit = (event) => {
     });
 }
 
+const listen = (subscription) => {
+    consumer.connect()
+    consumer.on('ready', async () => {
+        console.log('Consumer connected to Kafka');
+        console.log(subscription);
+        consumer.on('data', function(message) {
+            console.log('on data ' + message);
+            subscription.callback(message);
+        });
+        consumer.subscribe([subscription.topic]);
+        consumer.consume();
+    });
+}
+
 module.exports = {
-    emit, 
+    emit,
+    listen
 };

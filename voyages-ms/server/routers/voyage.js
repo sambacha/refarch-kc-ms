@@ -1,7 +1,7 @@
 var express = require('express');
 
 var voyagesList = require('../../data/voyages.json');
-var emitter = require('../utils/kafka.js');
+var kafka = require('../utils/kafka.js');
 
 module.exports = function(app) {
   var router = express.Router();
@@ -24,7 +24,7 @@ module.exports = function(app) {
     
     var event = {
       'timestamp':  Date.now(),
-      'type': 'OrderUpdated',
+      'type': 'OrderAssigned',
       'version': '1',
       'payload': {
         'voyageID': voyageID,
@@ -32,7 +32,7 @@ module.exports = function(app) {
       }
     }
     console.log('built' + JSON.stringify(event));
-    emitter.emit(event).then (function(fulfilled) {
+    kafka.emit(event).then (function(fulfilled) {
       console.log('fulfilled' + event);  
       res.json(event);
     }).catch(function(err){
@@ -44,6 +44,39 @@ module.exports = function(app) {
 
   app.use('/voyage', router);
 }
+
+const cb = (message) => {
+  console.log('received a message');
+  var event = JSON.parse(message.value.toString());
+  console.log(event);
+  if (event.type === 'OrderCreated') {
+    // For UI demo purpose, wait 10 secs before assigning this order to a voyage
+    setTimeout(function() {
+      var voyageID = 123;
+      var assignEvent = {
+        'timestamp':  Date.now(),
+        'type': 'OrderAssigned',
+        'version': '1',
+        'payload': {
+          'voyageID': voyageID,
+          'orderID': event.payload.orderID
+        }
+      }
+      console.log('built' + JSON.stringify(assignEvent));
+      kafka.emit(assignEvent).then (function(fulfilled) {
+        console.log('fulfilled' + assignEvent);  
+      }).catch(function(err){
+        console.log('rejected' + err);  
+      });
+    }, 10000)
+   
+  }
+}
+
+kafka.listen({
+  'topic':'orders',
+  'callback': cb
+});
 
 
 
