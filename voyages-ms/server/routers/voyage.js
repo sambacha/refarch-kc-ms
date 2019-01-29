@@ -47,9 +47,9 @@ module.exports = function(app) {
 
 const cb = (message) => {
   console.log('received a message');
-  var payload = JSON.parse(message.value.toString());
-  console.log(payload);
-  if (payload.type === 'OrderCreated') {
+  var event = JSON.parse(message.value.toString());
+  console.log(event);
+  if (event.type === 'OrderCreated') {
     var voyageID = 123;
     var event = {
       'timestamp':  Date.now(),
@@ -57,7 +57,7 @@ const cb = (message) => {
       'version': '1',
       'payload': {
         'voyageID': voyageID,
-        'orderID': payload.orderID
+        'orderID': event.payload.orderID
       }
     }
     console.log('built' + JSON.stringify(event));
