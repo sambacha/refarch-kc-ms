@@ -3,6 +3,8 @@ var express = require('express');
 var voyagesList = require('../../data/voyages.json');
 var kafka = require('../utils/kafka.js');
 
+
+
 module.exports = function(app) {
   var router = express.Router();
 
@@ -50,9 +52,9 @@ const cb = (message) => {
   var event = JSON.parse(message.value.toString());
   console.log(event);
   if (event.type === 'OrderCreated') {
-    // For UI demo purpose, wait 10 secs before assigning this order to a voyage
+    // For UI demo purpose, wait 30 secs before assigning this order to a voyage
     setTimeout(function() {
-      var voyageID = 123;
+      var voyageID = 100;
       var assignEvent = {
         'timestamp':  Date.now(),
         'type': 'OrderAssigned',
@@ -68,7 +70,7 @@ const cb = (message) => {
       }).catch(function(err){
         console.log('rejected' + err);  
       });
-    }, 10000)
+    }, 30000)
    
   }
 }

@@ -4,18 +4,18 @@
     "name": "KC-NorthAtlantic",
     "ships": [
       {
-         "name": "MarieRose",
+         "name": "BlackBear",
         "latitude": "37.8044",
         "longitude": "-122.2711",
         "status": "Docked",
-        "port": "Oakland",
+        "port": "NYC",
         "type": "Carrier",
         "maxRow": 3,
         "maxColumn": 7,
          "numberOfContainers" : 17
       },
       {
-        "name": "BlackBear",
+        "name": "Marie",
         "latitude": "26.10245",
         "longitude": "29.07359",
         "status": "AtSea",
