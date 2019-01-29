@@ -53,7 +53,7 @@ const cb = (message) => {
     // For UI demo purpose, wait 10 secs before assigning this order to a voyage
     setTimeout(function() {
       var voyageID = 123;
-      var event = {
+      var assignEvent = {
         'timestamp':  Date.now(),
         'type': 'OrderAssigned',
         'version': '1',
@@ -62,9 +62,9 @@ const cb = (message) => {
           'orderID': event.payload.orderID
         }
       }
-      console.log('built' + JSON.stringify(event));
-      kafka.emit(event).then (function(fulfilled) {
-        console.log('fulfilled' + event);  
+      console.log('built' + JSON.stringify(assignEvent));
+      kafka.emit(assignEvent).then (function(fulfilled) {
+        console.log('fulfilled' + assignEvent);  
       }).catch(function(err){
         console.log('rejected' + err);  
       });
