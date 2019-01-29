@@ -47,9 +47,9 @@ module.exports = function(app) {
 
 const cb = (message) => {
   console.log('received a message');
-  var payload = message.value.toString();
+  var payload = JSON.parse(message.value.toString());
   console.log(payload);
-  if (payload.type == 'OrderCreated') {
+  if (payload.type === 'OrderCreated') {
     var voyageID = 123;
     var event = {
       'timestamp':  Date.now(),
@@ -63,10 +63,8 @@ const cb = (message) => {
     console.log('built' + JSON.stringify(event));
     kafka.emit(event).then (function(fulfilled) {
       console.log('fulfilled' + event);  
-      res.json(event);
     }).catch(function(err){
       console.log('rejected' + err);  
-      res.status(500).send('Error occured');
     });
   }
 }
