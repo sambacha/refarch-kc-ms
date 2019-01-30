@@ -32,7 +32,7 @@ module.exports = function(app) {
     }
 
     kafka.emit(event).then ( function(fulfilled) {
-      console.log('Emitted ' + event);  
+      console.log('Emitted ' + JSON.stringify(event));  
       res.json(event);
     }).catch( function(err){
       console.log('Rejected' + err);  
@@ -46,7 +46,7 @@ module.exports = function(app) {
 
 const cb = (message) => {
   var event = JSON.parse(message.value.toString());
-  console.log('Event received ' + event);
+  console.log('Event received ' + JSON.stringify(event));
   if (event.type === 'OrderCreated') {
     // For UI demo purpose, wait 30 secs before assigning this order to a voyage
     setTimeout(function() {
@@ -74,9 +74,10 @@ const cb = (message) => {
           }
         }
       }
-      console.log('built' + JSON.stringify(assignOrCancelEvent));
+
+      console.log('Emitting ' + assignOrCancelEvent.type);  
       kafka.emit(assignOrCancelEvent).then (function(fulfilled) {
-        console.log('Emitted ' + assignOrCancelEvent);  
+        console.log('Emitted ' + JSON.stringify(assignOrCancelEvent));  
       }).catch(function(err){
         console.log('Rejected' + err);  
       });

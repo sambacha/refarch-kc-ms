@@ -76,8 +76,6 @@ producer.on('delivery-report', (err, report) => {
 var consumer = new kafka.KafkaConsumer(getConsumerConfig());
 
 const emit = (event) => {
-    console.log('emitting ' + JSON.stringify(event));
-
     if (!ready) {
         // kafka will handle reconnections but the produce method should never 
         // be called if the client was never 'ready'
@@ -98,7 +96,7 @@ const emit = (event) => {
                 }
             );
         } catch (e) {
-            console.error('Failed sending event ' + event + " error:" + e);
+            console.error('Failed sending event ' + JSON.stringify(event) + " error:" + e);
             return reject(e);
         }
     });
