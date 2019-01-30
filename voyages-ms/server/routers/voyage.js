@@ -51,15 +51,15 @@ const cb = (message) => {
     // For UI demo purpose, wait 30 secs before assigning this order to a voyage
     setTimeout(function() {
       
-      var voyageID = findSuitableVoyage(event.payload);
+      var matchedVoyage = findSuitableVoyage(event.payload);
       var assignOrCancelEvent;
-      if (voyageID) {
+      if (matchedVoyage.voyageID) {
           assignOrCancelEvent = {
           'timestamp':  Date.now(),
           'type': 'OrderAssigned',
           'version': '1',
           'payload': {
-            'voyageID': voyageID,
+            'voyageID': matchedVoyage.voyageID,
             'orderID': event.payload.orderID
           }
         }
@@ -69,7 +69,7 @@ const cb = (message) => {
           'type': 'OrderCancelled',
           'version': '1',
           'payload': {
-            'reason': 'No suitable Voyages found.',
+            'reason': matchedVoyage.reason,
             'orderID': event.payload.orderID
           }
         }
@@ -95,8 +95,12 @@ kafka.listen({
 const findSuitableVoyage = (order) => {
   for (v of voyagesList) {
     if (v.destPort === order.destinationAddress.city) {
-      return v.voyageID;
+      if (v.freeCapacity >= order.quantity) {
+        v.freeCapacity -= order.quantity;
+        return { 'voyageID': v.voyageID};
+      }
+      return { 'reason': 'Insufficient free capacity'};
     }
   }
-  return null;
+  return { 'reason': 'No matching destination'};
 }
