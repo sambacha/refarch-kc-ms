@@ -1,6 +1,9 @@
 var kafka = require('node-rdkafka');
 var config = require('../utils/config.js')
 
+const connectTimeoutMs = 10000;
+const committedTimeoutMs = 10000;
+
 const getCloudConfig = () => {
     return {
         'security.protocol': 'sasl_ssl',
@@ -12,9 +15,8 @@ const getCloudConfig = () => {
 }
 
 const getProducerConfig = () => {
-    console.log('in getProducerConfig');
     var producerConfig = {
-        'debug': 'all',
+        //'debug': 'all',
         'metadata.broker.list': config.getKafkaBrokers(),
         'broker.version.fallback': '0.10.2.1',
         'log.connection.close' : false,
@@ -31,15 +33,15 @@ const getProducerConfig = () => {
     return producerConfig;
 }
 
-const getConsumerConfig = () => {
-    console.log('in getConsumerConfig');
+const getConsumerConfig = (gid) => {
     var consumerConfig = {
-        'debug': 'all',
+        //'debug': 'all',
         'metadata.broker.list': config.getKafkaBrokers(),
         'broker.version.fallback': '0.10.2.1',
         'log.connection.close' : false,
         'client.id': 'voyage-consumer',
-        'group.id': 'voyage-consumer-group'
+        'group.id': gid,
+        'enable.auto.commit' : false
     };
     if (config.getKafkaEnvironment() == "IBMCLOUD") {
         eventStreamsConfig = getCloudConfig()
@@ -51,19 +53,49 @@ const getConsumerConfig = () => {
     return consumerConfig;
 }
 
+const getConsumerTopicConfig = () => {
+    return {'auto.offset.reset':'earliest'};
+}
+
 var producer = new kafka.Producer(getProducerConfig(), {
     'request.required.acks': -1,
     'produce.offset.report': true,
     'message.timeout.ms' : 10000  //speeds up a producer error response
 });
+producer.on('event.log', function(m){
+    console.log('P', m);
+})
+producer.on('event.error', function(m){
+    console.error('P', m);
+})
+
+var consumer = new kafka.KafkaConsumer(getConsumerConfig('voyage-consumer-group'), getConsumerTopicConfig());
+var reloadConsumer = new kafka.KafkaConsumer(getConsumerConfig('voyage-consumer-group-reload'), getConsumerTopicConfig());
+
+consumer.on('event.log', function(m){
+     console.log('C', m);
+})
+reloadConsumer.on('event.log', function(m){
+    console.log('RC', m);
+})
+consumer.on('event.error', function(m){
+    console.error('C', m);
+})
+reloadConsumer.on('event.error', function(m){
+   console.error('RC', m);
+})
 
 producer.setPollInterval(100);
-producer.connect();
-var ready = false;
-producer.on('ready', async () => {
-    console.log('Producer connected to Kafka');
-    ready = true;
-});
+var producerReady = false;
+producer.connect({ timeout: connectTimeoutMs }, function(err, info) {
+    if(err) {
+        console.error('Error in producer connect cb', err);
+        process.exit(-99); // microservice can't be available
+    } else {
+        console.log('Producer connected to Kafka');
+        producerReady = true;
+    }
+})
 
 producer.on('delivery-report', (err, report) => {
     if (typeof report.opaque === 'function') {
@@ -73,10 +105,8 @@ producer.on('delivery-report', (err, report) => {
     }
 });
 
-var consumer = new kafka.KafkaConsumer(getConsumerConfig());
-
 const emit = (key, event) => {
-    if (!ready) {
+    if (!producerReady) {
         // kafka will handle reconnections but the produce method should never 
         // be called if the client was never 'ready'
         console.log('Producer never connected to Kafka yet');
@@ -102,19 +132,100 @@ const emit = (key, event) => {
     });
 }
 
-const listen = (subscription) => {
-    consumer.connect()
-    consumer.on('ready', async () => {
-        consumer.on('data', function(message) {
-            subscription.callback(message);
+const reload = (subscription) => {
+    consumer.connect({ timeout: connectTimeoutMs }, function(err, info) {
+        if(err) {
+            console.error('Error in consumer connect cb', err);
+            process.exit(-100); // If reload fails, microservice can't be available
+        } else {
+            console.log('Consumer connected to Kafka');
+        }
+
+        // TODO handle multiple partitions
+        consumer.committed([{ topic: subscription.topic, partition: 0, offset: -1 }], committedTimeoutMs, function(err,tps) {
+            if(err) {
+                console.error('Error in committed cb', err);
+                consumer.disconnect();
+                process.exit(-200); // If reload fails, microservice can't be available
+            }
+
+            var reloadLimit = tps[0].offset-1;
+            console.log('ReloadLimit='+reloadLimit);
+            
+            doReload(reloadLimit, subscription)
+            .then(function() {
+                listen(subscription)
+            })
+            .catch(function(err) {
+                consumer.disconnect();
+                process.exit(-300); // If reload fails, microservice can't be available
+            });
+            
         });
-        consumer.subscribe([subscription.topic]);
-        consumer.consume();
-        console.log('Consumer connected to Kafka and subscribed');
     });
+}
+
+const doReload = (reloadLimit, subscription) => {
+    return new Promise((resolve, reject) => {
+        if (reloadLimit>=0) {
+            reloadConsumer.connect({ timeout: 5000 }, function(err, info) {
+                if (err) {
+                    console.error('ReloadConsumer error in connected cb', err);
+                    return reject(err);
+                } else {
+                    console.log('ReloadConsumer connected to Kafka');
+                }
+
+                reloadConsumer.subscribe([subscription.topic]); //will consume from earliest
+                var finishedReloading = false;
+                
+                var consumeCb = function(err,messages) {
+                    for(var m of messages) {
+                        if (m.offset <= reloadLimit) {
+                            subscription.callback(m, true);
+                        } 
+                        
+                        if (m.offset === reloadLimit) {
+                            finishedReloading = true;
+                            break;
+                        }
+                    };
+                    if (!finishedReloading) {
+                        reloadConsumer.consume(10, consumeCb);
+                    } else {
+                        console.log("Finished reloading");
+                        reloadConsumer.disconnect();
+                        return resolve();        
+                    }
+                }
+
+                reloadConsumer.consume(10, consumeCb);                    
+            });
+        } else {
+            console.log("No reloading needed");
+            return resolve();
+        }
+    });
+}
+
+
+const listen = (subscription) => {
+    console.log('Main Consumer in listen', subscription);
+    consumer.on('data', function(message) {
+        try {
+            subscription.callback(message, false);
+            consumer.commitMessageSync(message);
+        } catch(err) {
+            // TODO send to error queue
+            logger.error(err)
+        }
+    });
+    consumer.subscribe([subscription.topic]); //will consume from committed
+    consumer.consume();
+    console.log('Main Consumer starting consume loop');
 }
 
 module.exports = {
     emit,
-    listen
+    reload
 };

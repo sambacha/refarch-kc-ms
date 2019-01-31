@@ -44,11 +44,14 @@ module.exports = function(app) {
   app.use('/voyage', router);
 }
 
-const cb = (message) => {
+const cb = (message, reloading) => {
   var event = JSON.parse(message.value.toString());
   console.log('Event received ' + JSON.stringify(event));
   if (event.type === 'OrderCreated') {
-    // For UI demo purpose, wait 30 secs before assigning this order to a voyage
+
+    // For UI demo purpose, wait 30 secs before assigning this order to a voyage    
+    var timeoutMs = reloading ? 0 : 30000;
+    
     setTimeout(function() {
       
       var matchedVoyage = findSuitableVoyage(event.payload);
@@ -75,18 +78,20 @@ const cb = (message) => {
         }
       }
 
-      console.log('Emitting ' + assignOrCancelEvent.type);  
-      kafka.emit(event.payload.orderID, assignOrCancelEvent).then (function(fulfilled) {
-        console.log('Emitted ' + JSON.stringify(assignOrCancelEvent));  
-      }).catch(function(err){
-        console.log('Rejected' + err);  
-      });
-    }, 30000)
+      if(!reloading) {
+        console.log('Emitting ' + assignOrCancelEvent.type);  
+        kafka.emit(event.payload.orderID, assignOrCancelEvent).then (function(fulfilled) {
+          console.log('Emitted ' + JSON.stringify(assignOrCancelEvent));  
+        }).catch(function(err){
+          console.log('Rejected' + err);  
+        });
+      }
+    }, timeoutMs)
    
   }
 }
 
-kafka.listen({
+kafka.reload({
   'topic':'orders',
   'callback': cb
 });

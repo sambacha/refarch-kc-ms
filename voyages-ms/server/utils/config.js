@@ -21,6 +21,5 @@ module.exports = {
     getCertsPath: function() {
         return process.env.CERTS_PATH || config.certsPath;
     }
-
 }
 
