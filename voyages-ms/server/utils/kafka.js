@@ -131,8 +131,8 @@ const emit = (key, event) => {
 const reload = (subscription) => {
     consumer.connect({ timeout: connectTimeoutMs }, function(err, info) {
         if(err) {
-            // TODO handle err properly
             console.error('Error in consumer connect cb', err);
+            process.exit(-100); // If reload fails, microservice can't be available
         } else {
             console.log('Consumer connected to Kafka');
         }
@@ -140,54 +140,68 @@ const reload = (subscription) => {
         // TODO handle multiple partitions
         consumer.committed([{ topic: subscription.topic, partition: 0, offset: -1 }], committedTimeoutMs, function(err,tps) {
             if(err) {
-                // TODO handle err properly
                 console.error('Error in committed cb', err);
+                consumer.disconnect();
+                process.exit(-200); // If reload fails, microservice can't be available
             }
 
             var reloadLimit = tps[0].offset-1;
             console.log('ReloadLimit='+reloadLimit);
             
-            if (reloadLimit>=0) {
-                reloadConsumer.connect({ timeout: 5000 }, function(err, info) {
-                    if (err) {
-                        // TODO handle err properly
-                        console.error('ReloadConsumer error in connected cb', err);
-                    } else {
-                        console.log('ReloadConsumer connected to Kafka');
-                    }
-
-                    reloadConsumer.subscribe([subscription.topic]); //will consume from earliest
-                    var finishedReloading = false;
-                    
-                    var consumeCb = function(err,messages) {
-                        for(var m of messages) {
-                            if (m.offset <= reloadLimit) {
-                                subscription.callback(m, true);
-                            } 
-                            
-                            if (m.offset === reloadLimit) {
-                                finishedReloading = true;
-                                break;
-                            }
-                        };
-                        if (!finishedReloading) {
-                            reloadConsumer.consume(10, consumeCb);
-                        } else {
-                            console.log("Finished reloading");
-                            reloadConsumer.disconnect();
-                            listen(subscription);        
-                        }
-                    }
-
-                    reloadConsumer.consume(10, consumeCb);                    
-                });
-            } else {
-                console.log("No reloading needed");
-                listen(subscription);
-            }
+            doReload(reloadLimit, subscription)
+            .then(function() {
+                listen(subscription)
+            })
+            .catch(function(err) {
+                consumer.disconnect();
+                process.exit(-300); // If reload fails, microservice can't be available
+            });
+            
         });
     });
+}
 
+const doReload = (reloadLimit, subscription) => {
+    return new Promise((resolve, reject) => {
+        if (reloadLimit>=0) {
+            reloadConsumer.connect({ timeout: 5000 }, function(err, info) {
+                if (err) {
+                    console.error('ReloadConsumer error in connected cb', err);
+                    return reject(err);
+                } else {
+                    console.log('ReloadConsumer connected to Kafka');
+                }
+
+                reloadConsumer.subscribe([subscription.topic]); //will consume from earliest
+                var finishedReloading = false;
+                
+                var consumeCb = function(err,messages) {
+                    for(var m of messages) {
+                        if (m.offset <= reloadLimit) {
+                            subscription.callback(m, true);
+                        } 
+                        
+                        if (m.offset === reloadLimit) {
+                            finishedReloading = true;
+                            break;
+                        }
+                    };
+                    if (!finishedReloading) {
+                        reloadConsumer.consume(10, consumeCb);
+                    } else {
+                        console.log("Finished reloading");
+                        reloadConsumer.disconnect();
+                        return resolve();        
+                    }
+                }
+
+                reloadConsumer.consume(10, consumeCb);                    
+            });
+        } else {
+            console.log("No reloading needed");
+            return resolve();
+        }
+    });
 }
 
 
