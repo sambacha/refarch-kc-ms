@@ -75,7 +75,7 @@ producer.on('delivery-report', (err, report) => {
 
 var consumer = new kafka.KafkaConsumer(getConsumerConfig());
 
-const emit = (event) => {
+const emit = (key, event) => {
     if (!ready) {
         // kafka will handle reconnections but the produce method should never 
         // be called if the client was never 'ready'
@@ -88,7 +88,7 @@ const emit = (event) => {
             producer.produce(config.getOrderTopicName(), 
                 null, /* partition */
                 new Buffer(JSON.stringify(event)),
-                null, /* key */
+                key,
                 Date.now(),
                 (err, report) => {
                     if (err) return reject(err);

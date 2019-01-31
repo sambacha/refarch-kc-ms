@@ -31,7 +31,7 @@ module.exports = function(app) {
       }
     }
 
-    kafka.emit(event).then ( function(fulfilled) {
+    kafka.emit(orderID, event).then ( function(fulfilled) {
       console.log('Emitted ' + JSON.stringify(event));  
       res.json(event);
     }).catch( function(err){
@@ -76,7 +76,7 @@ const cb = (message) => {
       }
 
       console.log('Emitting ' + assignOrCancelEvent.type);  
-      kafka.emit(assignOrCancelEvent).then (function(fulfilled) {
+      kafka.emit(event.payload.orderID, assignOrCancelEvent).then (function(fulfilled) {
         console.log('Emitted ' + JSON.stringify(assignOrCancelEvent));  
       }).catch(function(err){
         console.log('Rejected' + err);  
