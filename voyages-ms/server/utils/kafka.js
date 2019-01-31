@@ -69,22 +69,6 @@ producer.on('event.error', function(m){
     console.error('P', m);
 })
 
-producer.setPollInterval(100);
-producer.connect();
-var ready = false;
-producer.on('ready', async () => {
-    console.log('Producer connected to Kafka');
-    ready = true;
-});
-
-producer.on('delivery-report', (err, report) => {
-    if (typeof report.opaque === 'function') {
-        report.opaque.call(null, err, report);
-    } else {
-        console.error('Assertion failed: opaque not a function!' + err);
-    }
-});
-
 var consumer = new kafka.KafkaConsumer(getConsumerConfig('voyage-consumer-group'), getConsumerTopicConfig());
 var reloadConsumer = new kafka.KafkaConsumer(getConsumerConfig('voyage-consumer-group-reload'), getConsumerTopicConfig());
 
@@ -101,8 +85,28 @@ reloadConsumer.on('event.error', function(m){
    console.error('RC', m);
 })
 
+producer.setPollInterval(100);
+var producerReady = false;
+producer.connect({ timeout: connectTimeoutMs }, function(err, info) {
+    if(err) {
+        console.error('Error in producer connect cb', err);
+        process.exit(-99); // microservice can't be available
+    } else {
+        console.log('Producer connected to Kafka');
+        producerReady = true;
+    }
+})
+
+producer.on('delivery-report', (err, report) => {
+    if (typeof report.opaque === 'function') {
+        report.opaque.call(null, err, report);
+    } else {
+        console.error('Assertion failed: opaque not a function!' + err);
+    }
+});
+
 const emit = (key, event) => {
-    if (!ready) {
+    if (!producerReady) {
         // kafka will handle reconnections but the produce method should never 
         // be called if the client was never 'ready'
         console.log('Producer never connected to Kafka yet');
