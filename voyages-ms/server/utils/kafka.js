@@ -51,7 +51,6 @@ const getConsumerConfig = () => {
     return consumerConfig;
 }
 
-console.log('before creating producer');
 var producer = new kafka.Producer(getProducerConfig(), {
     'request.required.acks': -1,
     'produce.offset.report': true,
@@ -70,22 +69,18 @@ producer.on('delivery-report', (err, report) => {
     if (typeof report.opaque === 'function') {
         report.opaque.call(null, err, report);
     } else {
-        console.error('Assertion failed: opaque not a function!');
-        console.error(err);
-        console.error(report);
+        console.error('Assertion failed: opaque not a function!' + err);
     }
 });
 
 var consumer = new kafka.KafkaConsumer(getConsumerConfig());
 
 const emit = (event) => {
-    console.log('emitting ' + JSON.stringify(event));
-
     if (!ready) {
         // kafka will handle reconnections but the produce method should never 
         // be called if the client was never 'ready'
-        console.log('Not connected to Kafka yet');
-        return Promise.reject(new Error('Not connected to Kafka yet'));
+        console.log('Producer never connected to Kafka yet');
+        return Promise.reject(new Error('Producer never connected to Kafka yet'));
     }
 
     return new Promise((resolve, reject) => {
@@ -101,8 +96,7 @@ const emit = (event) => {
                 }
             );
         } catch (e) {
-            console.error('Failed sending event ' + event);
-            console.error(e);
+            console.error('Failed sending event ' + JSON.stringify(event) + " error:" + e);
             return reject(e);
         }
     });
@@ -111,14 +105,12 @@ const emit = (event) => {
 const listen = (subscription) => {
     consumer.connect()
     consumer.on('ready', async () => {
-        console.log('Consumer connected to Kafka');
-        console.log(subscription);
         consumer.on('data', function(message) {
-            console.log('on data ' + message);
             subscription.callback(message);
         });
         consumer.subscribe([subscription.topic]);
         consumer.consume();
+        console.log('Consumer connected to Kafka and subscribed');
     });
 }
 
