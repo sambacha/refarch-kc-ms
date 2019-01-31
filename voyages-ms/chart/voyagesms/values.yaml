@@ -3,8 +3,8 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: registry.ng.bluemix.net/replace-me-namespace/voyagesms
-  tag: v1.0.0
+  repository: ibmcase/kc-voyagesms
+  tag: latest
   pullPolicy: Always
   resources:
     requests:

@@ -14,7 +14,23 @@ npm test
 npm start
 ```
 
-## Build, run, and deploy using IDT
+## Deploy on IBM Kubernetes Service
+
+```sh
+# to install the helm release under browncompute namespace
+$ helm install voyagesms/ --name kc-voyagesms --namespace browncompute 
+# To see the pod deployment
+$ kubectl describe pod voyagesms  --namespace browncompute
+# To get the exposed port
+$ kubectl get service kc-voyagesms
+$ kubectl get service voyagesms-application-service -n browncompute
+# Status and traced of the pods:
+$ kubectl logs fleetms-deployment-58b7d58fb8-qcqz7  -n browncompute
+# then point your URL to the ipaddress and port number:
+http://
+```
+
+## NOT VERIFIED Build, run, and deploy using IDT
 
 ```bash
 # Install needed dependencies:

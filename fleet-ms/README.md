@@ -79,7 +79,7 @@ $ ./startContainerPowerOffSimulation.sh
 
 If you want to get a clear understanding of the traces see [this note](./docs/SimulatorTracing.md)
 
-### Run the demo on IBM Cloud
+### Run the demo locally connected to Event Streams on IBM Cloud
 As an alternate you can use our Event Stream backbone we have configured on IBM Cloud and still run the fleet service on you laptop.
 
 If you want to run with our Event Streams backbone deployed on IBM Cloud, ask us for the api key and then do the following:
@@ -89,8 +89,6 @@ export KAFKA_ENV="IBMCLOUD"
 export KAFKA_APIKEY="<the super secret key we will give you>"
 mvn liberty:run-server
 ```
-
-Also the complete solution is deployed on IBM Cloud.
 
 ## The model
 
@@ -409,9 +407,9 @@ We described the process in the [section above](#run-the-fleet-service-on-your-l
 
 ### Run on IBM Cloud with Kubernetes Service
 
-We are deploying the simulator on the kubernetes service. To define your kubernetes service [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
+We are deploying the simulator on the kubernetes service. To define your IBM Kubernetes Service (IKS) [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
 
-We use Helm to install the fleetms service. The commands are
+We use Helm to install the fleetms service. The commands are described below:
 
 ```
 # be sure to be connect to your kubernetes cluster:
@@ -431,7 +429,7 @@ $ helm version
 $ helm install fleetms/ --name kc-fleetms --namespace browncompute
 
 # if you have an issue and wants to uninstall do
-$ helm del --purge kc-fleetms --namespace browncompute
+$ helm del --purge kc-fleetms 
 
 # If you need to upgrade an existing deployed release use the command:
 $ helm upgrade kc-fleetms fleetms/ --namespace browncompute

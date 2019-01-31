@@ -114,7 +114,7 @@ public class ShipRunner implements Runnable {
 				
 			}
         } catch (Exception e) { 
-        	e.printStackTrace();
+        	// e.printStackTrace();
             System.out.println ("ShipRunner stopped"); 
             stop();
         } finally {
