@@ -1,6 +1,8 @@
 var kafka = require('node-rdkafka');
 var config = require('../utils/config.js')
 
+const committedTimeoutMs = 10000;
+
 const getCloudConfig = () => {
     return {
         'security.protocol': 'sasl_ssl',
@@ -31,7 +33,7 @@ const getProducerConfig = () => {
     return producerConfig;
 }
 
-const getConsumerConfig = () => {
+const getConsumerConfig = (gid) => {
     console.log('in getConsumerConfig');
     var consumerConfig = {
         'debug': 'all',
@@ -39,7 +41,8 @@ const getConsumerConfig = () => {
         'broker.version.fallback': '0.10.2.1',
         'log.connection.close' : false,
         'client.id': 'voyage-consumer',
-        'group.id': 'voyage-consumer-group'
+        'group.id': gid,
+        'enable.auto.commit' : false
     };
     if (config.getKafkaEnvironment() == "IBMCLOUD") {
         eventStreamsConfig = getCloudConfig()
@@ -49,6 +52,10 @@ const getConsumerConfig = () => {
     }
     console.log('consumer configs' + JSON.stringify(consumerConfig));
     return consumerConfig;
+}
+
+const getConsumerTopicConfig = () => {
+    return {'auto.offset.reset':'earliest'};
 }
 
 var producer = new kafka.Producer(getProducerConfig(), {
@@ -73,7 +80,11 @@ producer.on('delivery-report', (err, report) => {
     }
 });
 
-var consumer = new kafka.KafkaConsumer(getConsumerConfig());
+var consumer = new kafka.KafkaConsumer(getConsumerConfig('voyage-consumer-group'), getConsumerTopicConfig());
+var reloadConsumer = new kafka.KafkaConsumer(getConsumerConfig('voyage-consumer-group-reload'), getConsumerTopicConfig());
+// consumer.on('event.log', function(m){
+//     console.log(m);
+// })
 
 const emit = (key, event) => {
     if (!ready) {
@@ -102,19 +113,64 @@ const emit = (key, event) => {
     });
 }
 
-const listen = (subscription) => {
-    consumer.connect()
+const reload = (subscription) => {
+    consumer.connect();
+
     consumer.on('ready', async () => {
-        consumer.on('data', function(message) {
-            subscription.callback(message);
+        console.log('Consumer on ready')
+        // TODO handle multiple partitions
+        consumer.committed([{ topic: subscription.topic, partition: 0, offset: -1 }], committedTimeoutMs, function(err,tps) {
+            console.log('Consumer on committed cb ', err, tps);
+            // TODO handle err
+            var reloadLimit = tps[0].offset;
+            if (reloadLimit>0) {
+                reloadConsumer.connect({ timeout: 2000 }, function(err, info) {
+                    console.log('ReloadConsumer connect cb', err, info);
+                    reloadConsumer.subscribe([subscription.topic]); //should consume from 0
+                    var finishedReloading = false;
+                    while(!finishedReloading) {
+                        reloadConsumer.consume(10, function(err,messages) {
+                            console.log('ReloadConsumer on consume(n,messages) cb ', err);
+                            for(var m of messages) {
+                                if (m.offset <= reloadLimit) {
+                                    subscription.callback(message, true);
+                                } else {
+                                    finishedReloading = true;
+                                    break; // for loop
+                                }
+                            }
+                        })
+                    }
+                    reloadConsumer.disconnect();
+                    listen(subscription);
+                });
+            } else {
+                listen(subscription);
+            }
         });
-        consumer.subscribe([subscription.topic]);
-        consumer.consume();
-        console.log('Consumer connected to Kafka and subscribed');
     });
+
+}
+
+
+const listen = (subscription) => {
+    console.log('Consumer in listen ' + subscription);
+    consumer.on('data', function(message) {
+        try {
+            subscription.callback(message, false);
+            consumer.commitMessageSync(message);
+        } catch(err) {
+            // TODO send to error queue
+            logger.error(err)
+        }
+    });
+    consumer.subscribe([subscription.topic]); //should consume from committed
+    consumer.consume();
+    console.log('Consumer starting consume loop');
 }
 
 module.exports = {
     emit,
-    listen
+    listen,
+    reload
 };
