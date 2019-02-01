@@ -2,5 +2,6 @@
   "port": 3000,
   "orderTopicName": "orders",
   "kafkaEnv": "LOCAL",
-  "kafkaBrokers": "kafka1:9092"
+  "kafkaBrokers": "kafka1:9092",
+  "certsPath": "/etc/ssl/certs"
 }

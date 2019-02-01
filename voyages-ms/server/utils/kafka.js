@@ -8,7 +8,7 @@ const getCloudConfig = () => {
     return {
         'security.protocol': 'sasl_ssl',
         'ssl.ca.location': config.getCertsPath(),
-        'sasl.mechanisms': 'plain',
+        'sasl.mechanisms': 'PLAIN',
         'sasl.username': 'token',
         'sasl.password': config.getKafkaApiKey()
     };
