@@ -17,6 +17,7 @@ service:
   name: node
   type: NodePort
   servicePort: 3000
+  nodePort: 31000
 hpa:
   enabled: false
   minReplicas: 1
@@ -37,3 +38,5 @@ istio:
   weight: 100
 generatedBindings:
   enabled: true
+eventstreams:
+  brokers: "<KAFKA_BROKERS>"
