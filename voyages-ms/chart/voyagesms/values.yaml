@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: ibmcase/kc-voyagesms
+  repository: edobrez/kc-voyagesms
   tag: latest
   pullPolicy: Always
   resources:
@@ -17,6 +17,7 @@ service:
   name: node
   type: NodePort
   servicePort: 3000
+  nodePort: 31000
 hpa:
   enabled: false
   minReplicas: 1
@@ -37,3 +38,5 @@ istio:
   weight: 100
 generatedBindings:
   enabled: true
+eventstreams:
+  brokers: "kafka05-prod01.messagehub.services.eu-de.bluemix.net:9093"
