@@ -15,6 +15,7 @@ service:
   type: NodePort
   servicePort: 9080
   servicePortHttps: 9443
+  nodePort: 31300
 hpa:
   enabled: false
   minReplicas: 1
