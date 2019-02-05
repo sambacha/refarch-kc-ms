@@ -409,7 +409,17 @@ We described the process in the [section above](#run-the-fleet-service-on-your-l
 
 We are deploying the simulator on the kubernetes service. To define your IBM Kubernetes Service (IKS) [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
 
-We use Helm to install the fleetms service. The commands are described below:
+We use Helm to install the fleetms service. Helm is a package manager to deploy applications and services to Kubernetes cluster. Package definitions are charts, which are yaml files, to be shareable between teams.
+
+The first time you need to build a chart for any microservice, select a chart name (e.g. `fleetms`) and then use the command like:
+```
+$ mkdir chart && cd chart
+$ helm init fleetms
+```
+
+This creates yaml files and a simple set of folders. Those files play a role to define the deployment configuration for kubernetes. Under the templates folder the yaml files use parameters coming from the `values.yaml` and `chart.yaml` files.
+
+ The commands are described below:
 
 ```
 # be sure to be connect to your kubernetes cluster:
