@@ -38,19 +38,18 @@ This service keeps track of each of the container ships available for transporti
 * [ ] Define query of what happen to a ship from a given time to retrace its past voyages. 
 
 
-From the analysis and concepts explained [here](https://github.com/ibm-cloud-architecture/refarch-kc#fleetsships-microservice---concept) we did not implement the following:
-* 
+For more in depth analysis and concepts explained [see this note](https://github.com/ibm-cloud-architecture/refarch-kc#fleetsships-microservice---concept) 
 
 ## Run
 
 ### Run the fleet service on your laptop
 
-If you are in a hurry and want to see the simulator running quickly on your local machine, you can do start our docker compose for the kafka node, start liberty server with the simulator app deployed and use one of the scenario to trigger a simulation. This can be summarized as the following steps
+If you are in a hurry and want to see the simulator running quickly on your local machine, you can do start our docker compose for a unique kafka node cluster, start liberty server with the simulator app deployed and use one of the scenario to trigger a simulation. This can be summarized as the following steps
 ```
 # Go to the parent repository refarch-kc/docker folder
 $ cd ../refarch-kc/docker
 
-# If not done previously, start kafka and zookeeper locally. If not see this section: https://github.com/ibm-cloud-architecture/refarch-kc#run-locally.
+# If not done previously, start kafka and zookeeper locally. See this section for detail: https://github.com/ibm-cloud-architecture/refarch-kc#run-locally.
 $ docker-compose -f backbone-compose.yml up
 
 # Go back to this project to build it

@@ -37,15 +37,15 @@ spec:
             value: "{{ .Values.service.servicePort }}"
           - name: APPLICATION_NAME
             value: "{{ .Release.Name }}"
-          - name: KAFKA_BROKERS
-            value: "{{ .Values.env.kafka.brokers }}"
           - name: KAFKA_ENV
-            value: "{{ .Values.env.kafka.env }}"
+            value: "{{ .Values.eventstreams.env }}"
+          - name: KAFKA_BROKERS
+            value: "{{ .Values.eventstreams.brokers }}"
           - name: KAFKA_APIKEY
-            valueFrom:
+            valueFrom: 
               secretKeyRef:
-                name: es-secret
-                key: apikey
+                name: eventstreams-apikey
+                key: binding
 {{- if .Values.generatedBindings.enabled }}
 {{.Files.Get "bindings.yaml" | indent 10 }}
 {{- end }}
