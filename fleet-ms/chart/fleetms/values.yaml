@@ -3,9 +3,10 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: ibmcase/kc-fleetms
+  repository: registry.ng.bluemix.net/ibmcaseeda/kc-fleetms 
   tag: latest
   pullPolicy: Always
+  pullSecret: bluemix-browncompute-secret-regional
   resources:
     requests:
       cpu: 200m

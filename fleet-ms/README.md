@@ -407,9 +407,9 @@ We described the process in the [section above](#run-the-fleet-service-on-your-l
 
 ### Run on IBM Cloud with Kubernetes Service
 
-We are deploying the simulator on the kubernetes service. To define your IBM Kubernetes Service (IKS) [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
+We are deploying the simulator on the kubernetes service. To define your own IBM Kubernetes Service (IKS) [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
 
-We use Helm to install the fleetms service. Helm is a package manager to deploy applications and services to Kubernetes cluster. Package definitions are charts, which are yaml files, to be shareable between teams.
+We use [Helm](https://helm.sh/) to install the fleetms service. Helm is a package manager to deploy applications and services to Kubernetes cluster. Package definitions are charts, which are yaml files, to be shareable between teams.
 
 The first time you need to build a chart for any microservice, select a chart name (e.g. `fleetms`) and then use the command like:
 ```
@@ -419,10 +419,44 @@ $ helm init fleetms
 
 This creates yaml files and a simple set of folders. Those files play a role to define the deployment configuration for kubernetes. Under the templates folder the yaml files use parameters coming from the `values.yaml` and `chart.yaml` files.
 
- The commands are described below:
+* *Chart.yaml*: This is a global parameter file. Set the version and name attributes, as they will be used in deployment.yaml. Each time you deploy a new version of your app you can just change the version number. The values in the chart.yaml are used in the templates.
+
+The following modifications were done to the deployment configuration file to leverage environment variables and docker registry and kafka api key secrets.
+* In `values.yml` file:   
+ ```yml
+ env:
+  kafka:
+    brokers: kafka03....  
+    env: IBMCLOUD  
+ image:  
+     repository:   registry.ng.bluemix.net/ibmcaseeda/kc-fleetms   
+     tag: latest  
+     pullPolicy: Always  
+     pullSecret:   bluemix-browncompute-secret-regional  
+ ``` 
+* In `deployment.yml` template file  
+ ```yml
+   spec:
+      imagePullSecrets:
+          - name: {{ .Values.image.pullSecret }}
+      containers: ...
+    env:
+        - name: KAFKA_BROKERS
+            value: "{{ .Values.env.kafka.brokers }}"
+        - name: KAFKA_ENV
+            value: "{{ .Values.env.kafka.env }}"
+        - name: KAFKA_APIKEY
+            valueFrom:
+              secretKeyRef:
+                name: es-secret
+                key: apikey
+ ```
+
+
+The commands for the deploymnet are described below:
 
 ```
-# be sure to be connect to your kubernetes cluster:
+# be sure to be connected to your kubernetes cluster:
 $ ibmcloud login -a https://api.us-east.bluemix.net
 
 # Target the IBM Cloud Container Service region in which you want to work
@@ -435,7 +469,7 @@ $ export KUBECONFIG=/Users/jeromeboyer/.bluemix/plugins/container-service/cluste
 $ kubectl get nodes
 $ helm init
 $ helm version
-
+$ cd chart
 $ helm install fleetms/ --name kc-fleetms --namespace browncompute
 
 # if you have an issue and wants to uninstall do
@@ -465,6 +499,12 @@ $ ibmcloud ks workers <cluster_name>
 ```
 
 Test the deployed app is running using the URL: `http://<public-IP-address>:<port>/fleetms/fleets`
+
+#### Potential issue
+
+Here is a [troubleshooting note](https://github.com/ibm-cloud-architecture/refarch-integration/blob/master/docs/icp/troubleshooting.md) that can always be helpful to search solution for common problem.
+
+While deploying a liberty on ubuntu docker image to IKS, we got a vulnerability issue. This is reported in the image registry, in the image name. The resolution was "Upgrade apt to >= 1.2.29ubuntu0.1", which means modifying the Dockerfile to get the last apt. (Adding the following `RUN apt-get update -q -y && apt-get dist-upgrade -q -y` in the docker file).
 
 ### Run on IBM Cloud Private
 

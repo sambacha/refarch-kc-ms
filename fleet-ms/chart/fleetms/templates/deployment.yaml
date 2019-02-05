@@ -13,10 +13,13 @@ spec:
         app: "{{  .Chart.Name }}-selector"
         version: "current"
     spec:
+      imagePullSecrets:
+          - name: {{ .Values.image.pullSecret }}
       containers:
       - name: "{{  .Chart.Name  }}"
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+     
 {{ if .Values.istio.enabled }}
 {{ else }}
         readinessProbe:
@@ -41,8 +44,8 @@ spec:
           - name: KAFKA_APIKEY
             valueFrom:
               secretKeyRef:
-              name: es-secret
-              key: apikey
+                name: es-secret
+                key: apikey
 {{- if .Values.generatedBindings.enabled }}
 {{.Files.Get "bindings.yaml" | indent 10 }}
 {{- end }}
