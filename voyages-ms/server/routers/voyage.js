@@ -1,6 +1,8 @@
 var express = require('express');
-
+// mockup of backend data source. Can be changed later !
 var voyagesList = require('../../data/voyages.json');
+// voyages is a consumer of orders topic for OrderCreated event 
+// and a producer when a voyage is assigned to an order 
 var kafka = require('../utils/kafka.js');
 
 
@@ -13,8 +15,8 @@ module.exports = function(app) {
     res.send(voyagesList);
   });
 
-  // Assign an order to a voyage
-  // Post data: {'orderID': 'qwerty', 'containers': 2'}
+  // Assign an order to a voyage according to the number of container
+  // Post data: {'orderID': 'a-orderid-as-key-in-orders-topic', 'containers': 2'}
   router.post('/:voyageID/assign/', function(req, res, next) {
     var voyageID = req.params.voyageID;
     var orderID = req.body.orderID;

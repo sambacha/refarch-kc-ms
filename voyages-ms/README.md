@@ -6,7 +6,14 @@ A generated IBM Cloud application
 
 [![](https://img.shields.io/badge/IBM%20Cloud-powered-blue.svg)](https://bluemix.net)
 
+
+## Build
+
+The script `.script/buildDocker.sh` build the docker image for this service.
+
 ## Run locally as Node.js application
+
+This is more for development purpose in your sandbox.
 
 ```bash
 npm install
