@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import ibm.labs.kc.model.Fleet;
 
@@ -20,7 +21,7 @@ public class TestFleetAPIsIT extends BaseIntegrationTest {
 	 private String url = getBaseUrl() + endpoint;
 	    
 	@Test
-	public void testGettingFleetsFromREST() throws InterruptedException {
+	public void testGettingFleetsFromREST() throws InterruptedException{ 
 		 System.out.println("Testing endpoint " + url);
 	        int maxCount = 5;
 	        int responseCode = 0;
@@ -33,10 +34,14 @@ public class TestFleetAPIsIT extends BaseIntegrationTest {
 		      if (response.hasEntity()) {
 			      String fleetsAsString=response.readEntity(String.class);
 			      Gson parser = new Gson();
+			      try{
 			      Fleet[] fa = parser.fromJson(fleetsAsString,Fleet[].class);
 			      assertNotNull(fleetsAsString);
 			      for (Fleet f : fa) {
 			    	  System.out.println(f.toString());
+			      }
+			      }catch(IllegalStateException | JsonSyntaxException exception){
+			    	  System.out.println(exception);
 			      }
 		      }
 		      
