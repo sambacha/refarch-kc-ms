@@ -39,7 +39,8 @@
   {
   	"id": "f2",
     "name": "KC-NorthPacific",
-    "ships": [{
+    "ships": [
+    	{
         "name": "JimminyCricket",
         "latitude": "37.8226902168957",
         "longitude": "-122.3248956640928",
@@ -84,7 +85,8 @@
   {
   	"id": "f3",
     "name": "KC-SouthPacific",
-    "ships": [{
+    "ships": [
+    	{
         "name": "GreenKangoroo",
         "latitude": "-29.85372",
         "longitude": "156.33.921",
