@@ -20,13 +20,13 @@ public class ContainerConsumer extends BaseKafkaConsumer {
 	
 	public ContainerConsumer() {
 		super();
-		prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME),"BW-container-consumer");
+		prepareConsumer(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME),"BW-container-consumer");
 	}
 
 	public List<ContainerMetric>  consume() {
     	List<ContainerMetric> buffer = new ArrayList<ContainerMetric>();
     	ConsumerRecords<String, String> records = kafkaConsumer.poll(
-    			Long.parseLong(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
+    			Long.parseLong(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
     	
 	    for (ConsumerRecord<String, String> record : records) {
 	    	ContainerMetric a = gson.fromJson(record.value(), ContainerMetric.class);
@@ -40,7 +40,7 @@ public class ContainerConsumer extends BaseKafkaConsumer {
 		System.out.println("# Consume container metrics events    #");
 		System.out.println("#########################################");
 		ContainerConsumer consumer = new ContainerConsumer();
-		System.out.print("@@@ topic:"+consumer.getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME));
+		System.out.print("@@@ topic:"+ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME));
 		boolean cont = true;
 		while (cont) {
 			for ( ContainerMetric p : consumer.consume()) {

@@ -17,15 +17,15 @@ public class ContainerEventConsumer extends BaseKafkaConsumer implements Runnabl
     
     public ContainerEventConsumer() {
     	 super();
-    	 prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME),
-    			 getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID)+"_container");
+    	 prepareConsumer(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME),
+    			 ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID)+"_container");
 	}
 
     
     public List<ContainerMetric>  consume() {
     	List<ContainerMetric> buffer = new ArrayList<ContainerMetric>();
     	ConsumerRecords<String, String> records = kafkaConsumer.poll(
-    			Long.parseLong(config.getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
+    			Long.parseLong(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
     	
 	    for (ConsumerRecord<String, String> record : records) {
 	    	ContainerMetric a = gson.fromJson(record.value(), ContainerMetric.class);

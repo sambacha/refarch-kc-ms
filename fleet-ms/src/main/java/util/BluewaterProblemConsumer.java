@@ -14,13 +14,13 @@ public class BluewaterProblemConsumer extends BaseKafkaConsumer {
 	
 	public BluewaterProblemConsumer() {
 		super();
-		prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_BW_PROBLEM_TOPIC_NAME),"BW-problem-consumer");
+		prepareConsumer(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_BW_PROBLEM_TOPIC_NAME),"BW-problem-consumer");
 	}
 
 	public List<BluewaterProblem>  consume() {
     	List<BluewaterProblem> buffer = new ArrayList<BluewaterProblem>();
     	ConsumerRecords<String, String> records = kafkaConsumer.poll(
-    			Long.parseLong(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
+    			Long.parseLong(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
     	
 	    for (ConsumerRecord<String, String> record : records) {
 	    	BluewaterProblem a = gson.fromJson(record.value(), BluewaterProblem.class);

@@ -19,14 +19,14 @@ public class ShipPositionConsumer extends BaseKafkaConsumer {
     
     public ShipPositionConsumer() {
     	 super();
-    	 prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME),
+    	 prepareConsumer(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME),
     			 "ship-consumer");
 	}
     
     public List<ShipPosition>  consume() {
     	List<ShipPosition> buffer = new ArrayList<ShipPosition>();
     	ConsumerRecords<String, String> records = kafkaConsumer.poll(
-    			Long.parseLong(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
+    			Long.parseLong(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
     	
 	    for (ConsumerRecord<String, String> record : records) {
 	    	System.out.println(record.offset() + " " + record.partition());

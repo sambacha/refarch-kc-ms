@@ -27,7 +27,7 @@ public class TestFleetAPIsIT extends BaseIntegrationTest {
 	        int responseCode = 0;
 	        for(int i = 0; (responseCode != 200) && (i < maxCount); i++) {
 	          System.out.println("Response code : " + responseCode + ", retrying ... (" + i + " of " + maxCount + ")");
-	          Thread.sleep(5000);
+
 	          Client client = ClientBuilder.newClient();
 		      Invocation.Builder invoBuild = client.target(url).request();
 		      Response response = invoBuild.get();
@@ -46,6 +46,7 @@ public class TestFleetAPIsIT extends BaseIntegrationTest {
 		      }
 		      
 		      responseCode = response.getStatus();
+	          Thread.sleep(5000);
 	        }
 	        assertTrue("Incorrect response code: " + responseCode, responseCode == 200);
 	}

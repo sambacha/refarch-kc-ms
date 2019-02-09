@@ -1,10 +1,16 @@
 FROM websphere-liberty:webProfile7
 LABEL maintainer="IBM Java Engineering at IBM Cloud"
+# 3 next lines need to be there to avoid NPE on javametrics-rest, javametrics-dash, fleetms 
 COPY /target/liberty/wlp/usr/servers/defaultServer /config/
 COPY /target/liberty/wlp/usr/shared/resources /config/resources/
 COPY /src/main/liberty/config/jvmbx.options /config/jvm.options
+
 USER root
-RUN apt-get update -q -y && apt-get dist-upgrade -q -y && chmod g+w /config/apps
+COPY es-cert.der /tmp/es-cert.der
+RUN apt-get update -q -y && apt-get dist-upgrade -q -y && chmod g+w /config/apps &&\
+echo yes | keytool -importcert -alias startssl -keystore \
+    $JAVA_HOME/lib/security/cacerts -storepass changeit -file /tmp/es-cert.der 
+
 USER 1001
 # Install required features if not present, install APM Data Collector
 RUN installUtility install --acceptLicense defaultServer && installUtility install --acceptLicense apmDataCollector-7.4

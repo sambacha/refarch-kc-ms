@@ -12,13 +12,13 @@ public class ShipEventConsumer extends BaseKafkaConsumer {
 
     public ShipEventConsumer() {
         super();
-        prepareConsumer(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME),"BW-container-consumer");
+        prepareConsumer(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME),"BW-container-consumer");
     }
 
     public List<ShipPosition>  consume() {
     	List<ShipPosition> buffer = new ArrayList<ShipPosition>();
     	ConsumerRecords<String, String> records = kafkaConsumer.poll(
-    			Long.parseLong(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
+    			Long.parseLong(ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_POLL_DURATION)));
     	
 	    for (ConsumerRecord<String, String> record : records) {
 	    	ShipPosition a = gson.fromJson(record.value(), ShipPosition.class);

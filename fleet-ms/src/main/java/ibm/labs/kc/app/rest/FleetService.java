@@ -35,7 +35,7 @@ public class FleetService {
 	
 	public FleetService() {
 		dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");	
-		//fleetSimulator = new FleetSimulator();
+		fleetSimulator = new FleetSimulator();
 	}
 	
 	public FleetService(FleetDAO fdao,FleetSimulator fleetSimulator) {

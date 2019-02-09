@@ -16,14 +16,12 @@ public class BaseKafkaConsumer {
 	protected static KafkaConsumer<String, String> kafkaConsumer;
     
 	protected Gson gson = new Gson();
-	protected ApplicationConfig config;
     
 	public BaseKafkaConsumer() {
-   	   this.config = new ApplicationConfig();
 	}
 	
 	protected void prepareConsumer(String topicName,String clientID) {
-		Properties properties = this.config.buildConsumerProperties(clientID);
+		Properties properties = ApplicationConfig.buildConsumerProperties(clientID);
         kafkaConsumer = new KafkaConsumer<>(properties);
         kafkaConsumer.subscribe(Arrays.asList(topicName));
 	}
@@ -44,7 +42,4 @@ public class BaseKafkaConsumer {
 		return gson;
 	}
 
-	public ApplicationConfig getConfig() {
-		return config;
-	}
 }

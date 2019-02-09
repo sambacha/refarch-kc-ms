@@ -20,9 +20,10 @@ public class ShipPositionProducer extends BaseProducer implements EventEmitter {
 	 private static ShipPositionProducer instance;
 	 
 	 private ShipPositionProducer() {
-		 Properties p = getConfig().buildProducerProperties(ShipPositionProducer.class.getName());
+		 Properties p = ApplicationConfig.buildProducerProperties(ShipPositionProducer.class.getName());
 		 kafkaProducer = new KafkaProducer<String, String>(p);
-	     topic = getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
+	     topic = ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_SHIP_TOPIC_NAME);
+	     System.out.println("ShipPositionProducer produces to " + topic);
 	 }
 	 
 	public synchronized static EventEmitter getInstance() {

@@ -21,9 +21,9 @@ public class ContainerMetricsProducer extends BaseProducer implements EventEmitt
 	private ContainerMetricsProducer() {
 	     System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "TRACE");
 	     System.setProperty(org.slf4j.impl.SimpleLogger.LOG_FILE_KEY,"System.out");
-		 Properties p = getConfig().buildProducerProperties(getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_PRODUCER_CLIENTID)+"_container");
+		 Properties p = ApplicationConfig.buildProducerProperties("ContainerMetric-Client");
 		 kafkaProducer = new KafkaProducer<String, String>(p);
-	     topic = getConfig().getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
+	     topic = ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_CONTAINER_TOPIC_NAME);
 	     System.out.println("Producing to " + topic);
 	}
 	
