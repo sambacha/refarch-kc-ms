@@ -1,3 +1,7 @@
+#!/bin/bash
+echo "##########################################"
+echo " Build Voyage microservice "
+echo "##########################################"
 set p = $(echo $PWD | awk -v h="scripts" '$0 ~h')
 if [[ $PWD = */scripts ]]; then
  cd ..

@@ -1,3 +1,6 @@
+echo "##########################################"
+echo " Build Fleet and Ship simulator "
+echo "##########################################"
 set p = $(echo $PWD | awk -v h="scripts" '$0 ~h')
 if [[ $PWD = */scripts ]]; then
  cd ..
