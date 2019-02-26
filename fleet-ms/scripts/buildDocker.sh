@@ -25,7 +25,7 @@ else
 fi
 # image for public docker hub
 docker build -t ibmcase/kc-fleetms .
-if [[ $kcenv -ne "local"]]
+if [[ $kcenv -ne "local" ]]
 then
    #   image for private registry in IBM Cloud
    docker tag ibmcase/kc-fleetms registry.ng.bluemix.net/ibmcaseeda/kc-fleetms 
