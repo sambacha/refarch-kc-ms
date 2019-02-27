@@ -10,7 +10,6 @@ This repository addresses the implementation of the yellow boxes in the figure b
 ## Sub repositories
 
 * The `fleet-ms` folder contains the Java App developed using microprofile and deployed on Open Liberty. It uses Kafka API to produce events. See [the readme for details](./fleet-ms/README.md) about deployment and code explanations.
-* The `container-ms` folder contains the Java app for the container microservice, also created with microprofile and deployable on Open Liberty. 
 * The `voyages-ms` folder contains the Node.js app for the voyages microservice also created with microprofile. It uses the Kafka API to produce events when an order has been assigned to a voyage.
 
 ## Project Status
