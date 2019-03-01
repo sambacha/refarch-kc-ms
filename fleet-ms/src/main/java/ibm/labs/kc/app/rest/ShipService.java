@@ -1,5 +1,7 @@
 package ibm.labs.kc.app.rest;
 
+import java.util.ArrayList;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -15,6 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponses;
 import ibm.labs.kc.dao.DAOFactory;
 import ibm.labs.kc.dao.ShipDAO;
 import ibm.labs.kc.dto.model.ShipSimulationControl;
+import ibm.labs.kc.model.Container;
 import ibm.labs.kc.model.Ship;
 import ibm.labs.kc.simulator.ShipSimulator;
 
@@ -75,6 +78,7 @@ public class ShipService {
 		}
 		if (ShipSimulationControl.STOP.equals(ctl.getCommand())) {
 			simulator.stop(s);
+			s.setContainers(new ArrayList<ArrayList<Container>>());
 			return Response.ok().entity(s).build();
 		}
 		s=dao.loadContainersForTheShip(s);

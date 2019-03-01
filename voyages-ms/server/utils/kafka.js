@@ -66,7 +66,7 @@ producer.on('event.log', function(m){
     console.log('P', m);
 })
 producer.on('event.error', function(m){
-    console.error('P', m);
+    console.error('PE', m);
 })
 
 var consumer = new kafka.KafkaConsumer(getConsumerConfig('voyage-consumer-group'), getConsumerTopicConfig());
@@ -79,13 +79,13 @@ reloadConsumer.on('event.log', function(m){
     console.log('RC', m);
 })
 consumer.on('event.error', function(m){
-    console.error('C', m);
+    console.error('CE', m);
 })
 reloadConsumer.on('event.error', function(m){
-   console.error('RC', m);
+   console.error('RCE', m);
 })
 
-producer.setPollInterval(100);
+producer.setPollInterval(1000);
 var producerReady = false;
 producer.connect({ timeout: connectTimeoutMs }, function(err, info) {
     if(err) {

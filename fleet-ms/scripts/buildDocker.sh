@@ -1,7 +1,7 @@
 echo "##########################################"
 echo " Build Fleet and Ship simulator "
 echo "##########################################"
-set p = $(echo $PWD | awk -v h="scripts" '$0 ~h')
+
 if [[ $PWD = */scripts ]]; then
  cd ..
 fi
@@ -24,7 +24,7 @@ else
    docker run -v $(pwd):/home -ti ibmcase/javatools bash -c "cd /home && mvn install -DskipITs"
 fi
 # image for public docker hub
-docker build -t ibmcase/kc-fleetms .
+docker build --build-arg envkc=$kcenv -t ibmcase/kc-fleetms .
 if [[ $kcenv -ne "local" ]]
 then
    #   image for private registry in IBM Cloud

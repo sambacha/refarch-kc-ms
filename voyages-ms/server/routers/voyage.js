@@ -15,9 +15,9 @@ module.exports = function(app) {
     res.send(voyagesList);
   });
 
-  // Assign an order to a voyage according to the number of container
+  // Assign an order to a voyage according to the number of containers expected
   // Post data: {'orderID': 'a-orderid-as-key-in-orders-topic', 'containers': 2'}
-  // this method is not really called, as voyage is more a consumer on topic.
+  // this method is not really called, as voyage is  a consumer on orders topic and will process order from event
   router.post('/:voyageID/assign/', function(req, res, next) {
     var voyageID = req.params.voyageID;
     var orderID = req.body.orderID;
@@ -45,12 +45,13 @@ module.exports = function(app) {
   });
 
   app.use('/voyage', router);
-}
+} // export
+
 
 const cb = (message, reloading) => {
   var event = JSON.parse(message.value.toString());
-  console.log('Event received ' + JSON.stringify(event));
-  if (event.type === 'OrderBooked') {
+  console.log('Event received ' + JSON.stringify(event,null,2));
+  if (event.type === 'OrderCreated') {
 
     // For UI demo purpose, wait 30 secs before assigning this order to a voyage    
     var timeoutMs = reloading ? 0 : 30000;
@@ -93,10 +94,15 @@ const cb = (message, reloading) => {
   }
 }
 
+/**
+ * This is the real entry point. Start a Kafka consumer and once an order event is received process it with
+ * the given callback
+ */
 kafka.reload({
   'topic':'orders',
   'callback': cb
 });
+
 
 
 /**
