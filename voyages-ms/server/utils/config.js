@@ -20,6 +20,10 @@ module.exports = {
 
     getCertsPath: function() {
         return process.env.CERTS_PATH || config.certsPath;
+    },
+
+    getPort: function() {
+        return process.env.PORT || config.port;
     }
 }
 

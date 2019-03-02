@@ -11,7 +11,7 @@ const appName = require('./../package').name;
 const http = require('http');
 const express = require('express');
 const log4js = require('log4js');
-const localConfig = require('./config/local.json');
+const localConfig = require('./utils/config.js');
 const path = require('path');
 
 const logger = log4js.getLogger(appName);
@@ -22,14 +22,16 @@ const server = http.createServer(app);
 app.use(express.json());
 app.use(log4js.connectLogger(logger, { level: logger.level }));
 
-const serviceManager = require('./services/service-manager');
+
 require('./services/index')(app);
 require('./routers/index')(app, server);
 
-const port = process.env.PORT || localConfig.port;
+const port = localConfig.getPort();
+const kbroker = localConfig.getKafkaBrokers();
 server.listen(port, function(){
   logger.info(`voyagesms listening on http://localhost:${port}/appmetrics-dash`);
   logger.info(`voyagesms listening on http://localhost:${port}`);
+  logger.info(`voyagesms should be connected to kafka at: ${kbroker}`  );
 });
 
 app.use(function (req, res, next) {
