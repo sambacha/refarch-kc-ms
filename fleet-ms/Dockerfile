@@ -8,15 +8,15 @@ COPY /src/main/liberty/config/jvmbx.options /config/jvm.options
 USER root
 COPY es-cert.der /tmp/es-cert.der
 ARG envkc
-RUN apt-get update -q -y && apt-get dist-upgrade -q -y && chmod g+w /config/apps && \
-   if [ $envkc != "local" ]; then \
+RUN apt-get update -q -y && apt-get dist-upgrade -q -y && chmod g+w /config/apps
+RUN \
+   if [ "$envkc"  != "local" ]; then \
     echo yes | keytool -importcert -alias startssl -keystore \
       $JAVA_HOME/lib/security/cacerts -storepass changeit -file /tmp/es-cert.der; \
    fi
 USER 1001
 # Install required features if not present, install APM Data Collector
-RUN installUtility install --acceptLicense defaultServer && installUtility install --acceptLicense apmDataCollector-7.4
-RUN /opt/ibm/wlp/usr/extension/liberty_dc/bin/config_liberty_dc.sh -silent /opt/ibm/wlp/usr/extension/liberty_dc/bin/silent_config_liberty_dc.txt
+RUN installUtility install  defaultServer apmDataCollector-7.4 openapi-3.0 --acceptLicense
 # Upgrade to production license if URL to JAR provided
 ARG LICENSE_JAR_URL
 ENV KAFKA_BROKERS kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093
