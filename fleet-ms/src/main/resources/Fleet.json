@@ -81,21 +81,5 @@
          "numberOfContainers" : 30
         }
       ]
-    },
-    {
-  	  "id": "f3",
-      "name": "KC-SouthPacific",
-      "ships": [
-        {
-          "name": "JimminyCricket",
-          "latitude": "-29.85372",
-          "longitude": "156.33.921",
-          "status": "AtSea",
-          "type": "Carrier",
-          "maxRow": 4,
-          "maxColumn": 8,
-          "numberOfContainers" : 30
-         }
-       ]
-     }
+    }
 ]
