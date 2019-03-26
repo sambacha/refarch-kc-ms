@@ -21,6 +21,8 @@ import ibm.labs.kc.model.Ship;
  * 
  * It uses thread to execute the ship movement in parallel. THIS is not mandatory it could have been done
  * sequentially. may be we need to revisit that.
+ * 
+ * The 'game time' is managed with x second = 45 minutes of real world and produce new position
  * @author jerome boyer
  *
  */
@@ -48,8 +50,8 @@ public class ShipRunner implements Runnable {
 		this.containerPublisher = cb;
 	}
 	
-	public void init(Ship s, List<Position> list, ShipSimulationControl ctl) {
-		this.init(s, list, ctl.getNumberOfMinutes());
+	public void init(Ship s, List<Position> positions, ShipSimulationControl ctl) {
+		this.init(s, positions, ctl.getNumberOfMinutes());
 		// prepare some containers from the selected simulator
 		if (ShipSimulationControl.CONTAINER_FIRE.equals(ctl.getCommand())) {
 			BadEventSimulator.fireContainers(s, ctl.getNumberOfContainers());
@@ -62,10 +64,10 @@ public class ShipRunner implements Runnable {
 		}
 	}
 	
-	// called for fleet simulator.
-	public void init(Ship s, List<Position> list,double numberOfMinutes) {
+	// Run the simulation for n minutes
+	public void init(Ship s, List<Position> positions,double numberOfMinutes) {
 		this.shipName = s.getName();
-		this.positions = list;
+		this.positions = positions;
 		this.ship = s;
 		this.numberOfMinutes = numberOfMinutes;
 	}
@@ -97,6 +99,7 @@ public class ShipRunner implements Runnable {
 					sp.setCompass(310);
 				}
 				previous = p;
+				//logger.info(sp.toString());
 				this.getShip().setLatitude(p.getLatitude());
 				this.getShip().setLongitude(p.getLongitude());
 				positionPublisher.emit(sp);
@@ -114,7 +117,7 @@ public class ShipRunner implements Runnable {
 				
 			}
         } catch (Exception e) { 
-        	// e.printStackTrace();
+        	e.printStackTrace();
             System.out.println ("ShipRunner stopped"); 
             stop();
         } finally {

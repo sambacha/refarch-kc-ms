@@ -22,6 +22,11 @@ public class ShipSimulationControl {
 		this.shipName = name;
 		this.command = command;
 	}
+	public  ShipSimulationControl(String name, String command,double mnt) {
+		this.shipName = name;
+		this.command = command;
+		this.numberOfMinutes = mnt;
+	}
 	
 	public String getShipName() {
 		return shipName;

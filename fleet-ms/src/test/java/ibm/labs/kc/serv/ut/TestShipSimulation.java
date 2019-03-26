@@ -40,7 +40,7 @@ public class TestShipSimulation  {
 	
 	
 	@Before
-	public  void init() {
+	public   void init() {
 		 ShipRunner sr = new ShipRunner(positionProducerMock, containerProducerMock);
 		 ShipSimulator s = new ShipSimulator(sr);
 		 serv =  new ShipService(DAOFactory.buildOrGetShipDAOInstance("Fleet.json"),s);
@@ -55,10 +55,6 @@ public class TestShipSimulation  {
 		}
 	}
 	
-	@Test
-	public void validateShipMove() {
-		
-	}
 	
 	@Test
 	public void validateContainerFire() {
@@ -81,22 +77,19 @@ public class TestShipSimulation  {
 		ctl.setNumberOfMinutes(1);
 		Response res = serv.performSimulation(ctl);
 		Ship s = (Ship)res.getEntity();
-		//printShip(s);
-		Assert.assertTrue(s.getContainers().get(0).get(3).getStatus().equals(Container.STATUS_DOWN));
-		ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.STOP);
-		res = serv.performSimulation(ctl);
+		printShip(s);
 	}
 	
 	@Test
-	public void validateHeatWave() {
+	public void validateHeatWave() throws InterruptedException {
 		System.out.println("Validate heat wave on top containers");
-		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.HEAT_WAVE);
-		ctl.setNumberOfMinutes(1);
+		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.HEAT_WAVE,0.1);
 		Response res = serv.performSimulation(ctl);
+		Thread.sleep(5000);
 		Ship s = (Ship)res.getEntity();
 		int topRowAllocated = s.getContainers().size() - 1;
 		Assert.assertTrue(s.getContainers().get(topRowAllocated).get(0).getStatus().equals(Container.STATUS_HEAT));
-		ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.STOP);
-		res = serv.performSimulation(ctl);
+		//ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.STOP);
+		//res = serv.performSimulation(ctl);
 	}
 }
