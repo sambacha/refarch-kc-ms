@@ -19,7 +19,7 @@ public class TestFleetAPIsIT extends BaseIntegrationTest {
 
 	 private String endpoint = "/fleets";
 	 private String url = getBaseUrl() + endpoint;
-	    
+	 private Gson parser = new Gson();
 	@Test
 	public void testGettingFleetsFromREST() throws InterruptedException{ 
 		 System.out.println("Testing endpoint " + url);
@@ -33,13 +33,13 @@ public class TestFleetAPIsIT extends BaseIntegrationTest {
 		      Response response = invoBuild.get();
 		      if (response.hasEntity()) {
 			      String fleetsAsString=response.readEntity(String.class);
-			      Gson parser = new Gson();
+			     
 			      try{
-			      Fleet[] fa = parser.fromJson(fleetsAsString,Fleet[].class);
-			      assertNotNull(fleetsAsString);
-			      for (Fleet f : fa) {
-			    	  System.out.println(f.toString());
-			      }
+				      Fleet[] fa = parser.fromJson(fleetsAsString,Fleet[].class);
+				      assertNotNull(fleetsAsString);
+				      for (Fleet f : fa) {
+				    	  System.out.println(f.toString());
+				      }
 			      }catch(IllegalStateException | JsonSyntaxException exception){
 			    	  System.out.println(exception);
 			      }

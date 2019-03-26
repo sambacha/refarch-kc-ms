@@ -2,7 +2,8 @@ echo "##########################################"
 echo " Build Fleet and Ship simulator "
 echo "##########################################"
 
-if [[ $PWD = */scripts ]]; then
+p=$(pwd)
+if [[ $p = */scripts ]]; then
  cd ..
 fi
 
@@ -32,6 +33,7 @@ else
    docker run -v $(pwd):/home -ti ibmcase/javatools bash -c "cd /home && mvn install -DskipITs"
 fi
 
+echo "Build docker image for $kname"
 # image for public docker hub
 docker build --build-arg envkc=$kcenv -t ibmcase/$kname  .
 if [[ $kcenv != "local" ]]
