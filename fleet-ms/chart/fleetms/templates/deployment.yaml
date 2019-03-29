@@ -24,7 +24,7 @@ spec:
 {{ else }}
         readinessProbe:
           httpGet:
-            path: /fleetms/health
+            path: /health
             port: 9080
           initialDelaySeconds: 20
 {{ end }}

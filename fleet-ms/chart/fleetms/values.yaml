@@ -11,6 +11,9 @@ image:
     requests:
       cpu: 200m
       memory: 300Mi
+base:
+  replicaCount: 1
+  enabled: false
 service:
   name: Node
   type: NodePort
@@ -26,12 +29,6 @@ hpa:
       targetAverageUtilization: 70
     memory:
       targetAverageUtilization: 70
-base:
-  enabled: false
-  replicaCount: 1
-  image:
-    tag : v0.9.9
-  weight: 100
 istio:
   enabled: false
   weight: 100

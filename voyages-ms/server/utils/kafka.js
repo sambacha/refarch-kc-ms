@@ -135,7 +135,7 @@ const emit = (key, event) => {
 const reload = (subscription) => {
     consumer.connect({ timeout: connectTimeoutMs }, function(err, info) {
         if(err) {
-            console.error('Error in consumer connect cb', err);
+            console.error('Error in consumer connect ', err);
             process.exit(-100); // If reload fails, microservice can't be available
         } else {
             console.log('Consumer connected to Kafka');

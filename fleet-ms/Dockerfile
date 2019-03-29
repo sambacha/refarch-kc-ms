@@ -5,12 +5,9 @@ COPY /target/liberty/wlp/usr/servers/defaultServer /config/
 COPY /target/liberty/wlp/usr/shared/resources /config/resources/
 COPY /src/main/liberty/config/jvmbx.options /config/jvm.options
 
-USER root
-COPY es-cert.der /tmp/es-cert.der
-ARG envkc
 RUN apt-get update -q -y && apt-get dist-upgrade -q -y && chmod g+w /config/apps
 RUN \
-   if [ "$envkc"  != "local" ]; then \
+   if [ "$envkc"  == "ICP" ]; then \
     echo yes | keytool -importcert -alias startssl -keystore \
       $JAVA_HOME/lib/security/cacerts -storepass changeit -file /tmp/es-cert.der; \
    fi
