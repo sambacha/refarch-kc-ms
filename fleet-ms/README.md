@@ -79,6 +79,7 @@ $ ./startContainerPowerOffSimulation.sh
 If you want to get a clear understanding of the traces see [this note](./docs/SimulatorTracing.md)
 
 ### Run the demo locally connected to Event Streams on IBM Cloud
+
 As an alternate you can use our Event Stream backbone we have configured on IBM Cloud and still run the fleet service on you laptop.
 
 If you want to run with our Event Streams backbone deployed on IBM Cloud, ask us for the api key and then do the following:
