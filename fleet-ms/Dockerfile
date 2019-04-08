@@ -5,6 +5,7 @@ COPY /target/liberty/wlp/usr/servers/defaultServer /config/
 COPY /target/liberty/wlp/usr/shared/resources /config/resources/
 COPY /src/main/liberty/config/jvmbx.options /config/jvm.options
 
+# Adding permissions
 USER root
 
 RUN apt-get update -q -y && apt-get dist-upgrade -q -y && chmod g+w /config/apps
