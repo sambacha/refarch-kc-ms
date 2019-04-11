@@ -1,27 +1,17 @@
 
-
-p=$(pwd)
-if [[ $p = */scripts ]]; then
- cd ..
-fi
+root_folder=$(cd $(dirname $0); cd ..; pwd)
 
 if [[ $# -eq 0 ]];then
-  kcenv="local"
+  kcenv="LOCAL"
 else
   kcenv=$1
 fi
 
-. ./scripts/setenv.sh
+. ./scripts/setenv.sh $kcenv
 
 echo "##########################################"
 echo " Build Fleet and Ship simulator $kcenv"
 echo "##########################################"
-
-if [[ "$kcenv" == "ICP" && -f ../../../refarch-kc/certs/es-cert.pem ]]
-then
-   openssl x509 -in ../../../refarch-kc/certs/es-cert.pem -inform pem -out es-cert.der -outform der
-fi
-
 
 
 find target -iname "*SNAPSHOT*" -print | xargs rm -rf
@@ -37,5 +27,6 @@ else
 fi
 
    echo "### ->  Build docker image for $kname "
-   docker build -f Dockerfile-local -t ibmcase/$kname .
+   docker build -f Dockerfile -t ibmcase/$kname .
    docker tag ibmcase/$kname us.icr.io/ibmcaseeda/$kname 
+   docker images | grep $kname
