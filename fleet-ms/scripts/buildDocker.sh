@@ -26,7 +26,11 @@ else
    docker run -v $(pwd):/home -ti ibmcase/javatools bash -c "cd /home && mvn install -DskipITs"
 fi
 
-   echo "### ->  Build docker image for $kname "
-   docker build -f Dockerfile -t ibmcase/$kname .
-   docker tag ibmcase/$kname us.icr.io/ibmcaseeda/$kname 
-   docker images | grep $kname
+echo "### ->  Build docker image for $kname "
+if [[ $kcenv == "LOCAL" ]]
+then
+   docker build -f Dockerfile-local -t ibmcase/$kname .
+else 
+   docker build -f Dockerfile -t us.icr.io/ibmcaseeda/$kname .
+fi
+docker images | grep $kname
