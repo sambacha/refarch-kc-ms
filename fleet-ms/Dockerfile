@@ -1,6 +1,6 @@
-FROM ibmcase/kc-base-liberty
+FROM us.icr.io/ibmcaseeda/kc-base-liberty
 LABEL maintainer="IBM Cloud Architecture Solution Engineering team"
-# next three lines need to be there to avoid NPE on javametrics-rest, javametrics-dash, fleetms
+#Next three lines need to be there to avoid NPE on javametrics-rest, javametrics-dash, fleetms
 COPY /target/liberty/wlp/usr/servers/defaultServer /config/
 COPY /target/liberty/wlp/usr/shared/resources /config/resources/
 COPY /src/main/liberty/config/jvmbx.options /config/jvm.options
