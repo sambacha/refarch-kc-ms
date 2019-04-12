@@ -29,6 +29,7 @@ fi
 echo "### ->  Build docker image for $kname "
 if [[ $kcenv == "LOCAL" ]]
 then
+   echo "docker build -f Dockerfile-local -t ibmcase/$kname ."
    docker build -f Dockerfile-local -t ibmcase/$kname .
 else 
    docker build -f Dockerfile -t us.icr.io/ibmcaseeda/$kname .
