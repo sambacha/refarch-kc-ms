@@ -18,6 +18,7 @@ module.exports = function(app) {
   // Assign an order to a voyage according to the number of containers expected
   // Post data: {'orderID': 'a-orderid-as-key-in-orders-topic', 'containers': 2'}
   // this method is not really called, as voyage is  a consumer on orders topic and will process order from event
+  // it is used as an alternate path. 
   router.post('/:voyageID/assign/', function(req, res, next) {
     var voyageID = req.params.voyageID;
     var orderID = req.body.orderID;

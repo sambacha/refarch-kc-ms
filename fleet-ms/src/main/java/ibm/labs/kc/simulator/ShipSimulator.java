@@ -1,7 +1,11 @@
 package ibm.labs.kc.simulator;
 
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
+import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
+import ibm.labs.kc.app.kafka.EventEmitter;
+import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.dto.model.ShipSimulationControl;
 import ibm.labs.kc.model.Position;
 import ibm.labs.kc.model.Ship;
@@ -12,16 +16,20 @@ import ibm.labs.kc.model.Ship;
  *
  */
 public class ShipSimulator extends KCSimulator {
+	private EventEmitter positionPublisher;
+	private EventEmitter containerPublisher;
 
-	ShipRunner shipRunner;
+	static ConcurrentHashMap<String, Thread> runners = new ConcurrentHashMap<String, Thread>();
 	
 	public ShipSimulator() {
-		shipRunner = new ShipRunner();
+		 this.positionPublisher = ShipPositionProducer.getInstance();
+	     this.containerPublisher = ContainerMetricsProducer.getInstance();
 	}
 	
-	
-	public ShipSimulator(ShipRunner r) {
-		this.shipRunner = r;
+	public ShipSimulator(ShipPositionProducer positionPublisher,
+			ContainerMetricsProducer containerPublisher) {
+		this.positionPublisher = positionPublisher;
+		this.containerPublisher = containerPublisher;
 	}
 
 
@@ -31,16 +39,20 @@ public class ShipSimulator extends KCSimulator {
 	 * @param ship
 	 * @param simulation controller
 	 */
-	public void start(Ship s, ShipSimulationControl ctl) {
+	public void addAndStart(Ship s, ShipSimulationControl ctl) {
 		List<Position> shipPositions = readShipPositions(s.getName());
+		ShipRunner shipRunner = new ShipRunner(this.positionPublisher,this.containerPublisher);
 		shipRunner.init(s,shipPositions,ctl);
-		shipRunner.start();
+		Thread t = new Thread(shipRunner,s.getName());
+		runners.put(s.getName(), t);
+		t.start();
 	}
 
 	
 	public void stop(Ship s) {
-		if (shipRunner != null) {
-			shipRunner.stop();
+		Thread t = runners.get(s.getName());
+		if (t != null) {
+			t.interrupt();
 		}
 	}
 

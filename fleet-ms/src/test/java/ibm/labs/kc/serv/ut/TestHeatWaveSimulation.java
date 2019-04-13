@@ -26,7 +26,7 @@ import ibm.labs.kc.simulator.ShipSimulator;
  * @author jeromeboyer
  *
  */
-public class TestShipSimulation  {
+public class TestHeatWaveSimulation  {
    
 	 @Mock
 	 static ShipPositionProducer positionProducerMock;
@@ -53,31 +53,17 @@ public class TestShipSimulation  {
 		}
 	}
 	
-	
 	@Test
-	public void validateContainerFire() throws InterruptedException {
-		System.out.println("Validate containers fire");
-		ShipSimulationControl ctl = new ShipSimulationControl("BlackBear", ShipSimulationControl.CONTAINER_FIRE);
-		ctl.setNumberOfContainers(4);
+	public void validateHeatWave() throws InterruptedException {
+		System.out.println("Validate heat wave on top containers");
+		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.HEAT_WAVE,0.1);
 		ctl.setNumberOfMinutes(.25);
 		Response res = serv.performSimulation(ctl);
-		Ship s = (Ship)res.getEntity();	
-		Assert.assertTrue(s.getContainers().get(0).get(2).getStatus().equals(Container.STATUS_FIRE));
-		//verify(positionPublisherMock).publishShipPosition(null);
-		Thread.sleep(30000);
-		ctl = new ShipSimulationControl("BlackBear", ShipSimulationControl.STOP);
+		Thread.sleep(20000);
+		Ship s = (Ship)res.getEntity();
+		int topRowAllocated = s.getContainers().size() - 1;
+		Assert.assertTrue(s.getContainers().get(topRowAllocated).get(0).getStatus().equals(Container.STATUS_HEAT));
+		ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.STOP);
 		res = serv.performSimulation(ctl);
 	}
-
-	@Test
-	public void validateContainerDown() throws InterruptedException {
-		System.out.println("Validate containers down");
-		ShipSimulationControl ctl = new ShipSimulationControl("JimminyCricket", ShipSimulationControl.REEFER_DOWN);
-		ctl.setNumberOfMinutes(.25);
-		Response res = serv.performSimulation(ctl);
-		Thread.sleep(10000);
-		Ship s = (Ship)res.getEntity();
-		printShip(s);
-	}
-	
 }

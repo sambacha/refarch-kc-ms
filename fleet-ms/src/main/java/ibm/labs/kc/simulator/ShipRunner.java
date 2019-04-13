@@ -5,9 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
 import ibm.labs.kc.app.kafka.EventEmitter;
-import ibm.labs.kc.app.kafka.ShipPositionProducer;
 import ibm.labs.kc.dto.model.ShipSimulationControl;
 import ibm.labs.kc.event.model.ContainerMetric;
 import ibm.labs.kc.event.model.ShipPosition;
@@ -34,34 +32,36 @@ public class ShipRunner implements Runnable {
 	protected EventEmitter containerPublisher;
 	protected static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
-	protected Thread t;
+	
 	protected String shipName;
 	protected Ship ship;
 	protected List<Position> positions;
 	protected double numberOfMinutes;
 	
-	public ShipRunner() {
-		 this.positionPublisher = ShipPositionProducer.getInstance();
-	     this.containerPublisher = ContainerMetricsProducer.getInstance();
-	}
-	
+
 	public ShipRunner(EventEmitter pb,EventEmitter cb) {
 		this.positionPublisher = pb;
 		this.containerPublisher = cb;
 	}
 	
 	public void init(Ship s, List<Position> positions, ShipSimulationControl ctl) {
-		this.init(s, positions, ctl.getNumberOfMinutes());
-		// prepare some containers from the selected simulator
-		if (ShipSimulationControl.CONTAINER_FIRE.equals(ctl.getCommand())) {
-			BadEventSimulator.fireContainers(s, ctl.getNumberOfContainers());
+		if (ctl == null) {
+			this.init(s, positions, 1);
+			
+		} else {
+			this.init(s, positions, ctl.getNumberOfMinutes());
+			// prepare some containers from the selected simulator
+			if (ShipSimulationControl.CONTAINER_FIRE.equals(ctl.getCommand())) {
+				BadEventSimulator.fireContainers(s, ctl.getNumberOfContainers());
+			}
+			if (ShipSimulationControl.HEAT_WAVE.equals(ctl.getCommand())) {
+				BadEventSimulator.heatWave(s);
+			}
+			if (ShipSimulationControl.REEFER_DOWN.equals(ctl.getCommand())) {
+				BadEventSimulator.reeferDown(s);
+			}
 		}
-		if (ShipSimulationControl.HEAT_WAVE.equals(ctl.getCommand())) {
-			BadEventSimulator.heatWave(s);
-		}
-		if (ShipSimulationControl.REEFER_DOWN.equals(ctl.getCommand())) {
-			BadEventSimulator.reeferDown(s);
-		}
+		
 	}
 	
 	// Run the simulation for n minutes
@@ -72,16 +72,10 @@ public class ShipRunner implements Runnable {
 		this.numberOfMinutes = numberOfMinutes;
 	}
 
-	public void start() {
-	    if (t == null) {
-	    	System.out.println("@@@@ Start simulation for the ship:" + shipName );
-	         t = new Thread (this, shipName);
-	         t.start ();
-	      }
-	}
 	
 	@Override
 	public void run() {		
+		System.out.println("@@@@ Start simulation for the ship:" + shipName );
 		Date currentWorldTime = new Date();
 		try  { 
 			Position previous = new Position(this.getShip().getLatitude(),this.getShip().getLongitude());
@@ -99,7 +93,7 @@ public class ShipRunner implements Runnable {
 					sp.setCompass(310);
 				}
 				previous = p;
-				//logger.info(sp.toString());
+				logger.info(sp.toString());
 				this.getShip().setLatitude(p.getLatitude());
 				this.getShip().setLongitude(p.getLongitude());
 				positionPublisher.emit(sp);
@@ -113,13 +107,12 @@ public class ShipRunner implements Runnable {
 				}
 				currentWorldTime=modifyTime(currentWorldTime);
 	            // The simulation needs to run in x minutes, so play all the position in this time
-				Thread.sleep(Math.round(this.numberOfMinutes*60000/this.positions.size()));
-				
+				Thread.currentThread().sleep(Math.round(this.numberOfMinutes*60000/this.positions.size()));	
 			}
         } catch (Exception e) { 
         	e.printStackTrace();
             System.out.println ("ShipRunner stopped"); 
-            stop();
+            Thread.currentThread().interrupt();
         } finally {
         	/** do not want to close as producers are thread safe and reusable.
         	if (containerPublisher != null)
@@ -136,12 +129,6 @@ public class ShipRunner implements Runnable {
 		return d;
 	}
 
-	public void stop() {
-	  System.out.println("Ship Runner stopping " +  shipName + "...");
-      if (t != null) {
-         t.interrupt();
-      }
-	}
 
 	public String getShipName() {
 		return shipName;

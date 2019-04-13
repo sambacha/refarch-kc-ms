@@ -119,7 +119,7 @@ public class ApplicationConfig {
 		if (env.get("KAFKA_BROKERS") != null) {
 			getProperties().setProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS,env.get("KAFKA_BROKERS"));
 		} 
-		properties.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, 
+		getProperties().put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, 
 	        		getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
 		
 		if (env.get("KAFKA_APIKEY") != null) {

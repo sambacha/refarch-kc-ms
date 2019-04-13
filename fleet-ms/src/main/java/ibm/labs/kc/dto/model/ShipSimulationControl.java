@@ -11,6 +11,7 @@ public class ShipSimulationControl {
 	public static final String HEAT_WAVE = "HEAT_WAVE";
 	public static final String REEFER_DOWN = "REEFER_DOWN";
 	public static final String STOP = "STOP";
+	public static final String RUN_VESSELS = "RUN_VESSELS ";
 	protected String shipName;
 	protected String command;
 	private int numberOfContainers = 1;

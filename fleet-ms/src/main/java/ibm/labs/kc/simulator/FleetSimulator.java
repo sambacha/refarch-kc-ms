@@ -1,13 +1,9 @@
 package ibm.labs.kc.simulator;
 
-import java.util.HashMap;
-import java.util.List;
-
 import ibm.labs.kc.app.kafka.ContainerMetricsProducer;
-import ibm.labs.kc.app.kafka.EventEmitter;
 import ibm.labs.kc.app.kafka.ShipPositionProducer;
+import ibm.labs.kc.dto.model.ShipSimulationControl;
 import ibm.labs.kc.model.Fleet;
-import ibm.labs.kc.model.Position;
 import ibm.labs.kc.model.Ship;
 
 /**
@@ -17,18 +13,16 @@ import ibm.labs.kc.model.Ship;
  *
  */
 public class FleetSimulator extends KCSimulator {
-	HashMap<String,ShipRunner> shipThreads;
-	private EventEmitter positionPublisher;
-	private EventEmitter containerPublisher;
+	
+	public ShipSimulator shipSimulator = new ShipSimulator();
 	
 	public FleetSimulator() {
-		 this.positionPublisher = ShipPositionProducer.getInstance();
-	     this.containerPublisher = ContainerMetricsProducer.getInstance();
+		this.shipSimulator = new ShipSimulator();
 	}
 	
-	public FleetSimulator(ShipPositionProducer pb,ContainerMetricsProducer cb) {
-		this.positionPublisher = pb;
-		this.containerPublisher = cb;
+	public FleetSimulator(ShipPositionProducer positionPublisher,
+			ContainerMetricsProducer containerPublisher) {
+		this.shipSimulator = new ShipSimulator(positionPublisher,containerPublisher);
 	}
 	
 	/**
@@ -37,24 +31,17 @@ public class FleetSimulator extends KCSimulator {
 	 * @param d
 	 */
 	public void start(Fleet f, double d) {
-		HashMap<String,List<Position>> shipsPositions = readShipsPositions(f);
-		// start a thread per ship for the duration specified in number of minutes
-		shipThreads = new HashMap<String,ShipRunner>(); 
-		for (Ship s : f.getShips()) {
-			ShipRunner runner = new ShipRunner(this.positionPublisher,this.containerPublisher);
-			runner.init(s,shipsPositions.get(s.getName()),d);
-			shipThreads.put(s.getName(), runner);
-			runner.start();
-		}
 		
+		for (Ship s : f.getShips()) {			
+			ShipSimulationControl ctl = new ShipSimulationControl(s.getName(), ShipSimulationControl.RUN_VESSELS, d);
+			shipSimulator.addAndStart(s, ctl);
+		}
 	}
 
 	
 	public void stop(Fleet f) {
-		if (shipThreads != null) {
-			for (Ship s : f.getShips()) {
-				shipThreads.get(s.getName()).stop();
-			}
+		for (Ship s : f.getShips()) {
+			shipSimulator.stop(s);
 		}
 	}
 }

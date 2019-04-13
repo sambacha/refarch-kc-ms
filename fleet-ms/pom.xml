@@ -411,8 +411,8 @@
                             <!--appsDirectory>apps</appsDirectory-->
                             <assemblyArtifact>
                                 <groupId>com.ibm.websphere.appserver.runtime</groupId>
-                                <artifactId>wlp-webProfile7</artifactId>
-                                <version>17.0.0.4</version>
+                                <artifactId>wlp-webProfile8</artifactId>
+                                <version>19.0.0.3</version>
                                 <type>zip</type>
                             </assemblyArtifact>
                             <configFile>${basedir}/src/main/liberty/config/server.xml</configFile>

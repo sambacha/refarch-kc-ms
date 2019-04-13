@@ -82,7 +82,7 @@ public class ShipService {
 			return Response.ok().entity(s).build();
 		}
 		s=dao.loadContainersForTheShip(s);
-		simulator.start(s,ctl);
+		simulator.addAndStart(s,ctl);
 		return Response.ok().entity(s).build();
 	}
 	

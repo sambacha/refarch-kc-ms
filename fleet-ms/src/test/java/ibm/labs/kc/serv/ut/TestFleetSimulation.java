@@ -27,11 +27,12 @@ public class TestFleetSimulation {
 	 @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
 	 
 	 @Test
-	 public void testStartFleet() {
+	 public void testStartFleet() throws InterruptedException {
 		FleetSimulator fleetSimulator = new FleetSimulator(positionPublisherMock,containerPublisherMock);
 		FleetDAO dao = DAOFactory.buildOrGetFleetDAO("Fleet.json");
 		Fleet f = dao.getFleetByName("KC-NorthAtlantic");
 		fleetSimulator.start(f, .25);
+		Thread.sleep(70000);
 		fleetSimulator.stop(f);
 	 }
 }

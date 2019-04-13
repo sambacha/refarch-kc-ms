@@ -5,12 +5,6 @@ COPY /target/liberty/wlp/usr/servers/defaultServer /config/
 COPY /target/liberty/wlp/usr/shared/resources /config/resources/
 COPY /src/main/liberty/config/jvmbx.options /config/jvm.options
 
-
-# Adding permissions
-USER root
-
-RUN chmod g+w /config/apps
-
 USER 1001
 # Install required features if not present, install APM Data Collector
 RUN installUtility install  defaultServer apmDataCollector-7.4 openapi-3.0 --acceptLicense

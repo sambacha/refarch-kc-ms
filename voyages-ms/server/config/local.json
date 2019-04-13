@@ -3,5 +3,6 @@
   "orderTopicName": "orders",
   "kafkaEnv": "LOCAL",
   "kafkaBrokers": "kafka1:9092",
-  "certsPath": "/etc/ssl/certs"
+  "certsPath": "/etc/ssl/certs",
+  "version": "0.0.3"
 }
