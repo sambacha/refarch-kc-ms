@@ -1,13 +1,19 @@
 
-root_folder=$(cd $(dirname $0); cd ..; pwd)
 
+if [[ $PWD = */scripts ]]; then
+ cd ..
+fi
 if [[ $# -eq 0 ]];then
   kcenv="LOCAL"
 else
   kcenv=$1
 fi
 
-. ./scripts/setenv.sh $kcenv
+source ../../scripts/setenv.sh $kcenv
+msname="fleetms"
+chart=$(ls ./chart/| grep $msname)
+kname="kc-"$chart
+ns="greencompute"
 
 echo "##########################################"
 echo " Build Fleet and Ship simulator $kcenv"
@@ -30,7 +36,7 @@ echo "### ->  Build docker image for $kname "
 if [[ "$kcenv" = "LOCAL" ]]
 then
    echo "docker build -f Dockerfile-local -t ibmcase/$kname ."
-   docker build -f Dockerfile-local -t ibmcase/$kname .
+   docker build -f Dockerfile -t ibmcase/$kname .
 else 
    docker build -f Dockerfile -t us.icr.io/ibmcaseeda/$kname .
 fi

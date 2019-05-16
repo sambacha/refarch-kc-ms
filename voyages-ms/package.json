@@ -4,7 +4,7 @@
   "description": "A generated IBM Cloud application",
   "private": true,
   "engines": {
-    "node": "^8.11.1"
+    "node": "^12.2.0"
   },
   "config": {
     "entrypoint": "server/server.js"
@@ -31,15 +31,16 @@
     }
   },
   "dependencies": {
-    "appmetrics-dash": "^4.0.0",
+    "appmetrics": "^4.0.1",
+    "appmetrics-dash": "^4.1.0",
     "appmetrics-prometheus": "^2.0.0",
-    "appmetrics-zipkin": "^1.0.4",
-    "body-parser": "^1.17.2",
-    "express": "^4.15.3",
+    "appmetrics-zipkin": "^1.1.1",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
     "log4js": "^3.0.5",
     "strong-supervisor": "^6.2.0",
     "ibm-cloud-env": "^0",
-    "node-rdkafka": "^2.5.1"
+    "node-rdkafka": "^2.6.1"
   },
   "devDependencies": {
     "nodemon": "^1.12.1",

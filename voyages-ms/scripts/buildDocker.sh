@@ -10,15 +10,15 @@ if [[ $PWD = */scripts ]]; then
  cd ..
 fi
 if [[ $# -eq 0 ]];then
-  kcenv="local"
+  kcenv="LOCAL"
 else
   kcenv=$1
 fi
 
-. ./scripts/setenv.sh
+source  ./scripts/setenv.sh
 
 docker build -t ibmcase/$kname .
-if [[ "$kcenv" != "local" ]]; then
+if [[ "$kcenv" != "LOCAL" ]]; then
     # image for private registry in IBM Cloud
     docker tag ibmcase/$kname us.icr.io/ibmcaseeda/$kname 
 fi
