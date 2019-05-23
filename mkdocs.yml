@@ -1,0 +1,10 @@
+site_name: Voyages and Fleet Simulation Solution Microservices
+repo_url: https://github.com/ibm-cloud-architecture/refarch-kc-ms
+nav:
+  - Welcome: index.md
+  - Fleet Simulator: fleetms.md
+  - Voyage management microservice: voyagems.md
+
+theme: 
+  name: material
+extra_css: ["extra.css"]

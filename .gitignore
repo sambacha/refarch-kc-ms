@@ -1,4 +1,5 @@
 fleetms/target/
 fleetms/bin/
 fleetms/es-cert.der
-/.vscode
+.vscode/
+site/
