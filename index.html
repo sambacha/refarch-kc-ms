@@ -265,6 +265,47 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
+    Pre-requisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-and-run-locally" title="Build and run locally" class="md-nav__link">
+    Build and run locally
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" title="Testing" class="md-nav__link">
+    Testing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-fleet-service" title="Testing the fleet service" class="md-nav__link">
+    Testing the fleet service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-voyage-service" title="Testing the voyage service" class="md-nav__link">
+    Testing the voyage service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#further-readings" title="Further readings" class="md-nav__link">
     Further readings
   </a>
@@ -334,6 +375,47 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pre-requisites" title="Pre-requisites" class="md-nav__link">
+    Pre-requisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#build-and-run-locally" title="Build and run locally" class="md-nav__link">
+    Build and run locally
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" title="Testing" class="md-nav__link">
+    Testing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-fleet-service" title="Testing the fleet service" class="md-nav__link">
+    Testing the fleet service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-voyage-service" title="Testing the voyage service" class="md-nav__link">
+    Testing the voyage service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#further-readings" title="Further readings" class="md-nav__link">
     Further readings
   </a>
@@ -361,13 +443,18 @@
                 
                 <h1 id="voyages-and-fleet-simulation-solution-microservices">Voyages and Fleet Simulation Solution Microservices</h1>
 <p>This repository includes a set of sub projects to implement the different microservices and functions to support the simulation of container shipment as introduced by <a href="https://ibm-cloud-architecture.github.io/refarch-kc">this main repository</a>.</p>
-<p>This repository addresses the implementation of the yellow boxes in the figure below:  </p>
-<p><img alt="" src="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/kc-hl-comp-view.png" /></p>
+<p>This repository addresses the implementation of the orange boxes in the figure below:  </p>
+<p><img alt="" src="images/fleet-voyage-comp.png" /></p>
 <h2 id="sub-repositories">Sub repositories</h2>
 <ul>
 <li>The <code>fleet-ms</code> folder contains the Java App developed using microprofile and deployed on Open Liberty. It uses Kafka API to produce events. See <a href="fleetms/">this chapter for details</a> about deployment and code explanations.</li>
 <li>The <code>voyages-ms</code> folder contains the Node.js app for the voyages microservice also created with microprofile. It uses the Kafka API to produce events when an order has been assigned to a voyage. See <a href="voyagems/">this chapter for details.</a></li>
 </ul>
+<h2 id="pre-requisites">Pre-requisites</h2>
+<h2 id="build-and-run-locally">Build and run locally</h2>
+<h2 id="testing">Testing</h2>
+<h3 id="testing-the-fleet-service">Testing the fleet service</h3>
+<h3 id="testing-the-voyage-service">Testing the voyage service</h3>
 <h2 id="further-readings">Further readings</h2>
 <ul>
 <li><a href="https://www.ibm.com/cloud/garage/architectures/eventDrivenArchitecture">Event driven architecture in IBM Garage method</a></li>
