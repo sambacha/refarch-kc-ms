@@ -388,42 +388,43 @@
                 
                 
                 <h1 id="voyage-management-service">Voyage Management Service</h1>
-<p>This service keeps track of each scheduled, current or completed voyage of a container ship, being loaded with containers at a source port, sailing to a destination port and having onboard containers unloaded there. </p>
-<p>A generated IBM Cloud application</p>
-<p><a href="https://bluemix.net"><img alt="" src="https://img.shields.io/badge/IBM%20Cloud-powered-blue.svg" /></a></p>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract<p>This service keeps track of each scheduled, current or completed voyage of container carreer vessels, being loaded with containers at a source port, sailing to a destination port and having onboard containers unloaded there. </p>
+</p>
+</div>
 <h2 id="build">Build</h2>
 <p>The script <code>.script/buildDocker.sh</code> build the docker image for this service.</p>
 <h2 id="run-locally-as-nodejs-application">Run locally as Node.js application</h2>
 <p>This is more for development purpose in your sandbox.</p>
-<pre><code class="bash">npm install
-npm test
+<div class="codehilite"><pre><span></span>npm install
+npm <span class="nb">test</span>
 npm start
-</code></pre>
+</pre></div>
 
 <h2 id="deploy-on-ibm-kubernetes-service">Deploy on IBM Kubernetes Service</h2>
-<pre><code class="sh"># to install the helm release under browncompute namespace
+<div class="codehilite"><pre><span></span><span class="c1"># to install the helm release under browncompute namespace</span>
 $ helm install voyagesms/ --name kc-voyagesms --namespace browncompute 
-# To see the pod deployment
+<span class="c1"># To see the pod deployment</span>
 $ kubectl describe pod voyagesms  --namespace browncompute
-# To get the exposed port
+<span class="c1"># To get the exposed port</span>
 $ kubectl get service kc-voyagesms
 $ kubectl get service voyagesms-application-service -n browncompute
-# Status and traced of the pods:
+<span class="c1"># Status and traced of the pods:</span>
 $ kubectl logs fleetms-deployment-58b7d58fb8-qcqz7  -n browncompute
-# then point your URL to the ipaddress and port number:
+<span class="c1"># then point your URL to the ipaddress and port number:</span>
 http://
-</code></pre>
+</pre></div>
 
 <h2 id="not-verified-build-run-and-deploy-using-idt">NOT VERIFIED Build, run, and deploy using IDT</h2>
-<pre><code class="bash"># Install needed dependencies:
+<div class="codehilite"><pre><span></span><span class="c1"># Install needed dependencies:</span>
 npm run idt:install
-# Build the docker image for your app:
+<span class="c1"># Build the docker image for your app:</span>
 npm run idt:build
-# Run the app locally through docker:
+<span class="c1"># Run the app locally through docker:</span>
 npm run idt:run
-# Deploy your app to IBM Cloud:
+<span class="c1"># Deploy your app to IBM Cloud:</span>
 npm run idt:deploy
-</code></pre>
+</pre></div>
                 
                   
                 

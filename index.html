@@ -272,15 +272,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-and-run-locally" title="Build and run locally" class="md-nav__link">
-    Build and run locally
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing" title="Testing" class="md-nav__link">
-    Testing
+  <a href="#build" title="Build" class="md-nav__link">
+    Build
   </a>
   
     <nav class="md-nav">
@@ -295,6 +288,54 @@
         
           <li class="md-nav__item">
   <a href="#testing-the-voyage-service" title="Testing the voyage service" class="md-nav__link">
+    Testing the voyage service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-locally-as-nodejs-application" title="Run locally as Node.js application" class="md-nav__link">
+    Run locally as Node.js application
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-on-ibm-kubernetes-service" title="Deploy on IBM Kubernetes Service" class="md-nav__link">
+    Deploy on IBM Kubernetes Service
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-verified-build-run-and-deploy-using-idt" title="NOT VERIFIED Build, run, and deploy using IDT" class="md-nav__link">
+    NOT VERIFIED Build, run, and deploy using IDT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" title="Testing" class="md-nav__link">
+    Testing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-fleet-service_1" title="Testing the fleet service" class="md-nav__link">
+    Testing the fleet service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-voyage-service_1" title="Testing the voyage service" class="md-nav__link">
     Testing the voyage service
   </a>
   
@@ -382,15 +423,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-and-run-locally" title="Build and run locally" class="md-nav__link">
-    Build and run locally
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing" title="Testing" class="md-nav__link">
-    Testing
+  <a href="#build" title="Build" class="md-nav__link">
+    Build
   </a>
   
     <nav class="md-nav">
@@ -405,6 +439,54 @@
         
           <li class="md-nav__item">
   <a href="#testing-the-voyage-service" title="Testing the voyage service" class="md-nav__link">
+    Testing the voyage service
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-locally-as-nodejs-application" title="Run locally as Node.js application" class="md-nav__link">
+    Run locally as Node.js application
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-on-ibm-kubernetes-service" title="Deploy on IBM Kubernetes Service" class="md-nav__link">
+    Deploy on IBM Kubernetes Service
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#not-verified-build-run-and-deploy-using-idt" title="NOT VERIFIED Build, run, and deploy using IDT" class="md-nav__link">
+    NOT VERIFIED Build, run, and deploy using IDT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#testing" title="Testing" class="md-nav__link">
+    Testing
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-fleet-service_1" title="Testing the fleet service" class="md-nav__link">
+    Testing the fleet service
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-the-voyage-service_1" title="Testing the voyage service" class="md-nav__link">
     Testing the voyage service
   </a>
   
@@ -442,7 +524,10 @@
                 
                 
                 <h1 id="voyages-and-fleet-simulation-solution-microservices">Voyages and Fleet Simulation Solution Microservices</h1>
-<p>This repository includes a set of sub projects to implement the different microservices and functions to support the simulation of container shipment as introduced by <a href="https://ibm-cloud-architecture.github.io/refarch-kc">this main repository</a>.</p>
+<div class="admonition abstract">
+<p class="admonition-title">Abstract<p>This repository includes a set of sub projects to implement the different microservices and functions to support the simulation of container shipment as introduced by <a href="https://ibm-cloud-architecture.github.io/refarch-kc">this main repository</a>.</p>
+</p>
+</div>
 <p>This repository addresses the implementation of the orange boxes in the figure below:  </p>
 <p><img alt="" src="images/fleet-voyage-comp.png" /></p>
 <h2 id="sub-repositories">Sub repositories</h2>
@@ -451,10 +536,51 @@
 <li>The <code>voyages-ms</code> folder contains the Node.js app for the voyages microservice also created with microprofile. It uses the Kafka API to produce events when an order has been assigned to a voyage. See <a href="voyagems/">this chapter for details.</a></li>
 </ul>
 <h2 id="pre-requisites">Pre-requisites</h2>
-<h2 id="build-and-run-locally">Build and run locally</h2>
-<h2 id="testing">Testing</h2>
+<p>You have two options to run the service using docker compose or Minikube. For Miniku we recommend following <a href="https://ibm-cloud-architecture.github.io/refarch-kc/deployments/minikube/#pre-requisites">those instructions</a> in the root project to set up your environment. Anf for docker compose use <a href="https://ibm-cloud-architecture.github.io/refarch-kc/deployments/local/#pre-requisites">those instructions</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning<p>Be sure the back end service, kafka, zookeeper are running.</p>
+</p>
+</div>
+<h2 id="build">Build</h2>
 <h3 id="testing-the-fleet-service">Testing the fleet service</h3>
+<p>Read <a href="">those instructions &gt;&gt;</a></p>
 <h3 id="testing-the-voyage-service">Testing the voyage service</h3>
+<p>The script <code>.script/buildDocker.sh</code> build the docker image for this service.</p>
+<h2 id="run-locally-as-nodejs-application">Run locally as Node.js application</h2>
+<p>This is more for development purpose in your sandbox.</p>
+<div class="codehilite"><pre><span></span>npm install
+npm <span class="nb">test</span>
+npm start
+</pre></div>
+
+<h2 id="deploy-on-ibm-kubernetes-service">Deploy on IBM Kubernetes Service</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># to install the helm release under browncompute namespace</span>
+$ helm install voyagesms/ --name kc-voyagesms --namespace browncompute 
+<span class="c1"># To see the pod deployment</span>
+$ kubectl describe pod voyagesms  --namespace browncompute
+<span class="c1"># To get the exposed port</span>
+$ kubectl get service kc-voyagesms
+$ kubectl get service voyagesms-application-service -n browncompute
+<span class="c1"># Status and traced of the pods:</span>
+$ kubectl logs fleetms-deployment-58b7d58fb8-qcqz7  -n browncompute
+<span class="c1"># then point your URL to the ipaddress and port number:</span>
+http://
+</pre></div>
+
+<h2 id="not-verified-build-run-and-deploy-using-idt">NOT VERIFIED Build, run, and deploy using IDT</h2>
+<div class="codehilite"><pre><span></span><span class="c1"># Install needed dependencies:</span>
+npm run idt:install
+<span class="c1"># Build the docker image for your app:</span>
+npm run idt:build
+<span class="c1"># Run the app locally through docker:</span>
+npm run idt:run
+<span class="c1"># Deploy your app to IBM Cloud:</span>
+npm run idt:deploy
+</pre></div>
+
+<h2 id="testing">Testing</h2>
+<h3 id="testing-the-fleet-service_1">Testing the fleet service</h3>
+<h3 id="testing-the-voyage-service_1">Testing the voyage service</h3>
 <h2 id="further-readings">Further readings</h2>
 <ul>
 <li><a href="https://www.ibm.com/cloud/garage/architectures/eventDrivenArchitecture">Event driven architecture in IBM Garage method</a></li>
