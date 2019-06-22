@@ -1,10 +1,7 @@
 # Voyage Management Service
 
-This service keeps track of each scheduled, current or completed voyage of a container ship, being loaded with containers at a source port, sailing to a destination port and having onboard containers unloaded there. 
-
-A generated IBM Cloud application
-
-[![](https://img.shields.io/badge/IBM%20Cloud-powered-blue.svg)](https://bluemix.net)
+!!! Abstract
+        This service keeps track of each scheduled, current or completed voyage of container carreer vessels, being loaded with containers at a source port, sailing to a destination port and having onboard containers unloaded there. 
 
 
 ## Build

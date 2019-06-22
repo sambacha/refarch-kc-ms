@@ -1,6 +1,6 @@
 # Voyages and Fleet Simulation Solution Microservices
 
-We recommend reading the content of this project documentation in [this book format]().
+We recommend reading the content of this project documentation in [this book format](https://ibm-cloud-architecture.github.io/refarch-kc-ms/).
 
 ## Sub repositories
 

@@ -1,6 +1,7 @@
 # Voyages and Fleet Simulation Solution Microservices
 
-This repository includes a set of sub projects to implement the different microservices and functions to support the simulation of container shipment as introduced by [this main repository](https://ibm-cloud-architecture.github.io/refarch-kc).
+!!! abstract
+        This repository includes a set of sub projects to implement the different microservices and functions to support the simulation of container shipment as introduced by [this main repository](https://ibm-cloud-architecture.github.io/refarch-kc).
 
 This repository addresses the implementation of the orange boxes in the figure below:  
 
@@ -13,8 +14,60 @@ This repository addresses the implementation of the orange boxes in the figure b
 
 ## Pre-requisites
 
+You have two options to run the service using docker compose or Minikube. For Miniku we recommend following [those instructions](https://ibm-cloud-architecture.github.io/refarch-kc/deployments/minikube/#pre-requisites) in the root project to set up your environment. Anf for docker compose use [those instructions](https://ibm-cloud-architecture.github.io/refarch-kc/deployments/local/#pre-requisites).
 
-## Build and run locally
+!!! warning
+        Be sure the back end service, kafka, zookeeper are running.
+
+## Build
+
+
+### Testing the fleet service
+
+Read [those instructions >>]()
+
+### Testing the voyage service
+
+The script `.script/buildDocker.sh` build the docker image for this service.
+
+## Run locally as Node.js application
+
+This is more for development purpose in your sandbox.
+
+```bash
+npm install
+npm test
+npm start
+```
+
+## Deploy on IBM Kubernetes Service
+
+```sh
+# to install the helm release under browncompute namespace
+$ helm install voyagesms/ --name kc-voyagesms --namespace browncompute 
+# To see the pod deployment
+$ kubectl describe pod voyagesms  --namespace browncompute
+# To get the exposed port
+$ kubectl get service kc-voyagesms
+$ kubectl get service voyagesms-application-service -n browncompute
+# Status and traced of the pods:
+$ kubectl logs fleetms-deployment-58b7d58fb8-qcqz7  -n browncompute
+# then point your URL to the ipaddress and port number:
+http://
+```
+
+## NOT VERIFIED Build, run, and deploy using IDT
+
+```bash
+# Install needed dependencies:
+npm run idt:install
+# Build the docker image for your app:
+npm run idt:build
+# Run the app locally through docker:
+npm run idt:run
+# Deploy your app to IBM Cloud:
+npm run idt:deploy
+```
 
 ## Testing
 
