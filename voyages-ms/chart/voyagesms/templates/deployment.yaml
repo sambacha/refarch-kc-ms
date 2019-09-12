@@ -18,6 +18,7 @@ spec:
         app: "{{  .Chart.Name }}-selector"
         version: "current"
     spec:
+      serviceAccountName: {{ .Values.serviceAccountName }}
       imagePullSecrets:
         - name: {{ .Values.image.pullSecret }}
       containers:
@@ -44,12 +45,15 @@ spec:
           - name: KAFKA_ENV
             value: "{{ .Values.eventstreams.env }}"
           - name: KAFKA_BROKERS
-            value: "{{ .Values.eventstreams.brokers }}"
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.eventstreams.brokersConfigMap }}"
+                key: brokers
           {{if or (eq .Values.eventstreams.env "IBMCLOUD") (eq .Values.eventstreams.env "ICP")}}
           - name: KAFKA_APIKEY
             valueFrom:
               secretKeyRef:
-                name: eventstreams-apikey
+                name: "{{ .Values.eventstreams.apikeyConfigMap }}"
                 key: binding
           {{end}}
 {{- if .Values.generatedBindings.enabled }}
