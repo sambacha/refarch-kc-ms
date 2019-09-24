@@ -79,9 +79,10 @@ http://
     - `--set image.pullPolicy=Always`
     - `--set eventstreams.env=ICP`
     - `--set eventstreams.brokersConfigMap=<kafka brokers ConfigMap name>`
+    - `--set eventstreams.apikeyConfigMap=<kafka api key Secret name>`
     - `--set serviceAccountName=<service-account-name>`
     - `--namespace <target-namespace>`
     - `--output-dir <local-template-directory>`
-  - Example: `helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set image.tag=latest --set image.pullSecret= --set image.pullPolicy=Always --set eventstreams.env=ICP --set eventstreams.brokersConfigMap=kafka-brokers --set serviceAccountName=kcontainer-runtime --output-dir templ --namespace eda-refarch chart/voyagesms/`
+  - Example: `helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set image.tag=latest --set image.pullSecret= --set image.pullPolicy=Always --set eventstreams.env=ICP --set eventstreams.brokersConfigMap=kafka-brokers --set eventstreams.apikeyConfigMap=kafka-apikey --set serviceAccountName=kcontainer-runtime --output-dir templ --namespace eda-refarch chart/voyagesms/`
 4. Deploy application using `oc apply`:
   - `oc apply -f templates/voyagesms/templates`
