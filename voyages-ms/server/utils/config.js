@@ -10,10 +10,6 @@ module.exports = {
         return process.env.ORDER_TOPIC || config.orderTopicName;
     },
 
-    getKafkaEnvironment: function() {
-        return process.env.KAFKA_ENV || config.kafkaEnv;
-    },
-
     getKafkaApiKey: function() {
         return process.env.KAFKA_APIKEY || config.kafkaApiKey;
     },
@@ -24,6 +20,13 @@ module.exports = {
 
     getPort: function() {
         return process.env.PORT || config.port;
+    },
+
+    isEventStreams: function() {
+       return ('KAFKA_APIKEY' in process.env);
+    },
+
+    areEventStreamsCertificatesRequired: function() {
+        return ('CERTS_ENABLED' in process.env);
     }
 }
-

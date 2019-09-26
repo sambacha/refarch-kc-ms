@@ -5,13 +5,18 @@ const connectTimeoutMs = 10000;
 const committedTimeoutMs = 10000;
 
 const getCloudConfig = () => {
-    return {
+    var _config = {
         'security.protocol': 'sasl_ssl',
-        'ssl.ca.location': config.getCertsPath(),
         'sasl.mechanisms': 'PLAIN',
         'sasl.username': 'token',
         'sasl.password': config.getKafkaApiKey()
     };
+
+    if(config.areEventStreamsCertificatesRequired()){
+      _config['ssl.ca.location'] = config.getCertsPath();
+    }
+
+    return _config;
 }
 
 const getProducerConfig = () => {
@@ -23,9 +28,9 @@ const getProducerConfig = () => {
         'client.id': 'voyage-producer',
         'dr_msg_cb': true // Enable delivery reports with message payload
     };
-    if (config.getKafkaEnvironment() == "IBMCLOUD") {
-        eventStreamsConfig = getCloudConfig()
-        for (var key in eventStreamsConfig) { 
+    if (config.isEventStreams()) {
+        eventStreamsConfig = getCloudConfig();
+        for (var key in eventStreamsConfig) {
             producerConfig[key] = eventStreamsConfig[key];
         }
     }
@@ -43,9 +48,9 @@ const getConsumerConfig = (gid) => {
         'group.id': gid,
         'enable.auto.commit' : false
     };
-    if (config.getKafkaEnvironment() == "IBMCLOUD") {
-        eventStreamsConfig = getCloudConfig()
-        for (var key in eventStreamsConfig) { 
+    if (config.isEventStreams()) {
+        eventStreamsConfig = getCloudConfig();
+        for (var key in eventStreamsConfig) {
             consumerConfig[key] = eventStreamsConfig[key];
         }
     }
@@ -107,7 +112,7 @@ producer.on('delivery-report', (err, report) => {
 
 const emit = (key, event) => {
     if (!producerReady) {
-        // kafka will handle reconnections but the produce method should never 
+        // kafka will handle reconnections but the produce method should never
         // be called if the client was never 'ready'
         console.log('Producer never connected to Kafka yet');
         return Promise.reject(new Error('Producer never connected to Kafka yet'));
@@ -115,7 +120,7 @@ const emit = (key, event) => {
 
     return new Promise((resolve, reject) => {
         try {
-            producer.produce(config.getOrderTopicName(), 
+            producer.produce(config.getOrderTopicName(),
                 null, /* partition */
                 new Buffer(JSON.stringify(event)),
                 key,
@@ -151,7 +156,7 @@ const reload = (subscription) => {
 
             var reloadLimit = tps[0].offset-1;
             console.log('ReloadLimit='+reloadLimit);
-            
+
             doReload(reloadLimit, subscription)
             .then(function() {
                 listen(subscription)
@@ -160,7 +165,7 @@ const reload = (subscription) => {
                 consumer.disconnect();
                 process.exit(-300); // If reload fails, microservice can't be available
             });
-            
+
         });
     });
 }
@@ -178,13 +183,13 @@ const doReload = (reloadLimit, subscription) => {
 
                 reloadConsumer.subscribe([subscription.topic]); //will consume from earliest
                 var finishedReloading = false;
-                
+
                 var consumeCb = function(err,messages) {
                     for(var m of messages) {
                         if (m.offset <= reloadLimit) {
                             subscription.callback(m, true);
-                        } 
-                        
+                        }
+
                         if (m.offset === reloadLimit) {
                             finishedReloading = true;
                             break;
@@ -195,11 +200,11 @@ const doReload = (reloadLimit, subscription) => {
                     } else {
                         console.log("Finished reloading");
                         reloadConsumer.disconnect();
-                        return resolve();        
+                        return resolve();
                     }
                 }
 
-                reloadConsumer.consume(10, consumeCb);                    
+                reloadConsumer.consume(10, consumeCb);
             });
         } else {
             console.log("No reloading needed");
