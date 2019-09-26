@@ -15,14 +15,14 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 
 /**
  * This class is to read configuration from properties file and keep in a properties object.
- * It also provides a set of method to define kafka config parameters 
- * 
+ * It also provides a set of method to define kafka config parameters
+ *
  * @author jerome boyer
  *
  */
 public class ApplicationConfig {
 	public static Logger logger = Logger.getLogger(ApplicationConfig.class.getName());
-		
+
 	public static final String KAFKA_ENV = "kafka.env";
 	public static final String KAFKA_BOOTSTRAP_SERVERS = "kafka.bootstrap.servers";
 	public static final String KAFKA_SHIP_TOPIC_NAME = "kafka.ship.topic.name";
@@ -38,16 +38,16 @@ public class ApplicationConfig {
 	public static final String KAFKA_APIKEY = "kafka.api_key";
 	public static final String KAFKA_POLL_DURATION = "kafka.poll.duration";
 	public static final String VERSION = "version";
-	
+
     public static final long PRODUCER_TIMEOUT_SECS = 10;
     public static final String CONSUMER_GROUP_ID = "order-command-grp";
     public static final Duration CONSUMER_POLL_TIMEOUT = Duration.ofSeconds(10);
     public static final Duration CONSUMER_CLOSE_TIMEOUT = Duration.ofSeconds(10);
-	
+
 	private static Properties properties ;
-		
-	
-	
+
+
+
 	private static void loadPropertiesFromStream(InputStream input){
 		try {
 			properties.load(input);
@@ -63,7 +63,7 @@ public class ApplicationConfig {
 			}
 		}
 	}
-	
+
 
 	public static Properties getProperties() {
 		if (properties == null) {
@@ -79,11 +79,11 @@ public class ApplicationConfig {
 			clientId = ApplicationConfig.getProperties().getProperty(ApplicationConfig.KAFKA_CONSUMER_CLIENTID);
 		}
 		ApplicationConfig.buildCommonProperties();
-        
-		getProperties().put(ConsumerConfig.GROUP_ID_CONFIG, 
+
+		getProperties().put(ConsumerConfig.GROUP_ID_CONFIG,
         		getProperties().getProperty(ApplicationConfig.KAFKA_GROUPID));
         // offsets are committed automatically with a frequency controlled by the config auto.commit.interval.ms
-        // here we want to use manual commit 
+        // here we want to use manual commit
 		getProperties().put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,"false");
 		getProperties().put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         // properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
@@ -94,7 +94,7 @@ public class ApplicationConfig {
 		getProperties().put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
        return getProperties();
 	}
-	
+
 	public static Properties buildProducerProperties(String clientID) {
 		String clientId = clientID;
 		if (clientId == null ) {
@@ -108,8 +108,8 @@ public class ApplicationConfig {
 		getProperties().put(ProducerConfig.RETRIES_CONFIG,getProperties().getProperty(ApplicationConfig.KAFKA_RETRIES));
 		return getProperties();
 	}
-	
-	
+
+
 	/**
 	 * Take into account the environment variables if set
 	 * @return common kafka properties
@@ -118,25 +118,30 @@ public class ApplicationConfig {
 		Map<String,String> env = System.getenv();
 		if (env.get("KAFKA_BROKERS") != null) {
 			getProperties().setProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS,env.get("KAFKA_BROKERS"));
-		} 
-		getProperties().put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, 
+		}
+		getProperties().put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
 	        		getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
-		
+
 		if (env.get("KAFKA_APIKEY") != null) {
 				getProperties().setProperty(ApplicationConfig.KAFKA_APIKEY, env.get("KAFKA_APIKEY"));
-		} 
+		}
 		if (env.get("KAFKA_ENV") != null) {
 			getProperties().setProperty(ApplicationConfig.KAFKA_ENV, env.get("KAFKA_ENV"));
-		} 
+		}
 		if ("IBMCLOUD".equals(env.get("KAFKA_ENV")) || "ICP".equals(env.get("KAFKA_ENV"))) {
 			getProperties().put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
 			getProperties().put(SaslConfigs.SASL_MECHANISM, "PLAIN");
-			getProperties().put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"token\" password=\"" 
+			getProperties().put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"token\" password=\""
                + getProperties().getProperty(ApplicationConfig.KAFKA_APIKEY)+ "\";");
 			getProperties().put(SslConfigs.SSL_PROTOCOL_CONFIG, "TLSv1.2");
 			getProperties().put(SslConfigs.SSL_ENABLED_PROTOCOLS_CONFIG, "TLSv1.2");
 			getProperties().put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, "HTTPS");
-        }
+    }
+		if ("true".equals(env.get("TRUSTSTORE_ENABLED"))){
+			getProperties().put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, env.get("TRUSTSTORE_PATH"));
+			getProperties().put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, env.get("TRUSTSTORE_PWD"));
+		}
+
 		System.out.println("Brokers " + getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
 		logger.info("Env " + getProperties().getProperty(ApplicationConfig.KAFKA_ENV));
 		logger.info("apikey " + getProperties().getProperty(ApplicationConfig.KAFKA_APIKEY));
