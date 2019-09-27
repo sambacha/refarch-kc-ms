@@ -34,7 +34,7 @@ Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequ
     - Command: `oc create secret generic <secret-name> --from-file=/path/to/downloaded/file.jks`
     - Example: `oc create secret generic es-truststore-jks --from-file=/Users/osowski/Downloads/es-cert.jks`
   - Create the PEM certificate Secret:
-    - Command: `oc create secret generic <secret-name> --from-file=/path/to/downloaded/file.jks`
+    - Command: `oc create secret generic <secret-name> --from-file=/path/to/downloaded/file.pem`
     - Example: `oc create secret generic es-ca-pemfile --from-file=/Users/osowski/Downloads/es-cert.pem`
 
 ## Deploy to OpenShift Container Platform (OCP)
