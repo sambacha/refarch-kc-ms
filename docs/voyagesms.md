@@ -52,7 +52,7 @@ Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequ
 
 **Perform the following for the `voyages-ms` microservice:**
 1. Build and push the Docker image by one of the two options below:
-  - Create a Jenkins project, pointing to the remote GitHub repository for the `voyages-ms` microservice, and manually creating the necessary parameters.  Refer to the individual microservice's [`Jenkinsfile.NoKubernetesPlugin`](voyages-ms/Jenkinsfile.NoKubernetesPlugin) for appropriate parameter values.
+  - Create a Jenkins project, pointing to the remote GitHub repository for the `voyages-ms` microservice, and manually creating the necessary parameters.  Refer to the individual microservice's [`Jenkinsfile.NoKubernetesPlugin`](../voyages-ms/Jenkinsfile.NoKubernetesPlugin) for appropriate parameter values.
   - Manually build the Docker image and push it to a registry that is accessible from your cluster (Docker Hub, IBM Cloud Container Registry, manually deployed Quay instance):
     - `docker build -t <private-registry>/<image-namespace>/kc-voyages-ms:latest order-command-ms/`
     - `docker login <private-registry>`
