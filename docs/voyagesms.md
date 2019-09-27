@@ -57,7 +57,7 @@ Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequ
     - `docker build -t <private-registry>/<image-namespace>/kc-voyages-ms:latest order-command-ms/`
     - `docker login <private-registry>`
     - `docker push <private-registry>/<image-namespace>/kc-voyages-ms:latest`
-3. Generate application YAMLs via `helm template`:
+2. Generate application YAMLs via `helm template`:
   - Parameters:
     - `--set image.repository=<private-registry>/<image-namespace>/<image-repository>`
     - `--set image.tag=latest`
@@ -79,5 +79,5 @@ Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequ
   ```
   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set image.tag=latest --set image.pullSecret= --set image.pullPolicy=Always --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-pipelines-sandbox chart/voyagesms
   ```
-4. Deploy application using `oc apply`:
+3. Deploy application using `oc apply`:
   - `oc apply -f templates/voyagesms/templates`

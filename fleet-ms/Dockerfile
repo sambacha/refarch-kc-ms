@@ -4,12 +4,11 @@ LABEL maintainer="IBM Cloud Architecture Solution Engineering at IBM Cloud"
 
 USER root
 
-RUN apt-get update -q -y && apt-get dist-upgrade -q -y 
+RUN apt-get update -q -y && apt-get dist-upgrade -q -y
 
 
 ARG LICENSE_JAR_URL
 ENV KAFKA_BROKERS=""
-ENV KAFKA_ENV=""
 ENV KAFKA_APIKEY=""
 ENV POSTGRESQL_URL=""
 ENV POSTGRESQL_USER=""

@@ -120,7 +120,7 @@
             <version>2.0.1</version>
             <scope>provided</scope>
         </dependency>
-        <!-- 
+        <!--
          <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -274,7 +274,6 @@
                 </executions>
                 <configuration>
                     <environmentVariables>
-                      <KAFKA_ENV>LOCAL</KAFKA_ENV>
                       <KAFKA_BROKERS>localhost:9092</KAFKA_BROKERS>
                     </environmentVariables>
                     <summaryFile>${project.build.directory}/test-reports/it/failsafe-summary.xml</summaryFile>
@@ -303,7 +302,6 @@
 						 <configuration>
 								<mainClass>util.ContainerConsumer</mainClass>
 								<environmentVariables>
-			                      	<KAFKA_ENV>LOCAL</KAFKA_ENV>
 			                      	<KAFKA_BROKERS>localhost:9092</KAFKA_BROKERS>
 			             		</environmentVariables>
 						 </configuration>

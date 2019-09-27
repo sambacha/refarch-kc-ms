@@ -4,7 +4,7 @@ This microservice is responsible to manage fleet of container carrier ships. It 
 
 ![](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/analysis/ship-dom-cmd3.png)
 
-The service exposes simple REST API to support getting ships and fleets, and start and stop simulator to emulate ship movements and container metrics events generation. When a ship leaves or enters it will also generates the events as listed in the analysis. 
+The service exposes simple REST API to support getting ships and fleets, and start and stop simulator to emulate ship movements and container metrics events generation. When a ship leaves or enters it will also generates the events as listed in the analysis.
 
 ## What you will learn
 
@@ -35,10 +35,10 @@ This service keeps track of each of the container ships available for transporti
 * [x] The capacity of a ship is represented by a matrix, number of rows x number of columns to make it simpler. Therefore the total number of container is rows*columns.
 * [x] Support GPS lat/log position reports, as ship position event, of the position of the ship a different point in time. This is modeled as csv file with one row of (lat,log) pair, a row representing a time stamp. (1h?)
 * [ ] Generate ship event when leaving source port and when entering destination port, and when docked.
-* [ ] Define query of what happen to a ship from a given time to retrace its past voyages. 
+* [ ] Define query of what happen to a ship from a given time to retrace its past voyages.
 
 
-For more in depth analysis and concepts explained [see this note](https://github.com/ibm-cloud-architecture/refarch-kc#fleetsships-microservice---concept) 
+For more in depth analysis and concepts explained [see this note](https://github.com/ibm-cloud-architecture/refarch-kc#fleetsships-microservice---concept)
 
 ## Run
 
@@ -55,7 +55,7 @@ $ docker-compose -f backbone-compose.yml up
 # Go back to this project to build it
 $ ./script/buildDocker.sh
 
-# Start the liberty server. Note that this script defines environment variables to access kafka brokers 
+# Start the liberty server. Note that this script defines environment variables to access kafka brokers
 $ ./scripts/runDocker.sh
 
 # Workaround for NullPointerException when starting Docker :
@@ -85,7 +85,6 @@ As an alternate you can use our Event Stream backbone we have configured on IBM 
 If you want to run with our Event Streams backbone deployed on IBM Cloud, ask us for the api key and then do the following:
 ```
 export KAFKA_BROKERS="kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093"
-export KAFKA_ENV="IBMCLOUD"
 export KAFKA_APIKEY="<the super secret key we will give you>"
 mvn liberty:run-server
 ```
@@ -123,7 +122,7 @@ The base of the project was created using IBM Microclimate using microprofile / 
 
 We are listing here the basic features to support:
 
-- [x] Support simulate ship movement and refrigerated containers metrics simulation via  REST api to be easily consumable from backend for frontend component using a POST verb. 
+- [x] Support simulate ship movement and refrigerated containers metrics simulation via  REST api to be easily consumable from backend for frontend component using a POST verb.
 - [x] Support simulation of container fire, container down and heat wave so container metric events can be analyzed down stream.
 - [x] Integrate with IBM Event Streams running on IBM public cloud  using api_key
 - [x] Integrate with Kafka running locally.
@@ -133,14 +132,14 @@ We are listing here the basic features to support:
 ### Code organization
 
 The following package structure is used:
-* `ibm.labs.kc.model` for the domain specific model. 
-* `ibm.labs.kc.app.kafka` kafka consumer and producer and config management. 
+* `ibm.labs.kc.model` for the domain specific model.
+* `ibm.labs.kc.app.kafka` kafka consumer and producer and config management.
 * `ibm.labs.kc.app.rest` set of REST resources with API definitions
 * `ibm.labs.kc.dao` data access object for ship and fleet. Use mockup no backend DB yet.
 * `ibm.labs.kc.event.model` event definitions for the kafka topic payload
 * `ibm.labs.kc.simulator` simulators for the demo as we do not have real ships... yet.
 
-The most important properties are defined in the config.properties file under `src/main/resources`. 
+The most important properties are defined in the config.properties file under `src/main/resources`.
 
 ### Test Driven Development
 
@@ -186,9 +185,9 @@ public List<Fleet> getFleets() {
 
 In the future, we may want to filter out the ships or separate fleet from ship in different json files so some logic may be added in this `getFleets()` function. The DAO is defined via an interface, and we add a Factory to build DAO implementation depending on the configuration. The DAO implementation at first is loadding data from file.
 
-To execute all the tests outside of the Eclipse IDE, we use the maven: `mvn test`. 
+To execute all the tests outside of the Eclipse IDE, we use the maven: `mvn test`.
 
-Quickly we can see that the DAO may be more complex than expected so we add unit tests for the DAO too. After 10, 15 minutes we have a service component and a DAO with Factory and Mockup implementation created and tested. 
+Quickly we can see that the DAO may be more complex than expected so we add unit tests for the DAO too. After 10, 15 minutes we have a service component and a DAO with Factory and Mockup implementation created and tested.
 
 The Fleet service needs to be exposed as REST api, so we add the JAXRS annotations inside the service class to the method we want to expose.
 
@@ -215,7 +214,7 @@ To execute the integration tests do a `mvn verify`.
 
 By using the same code approach as `HealthEndpointIT` we created a `TestFleetAPIsIT` Junit test class.
 
-The environment properties are set in the `pom.xml` file. 
+The environment properties are set in the `pom.xml` file.
 
 ```java
     protected String port = System.getProperty("liberty.test.port");
@@ -257,12 +256,12 @@ The ShipRunner is a Runnable class and uses the `positionPublisher` and `contain
 Here is a code snippet for the `run()` method of the `ShipRunner`: The ship positions are loaded from a file in the class loader and then for each container in the boat, send metrics.
 
 ```java
-try  { 
+try  {
     for (Position p : this.positions) {
-        // ships publish their position to a queue 
+        // ships publish their position to a queue
         ShipPosition sp = new ShipPosition(this.shipName,p.getLatitude(),p.getLongitude());
         positionPublisher.publishShipPosition(sp);
-        
+
         // Then publish the state of their containers
         for (List<Container> row :  ship.getContainers()) {
             for (Container c : row) {
@@ -273,7 +272,7 @@ try  {
         currentWorldTime=modifyTime(currentWorldTime);
         Thread.sleep(Math.round(this.numberOfMinutes*60000/this.positions.size()));
     }
-} catch (InterruptedException e) { 
+} catch (InterruptedException e) {
 ```
 
 So to avoid using kafka for unit tests, we can use mockito to mockup the producers. We encourage to read this [Mockito tutorial](https://javacodehouse.com/blog/mockito-tutorial/) and [this one.](http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects) to have some basic knowledge on how to use mockito. We added the following dependency in the `pom.xml`.
@@ -293,8 +292,8 @@ Add a constructor in `ShipRunner` so we can inject the producer. The test can us
  static PositionPublisher positionPublisherMock;
  @Mock
  static ContainerPublisher containerPublisherMock;
-	 
- @Rule public MockitoRule mockitoRule = MockitoJUnit.rule(); 
+
+ @Rule public MockitoRule mockitoRule = MockitoJUnit.rule();
 
 
  @Test
@@ -318,7 +317,7 @@ We can define the API using yaml file and generates code from there, but we are 
 @APIResponses(
     value = {
         @APIResponse(
-            responseCode = "404", 
+            responseCode = "404",
             description = "fleet not found",
             content = @Content(mediaType = "text/plain")),
         @APIResponse(
@@ -329,9 +328,9 @@ We can define the API using yaml file and generates code from there, but we are 
 	public Fleet getFleetByName(
 			@Parameter(
 		            description = "The fleetname to get ships data",
-		            required = true, 
-		            example = "KC-NorthFleet", 
-		            schema = @Schema(type = SchemaType.STRING)) 
+		            required = true,
+		            example = "KC-NorthFleet",
+		            schema = @Schema(type = SchemaType.STRING))
 			@PathParam("fleetName") String fleetName) {
             }
 ```
@@ -348,12 +347,12 @@ Once the server is restarted, we first go to http://localhost:9080/api/explorer 
 
 A summary of the operations defined for this simulator are:
 
- | API | Description |   
- | --- | --- |   
- | GET '/fleetms/fleets/' | Get the list of fleet | 
+ | API | Description |
+ | --- | --- |
+ | GET '/fleetms/fleets/' | Get the list of fleet |
  | GET '/fleetms/fleets/:fleetname' | Get the ships of a given fleet |
  | POST '/fleetms/fleets/simulate' | Start to simulate ships movements |
- | POST '/fleetms/ships/simulate' | Start to simulate ship movements and container metrics generation |  
+ | POST '/fleetms/ships/simulate' | Start to simulate ship movements and container metrics generation |
 
 ![](docs/fleetms-apis.png)
 
@@ -367,15 +366,13 @@ We use environment variables to control the configuration:
 
   | Variable | Role | Values |
   | --- | --- | --- |
-  | KAFKA_ENV | Define what Kafka to use | We propose 3 values: LOCAL, IBMCLOUD, ICP |
-  | KAFKA_BROKERS | IP addresses and port number of the n brokers configured in your environment | | 
+  | KAFKA_BROKERS | IP addresses and port number of the n brokers configured in your environment | |
 
 The pom.xml uses those variables to use the local kafka for the integration tests:
 
 ```
 <configuration>
         <environmentVariables>
-            <KAFKA_ENV>LOCAL</KAFKA_ENV>
             <KAFKA_BROKERS>gc-kafka-0.gc-kafka-hl-svc.greencompute.svc.cluster.local:32224</KAFKA_BROKERS>
         </environmentVariables>
 ```
@@ -403,11 +400,11 @@ These capabilities are provided through dependencies in the `pom.xml` file and L
 
 ### Run Locally
 
-We described the process in the [section above](#run-the-fleet-service-on-your-laptop)  
+We described the process in the [section above](#run-the-fleet-service-on-your-laptop)
 
 ### Run on IBM Cloud with Kubernetes Service
 
-We are deploying the simulator on the kubernetes service. To define your own IBM Kubernetes Service (IKS) [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md) 
+We are deploying the simulator on the kubernetes service. To define your own IBM Kubernetes Service (IKS) [see our explanations here.](https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md)
 
 We use [Helm](https://helm.sh/) to install the fleetms service. Helm is a package manager to deploy applications and services to Kubernetes cluster. Package definitions are charts, which are yaml files, to be shareable between teams.
 
@@ -422,19 +419,18 @@ This creates yaml files and a simple set of folders. Those files play a role to 
 * *Chart.yaml*: This is a global parameter file. Set the version and name attributes, as they will be used in deployment.yaml. Each time you deploy a new version of your app you can just change the version number. The values in the chart.yaml are used in the templates.
 
 The following modifications were done to the deployment configuration file to leverage environment variables and docker registry and kafka api key secrets.
-* In `values.yml` file:   
+* In `values.yml` file:
  ```yml
  env:
   kafka:
-    brokers: kafka03....  
-    env: IBMCLOUD  
- image:  
-     repository:   registry.ng.bluemix.net/ibmcaseeda/kc-fleetms   
-     tag: latest  
-     pullPolicy: Always  
-     pullSecret:   bluemix-browncompute-secret-regional  
- ``` 
-* In `deployment.yml` template file  
+    brokers: kafka03....
+ image:
+     repository:   registry.ng.bluemix.net/ibmcaseeda/kc-fleetms
+     tag: latest
+     pullPolicy: Always
+     pullSecret:   bluemix-browncompute-secret-regional
+ ```
+* In `deployment.yml` template file
  ```yml
    spec:
       imagePullSecrets:
@@ -443,8 +439,6 @@ The following modifications were done to the deployment configuration file to le
     env:
         - name: KAFKA_BROKERS
             value: "{{ .Values.env.kafka.brokers }}"
-        - name: KAFKA_ENV
-            value: "{{ .Values.env.kafka.env }}"
         - name: KAFKA_APIKEY
             valueFrom:
               secretKeyRef:
@@ -473,7 +467,7 @@ $ cd chart
 $ helm install fleetms/ --name kc-fleetms --namespace browncompute
 
 # if you have an issue and wants to uninstall do
-$ helm del --purge kc-fleetms 
+$ helm del --purge kc-fleetms
 
 # If you need to upgrade an existing deployed release use the command:
 $ helm upgrade kc-fleetms fleetms/ --namespace browncompute
@@ -514,4 +508,3 @@ While deploying a liberty on ubuntu docker image to IKS, we got a vulnerability 
 
 To deploy this application to IBM Cloud using a DevOps toolchain click the **Create Toolchain** button below.
 [![Create Toolchain](https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png)](https://console.ng.bluemix.net/devops/setup/deploy/)
-
