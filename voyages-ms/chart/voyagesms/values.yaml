@@ -42,10 +42,9 @@ generatedBindings:
 kafka:
   brokersConfigMap: kafka-brokers
 eventstreams:
-  #env: IBMCLOUD #DEPRECATED - TO BE REMOVED COMPLETELY
   enabled: true
   apikeyConfigMap: eventstreams-apikey
-  caPemFileRequired: true
+  caPemFileRequired: false
   caPemFilePath: "/etc/ssl/certs/kcontainer"
   caPemFileName: "es-cert.pem"
   caPemSecretName: es-ca-pemfile
