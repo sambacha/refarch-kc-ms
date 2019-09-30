@@ -563,7 +563,7 @@ To deploy this application to IBM Cloud using a DevOps toolchain click the **Cre
     - `--output-dir <local-template-directory>`
   - Example using Event Streams via ICP4I:
    ```
-   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.pullSecret= --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-ca-pemfile --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms
+   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.pullSecret= --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-truststore-jks --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms
    ```
   - Example using Event Streams hosted on IBM Cloud:
    ```
