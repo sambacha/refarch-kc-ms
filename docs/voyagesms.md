@@ -60,9 +60,7 @@ Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequ
 2. Generate application YAMLs via `helm template`:
   - Parameters:
     - `--set image.repository=<private-registry>/<image-namespace>/<image-repository>`
-    - `--set image.tag=latest`
     - `--set image.pullSecret=<private-registry-pullsecret>` (optional or set to blank)
-    - `--set image.pullPolicy=Always`
     - `--set kafka.brokersConfigMap=<kafka brokers ConfigMap name>`
     - `--set eventstreams.enabled=(true/false)` (`true` when connecting to Event Streams of any kind, `false` when connecting to Kafka directly)
     - `--set eventstreams.apikeyConfigMap=<kafka api key Secret name>`
@@ -73,11 +71,11 @@ Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequ
     - `--output-dir <local-template-directory>`
   - Example using Event Streams via ICP4I:
    ```
-   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set image.tag=latest --set image.pullSecret= --set image.pullPolicy=Always --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.caPemFileRequired=true --set eventstreams.caPemSecretName=es-ca-pemfile --output-dir templates --namespace eda-pipelines-sandbox chart/voyagesms
+   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set image.pullSecret= --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.caPemFileRequired=true --set eventstreams.caPemSecretName=es-ca-pemfile --output-dir templates --namespace eda-refarch chart/voyagesms
    ```
   - Example using Event Streams hosted on IBM Cloud:
   ```
-  helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set image.tag=latest --set image.pullSecret= --set image.pullPolicy=Always --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-pipelines-sandbox chart/voyagesms
+  helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set image.pullSecret= --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms
   ```
 3. Deploy application using `oc apply`:
   - `oc apply -f templates/voyagesms/templates`

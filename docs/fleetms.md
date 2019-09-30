@@ -541,7 +541,7 @@ To deploy this application to IBM Cloud using a DevOps toolchain click the **Cre
     - Command: `oc create secret generic <secret-name> --from-file=/path/to/downloaded/file.pem`
     - Example: `oc create secret generic es-ca-pemfile --from-file=/Users/osowski/Downloads/es-cert.pem`
 
-**Perform the following for the `SpringContainerMS` microservice:**
+**Perform the following for the `fleetms` microservice:**
 1. Build and push the Docker image by one of the two options below:
   - Create a Jenkins project, pointing to the remote GitHub repository for the `fleet-ms` microservice, and manually creating the necessary parameters.  Refer to the individual microservice's [`Jenkinsfile.NoKubernetesPlugin`](../fleet-ms/Jenkinsfile.NoKubernetesPlugin) for appropriate parameter values.
   - Manually build the Docker image and push it to a registry that is accessible from your cluster (Docker Hub, IBM Cloud Container Registry, manually deployed Quay instance):
@@ -551,9 +551,7 @@ To deploy this application to IBM Cloud using a DevOps toolchain click the **Cre
 2. Generate application YAMLs via `helm template`:
   - Parameters:
     - `--set image.repository=<private-registry>/<image-namespace>/<image-repository>`
-    - `--set image.tag=latest`
     - `--set image.pullSecret=<private-registry-pullsecret>` (optional or set to blank)
-    - `--set image.pullPolicy=Always`
     - `--set kafka.brokersConfigMap=<kafka brokers ConfigMap name>`
     - `--set eventstreams.enabled=(true/false)` (`true` when connecting to Event Streams of any kind, `false` when connecting to Kafka directly)
     - `--set eventstreams.apikeyConfigMap=<kafka api key Secret name>`
@@ -565,11 +563,11 @@ To deploy this application to IBM Cloud using a DevOps toolchain click the **Cre
     - `--output-dir <local-template-directory>`
   - Example using Event Streams via ICP4I:
    ```
-   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.tag=latest --set image.pullSecret= --set image.pullPolicy=Always --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-ca-pemfile --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-pipelines-sandbox chart/voyagesms
+   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.pullSecret= --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-ca-pemfile --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms
    ```
   - Example using Event Streams hosted on IBM Cloud:
-  ```
-  helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.tag=latest --set image.pullSecret= --set image.pullPolicy=Always --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-pipelines-sandbox chart/voyagesms
-  ```
+   ```
+   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.pullSecret= --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms
+   ```
 3. Deploy application using `oc apply`:
   - `oc apply -f templates/fleetms/templates`
