@@ -27,7 +27,6 @@ USER root
 RUN apt-get update -q -y && apt-get dist-upgrade -q -y
 
 ENV KAFKA_BROKERS=""
-ENV KAFKA_ENV=""
 ENV KAFKA_APIKEY=""
 ENV POSTGRESQL_URL=""
 ENV POSTGRESQL_USER=""
