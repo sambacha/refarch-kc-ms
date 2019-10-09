@@ -551,7 +551,7 @@ To deploy this application to IBM Cloud using a DevOps toolchain click the **Cre
 2. Generate application YAMLs via `helm template`:
   - Parameters:
     - `--set image.repository=<private-registry>/<image-namespace>/<image-repository>`
-    - `--set image.pullSecret=<private-registry-pullsecret>` (optional or set to blank)
+    - `--set image.pullSecret=<private-registry-pullsecret>` (only required if pulling from an external private registry)
     - `--set kafka.brokersConfigMap=<kafka brokers ConfigMap name>`
     - `--set eventstreams.enabled=(true/false)` (`true` when connecting to Event Streams of any kind, `false` when connecting to Kafka directly)
     - `--set eventstreams.apikeyConfigMap=<kafka api key Secret name>`
@@ -563,11 +563,11 @@ To deploy this application to IBM Cloud using a DevOps toolchain click the **Cre
     - `--output-dir <local-template-directory>`
   - Example using Event Streams via ICP4I:
    ```
-   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.pullSecret= --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-truststore-jks --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms
+   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-truststore-jks --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms
    ```
   - Example using Event Streams hosted on IBM Cloud:
    ```
-   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set image.pullSecret= --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms
+   helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms
    ```
 3. Deploy application using `oc apply`:
   - `oc apply -f templates/fleetms/templates`
