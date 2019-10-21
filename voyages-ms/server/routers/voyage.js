@@ -1,9 +1,10 @@
 var express = require('express');
 // mockup of backend data source. Can be changed later !
 var voyagesList = require('../../data/voyages.json');
-// voyages is a consumer of orders topic for OrderCreated event 
-// and a producer when a voyage is assigned to an order 
+// voyages is a consumer of orders topic for OrderCreated event
+// and a producer when a voyage is assigned to an order
 var kafka = require('../utils/kafka.js');
+var config = require('../utils/config.js');
 
 
 
@@ -18,13 +19,13 @@ module.exports = function(app) {
   // Assign an order to a voyage according to the number of containers expected
   // Post data: {'orderID': 'a-orderid-as-key-in-orders-topic', 'containers': 2'}
   // this method is not really called, as voyage is  a consumer on orders topic and will process order from event
-  // it is used as an alternate path. 
+  // it is used as an alternate path.
   router.post('/:voyageID/assign/', function(req, res, next) {
     var voyageID = req.params.voyageID;
     var orderID = req.body.orderID;
     var containers = req.body.containers;
     console.log('assigning order ' + orderID + ' to voyage ' + voyageID);
-    
+
     var event = {
       'timestamp':  Date.now(),
       'type': 'OrderAssigned',
@@ -36,10 +37,10 @@ module.exports = function(app) {
     }
 
     kafka.emit(orderID, event).then ( function(fulfilled) {
-      console.log('Emitted ' + JSON.stringify(event));  
+      console.log('Emitted ' + JSON.stringify(event));
       res.json(event);
     }).catch( function(err){
-      console.log('Rejected' + err);  
+      console.log('Rejected' + err);
       res.status(500).send('Error occured');
     });
 
@@ -54,9 +55,9 @@ const cb = (message, reloading) => {
   console.log('Event received ' + JSON.stringify(event,null,2));
   if (event.type === 'OrderCreated') {
 
-    // For UI demo purpose, wait 30 secs before assigning this order to a voyage    
+    // For UI demo purpose, wait 30 secs before assigning this order to a voyage
     var timeoutMs = reloading ? 0 : 30000;
-    
+
     setTimeout(function() {
       var matchedVoyage = findSuitableVoyage(event.payload);
       var assignOrCancelEvent;
@@ -83,15 +84,15 @@ const cb = (message, reloading) => {
       }
 
       if(!reloading) {
-        console.log('Emitting ' + assignOrCancelEvent.type);  
+        console.log('Emitting ' + assignOrCancelEvent.type);
         kafka.emit(event.payload.orderID, assignOrCancelEvent).then (function(fulfilled) {
-          console.log('Emitted ' + JSON.stringify(assignOrCancelEvent));  
+          console.log('Emitted ' + JSON.stringify(assignOrCancelEvent));
         }).catch(function(err){
-          console.log('Rejected' + err);  
+          console.log('Rejected' + err);
         });
       }
     }, timeoutMs)
-   
+
   }
 }
 
@@ -100,7 +101,8 @@ const cb = (message, reloading) => {
  * the given callback
  */
 kafka.reload({
-  'topic':'orders',
+  //'topic':'orders', //#### TOPIC NAME ####
+  'topic': config.getOrderTopicName(),
   'callback': cb
 });
 
@@ -108,7 +110,7 @@ kafka.reload({
 
 /**
  * Verify if port and capacity match
- * @param  order 
+ * @param  order
  */
 const findSuitableVoyage = (order) => {
   for (v of voyagesList) {
