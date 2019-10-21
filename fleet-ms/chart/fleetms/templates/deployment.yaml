@@ -41,6 +41,12 @@ spec:
               configMapKeyRef:
                 name: "{{ .Values.kafka.brokersConfigMap }}"
                 key: brokers
+          - name: KAFKA_SHIP_TOPIC_NAME
+            value: "{{ .Values.kafka.kafkaShipTopicName }}"
+          - name: KAFKA_CONTAINER_TOPIC_NAME
+            value: "{{ .Values.kafka.kafkaContainerTopicName }}"
+          - name: KAFKA_BW_PROBLEM_TOPIC_NAME
+            value: "{{ .Values.kafka.kafkaBwProblemTopicName }}"
           {{- if .Values.eventstreams.enabled }}
           - name: KAFKA_APIKEY
             valueFrom:
