@@ -45,8 +45,6 @@ public class ApplicationConfig {
 
 	private static Properties properties ;
 
-
-
 	private static void loadPropertiesFromStream(InputStream input){
 		try {
 			properties.load(input);
@@ -63,11 +61,40 @@ public class ApplicationConfig {
 		}
 	}
 
+	/*
+	 *  TO BE REPLACED WITH mpConfig REFACTORING
+	 */
+	private static void loadPropertiesFromEnvVars(){
+		if (properties == null) {
+			getProperties();
+		}
+
+		Map<String,String> env = System.getenv();
+		String topic;
+
+		if (env.get("KAFKA_SHIP_TOPIC_NAME") != null) {
+			topic = env.get("KAFKA_SHIP_TOPIC_NAME");
+			properties.setProperty(KAFKA_SHIP_TOPIC_NAME, topic);
+		}
+
+		if (env.get("KAFKA_CONTAINER_TOPIC_NAME") != null) {
+			topic = env.get("KAFKA_CONTAINER_TOPIC_NAME");
+			properties.setProperty(KAFKA_CONTAINER_TOPIC_NAME, topic);
+		}
+
+		if (env.get("KAFKA_BW_PROBLEM_TOPIC_NAME") != null) {
+			topic = env.get("KAFKA_BW_PROBLEM_TOPIC_NAME");
+			properties.setProperty(KAFKA_BW_PROBLEM_TOPIC_NAME, topic);
+		}
+
+	}
+
 
 	public static Properties getProperties() {
 		if (properties == null) {
 			properties = new Properties();
 			loadPropertiesFromStream(ApplicationConfig.class.getClassLoader().getResourceAsStream("config.properties"));
+			loadPropertiesFromEnvVars();
 		}
 		return properties;
 	}
