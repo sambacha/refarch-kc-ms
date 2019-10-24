@@ -42,11 +42,11 @@ spec:
                 name: "{{ .Values.kafka.brokersConfigMap }}"
                 key: brokers
           - name: KAFKA_SHIP_TOPIC_NAME
-            value: "{{ .Values.kafka.kafkaShipTopicName }}"
+            value: "{{ .Values.kafka.bluewaterShipTopicName }}"
           - name: KAFKA_CONTAINER_TOPIC_NAME
-            value: "{{ .Values.kafka.kafkaContainerTopicName }}"
+            value: "{{ .Values.kafka.bluewaterContainerTopicName }}"
           - name: KAFKA_BW_PROBLEM_TOPIC_NAME
-            value: "{{ .Values.kafka.kafkaBwProblemTopicName }}"
+            value: "{{ .Values.kafka.bluewaterProblemTopicName }}"
           {{- if .Values.eventstreams.enabled }}
           - name: KAFKA_APIKEY
             valueFrom:
