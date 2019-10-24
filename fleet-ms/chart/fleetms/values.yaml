@@ -36,12 +36,9 @@ generatedBindings:
   enabled: false
 kafka:
   brokersConfigMap: kafka-brokers
-  #KAFKA_SHIP_TOPIC_NAME: bluewaterShip
-  kafkaShipTopicName: bluewaterShip
-  #KAFKA_CONTAINER_TOPIC_NAME: bluewaterContainer
-  kafkaContainerTopicName: bluewaterContainer
-  #KAFKA_BW_PROBLEM_TOPIC_NAME: bluewaterProblem
-  kafkaBwProblemTopicName: bluewaterProblem
+  bluewaterShipTopicName: bluewaterShip
+  bluewaterContainerTopicName: bluewaterContainer
+  bluewaterProblemTopicName: bluewaterProblem
 eventstreams:
   enabled: true
   apikeyConfigMap: eventstreams-apikey
