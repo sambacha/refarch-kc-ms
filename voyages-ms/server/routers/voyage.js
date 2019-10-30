@@ -28,7 +28,7 @@ module.exports = function(app) {
 
     var event = {
       'timestamp':  Date.now(),
-      'type': 'OrderAssigned',
+      'type': 'VoyageAssigned',
       'version': '1',
       'payload': {
         'voyageID': voyageID,
@@ -64,7 +64,7 @@ const cb = (message, reloading) => {
       if (matchedVoyage.voyageID) {
           assignOrCancelEvent = {
           'timestamp':  Date.now(),
-          'type': 'OrderAssigned',
+          'type': 'VoyageAssigned',
           'version': '1',
           'payload': {
             'voyageID': matchedVoyage.voyageID,
@@ -74,7 +74,7 @@ const cb = (message, reloading) => {
       } else {
         assignOrCancelEvent = {
           'timestamp':  Date.now(),
-          'type': 'OrderCancelled',
+          'type': 'VoyageNotFound',
           'version': '1',
           'payload': {
             'reason': matchedVoyage.reason,
