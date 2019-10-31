@@ -36,7 +36,7 @@
     
     
       
-        <title>Voyage management microservice - Voyages and Fleet Simulation Solution Microservices</title>
+        <title>Voyage Management Service - Voyages and Fleet Simulation Solution Microservices</title>
       
     
     
@@ -121,7 +121,7 @@
               Voyages and Fleet Simulation Solution Microservices
             </span>
             <span class="md-header-nav__topic">
-              Voyage management microservice
+              Voyage Management Service
             </span>
           
         </div>
@@ -253,70 +253,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Voyage management microservice
-      </label>
-    
-    <a href="./" title="Voyage management microservice" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../voyagems.md" title="Voyage management microservice" class="md-nav__link">
       Voyage management microservice
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">Table of contents</label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#build" title="Build" class="md-nav__link">
-    Build
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#run-locally-as-nodejs-application" title="Run locally as Node.js application" class="md-nav__link">
-    Run locally as Node.js application
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#deploy-on-ibm-kubernetes-service" title="Deploy on IBM Kubernetes Service" class="md-nav__link">
-    Deploy on IBM Kubernetes Service
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#not-verified-build-run-and-deploy-using-idt" title="NOT VERIFIED Build, run, and deploy using IDT" class="md-nav__link">
-    NOT VERIFIED Build, run, and deploy using IDT
-  </a>
-  
-</li>
-      
-      
-      
-      
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -355,16 +296,29 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deploy-on-ibm-kubernetes-service" title="Deploy on IBM Kubernetes Service" class="md-nav__link">
-    Deploy on IBM Kubernetes Service
+  <a href="#deployment-prerequisites" title="Deployment prerequisites" class="md-nav__link">
+    Deployment prerequisites
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#not-verified-build-run-and-deploy-using-idt" title="NOT VERIFIED Build, run, and deploy using IDT" class="md-nav__link">
-    NOT VERIFIED Build, run, and deploy using IDT
+  <a href="#deploy-to-openshift-container-platform-ocp" title="Deploy to OpenShift Container Platform (OCP)" class="md-nav__link">
+    Deploy to OpenShift Container Platform (OCP)
   </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploy-to-ocp-311" title="Deploy to OCP 3.11" class="md-nav__link">
+    Deploy to OCP 3.11
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -384,12 +338,12 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/ibm-cloud-architecture/refarch-kc-ms/edit/master/docs/voyagems.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/ibm-cloud-architecture/refarch-kc-ms/edit/master/docs/voyagesms.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="voyage-management-service">Voyage Management Service</h1>
 <div class="admonition abstract">
-<p class="admonition-title">Abstract<p>This service keeps track of each scheduled, current or completed voyage of container carreer vessels, being loaded with containers at a source port, sailing to a destination port and having onboard containers unloaded there. </p>
+<p class="admonition-title">Abstract<p>This service keeps track of each scheduled, current or completed voyage of container carreer vessels, being loaded with containers at a source port, sailing to a destination port and having onboard containers unloaded there.</p>
 </p>
 </div>
 <h2 id="build">Build</h2>
@@ -401,30 +355,65 @@ npm <span class="nb">test</span>
 npm start
 </pre></div>
 
-<h2 id="deploy-on-ibm-kubernetes-service">Deploy on IBM Kubernetes Service</h2>
-<div class="codehilite"><pre><span></span><span class="c1"># to install the helm release under browncompute namespace</span>
-$ helm install voyagesms/ --name kc-voyagesms --namespace browncompute 
-<span class="c1"># To see the pod deployment</span>
-$ kubectl describe pod voyagesms  --namespace browncompute
-<span class="c1"># To get the exposed port</span>
-$ kubectl get service kc-voyagesms
-$ kubectl get service voyagesms-application-service -n browncompute
-<span class="c1"># Status and traced of the pods:</span>
-$ kubectl logs fleetms-deployment-58b7d58fb8-qcqz7  -n browncompute
-<span class="c1"># then point your URL to the ipaddress and port number:</span>
-http://
+<h2 id="deployment-prerequisites">Deployment prerequisites</h2>
+<p>Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequisite Kubernetes artifacts need to be created to support the deployments of application components.  These artifacts need to be created once per unique deployment of the entire application and can be shared between application components in the same overall application deployment.</p>
+<ol>
+<li>Create <code>kafka-brokers</code> ConfigMap</li>
+<li>Command: <code>kubectl create configmap kafka-brokers --from-literal=brokers='&lt;replace with comma-separated list of brokers&gt;' -n &lt;namespace&gt;</code></li>
+<li>Example: <code>kubectl create configmap kafka-brokers --from-literal=brokers='broker-3-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-2-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-1-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-5-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-0-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093,broker-4-j7fxtxtp5fs84205.kafka.svc01.us-south.eventstreams.cloud.ibm.com:9093' -n eda-refarch</code></li>
+<li>Create optional <code>eventstreams-apikey</code> Secret, if you are using Event Streams as your Kafka broker provider.</li>
+<li>Command: <code>kubectl create secret generic eventstreams-apikey --from-literal=binding='&lt;replace with api key&gt;' -n &lt;namespace&gt;</code></li>
+<li>Example: <code>kubectl create secret generic eventstreams-apikey --from-literal=binding='z...12345...notanactualkey...67890...a' -n eda-refarch</code></li>
+<li>If you are using Event Streams as your Kafka broker provider and it is deployed via the IBM Cloud Pak for Integration (ICP4I), you will need to create an additional Secret to store the generated Certificates &amp; Truststores.</li>
+<li>From the "Connect to this cluster" tab on the landing page of your Event Streams installation, download both the <strong>Java truststore</strong> and the <strong>PEM certificate</strong>.</li>
+<li>Create the Java truststore Secret:<ul>
+<li>Command: <code>oc create secret generic &lt;secret-name&gt; --from-file=/path/to/downloaded/file.jks</code></li>
+<li>Example: <code>oc create secret generic es-truststore-jks --from-file=/Users/osowski/Downloads/es-cert.jks</code></li>
+</ul>
+</li>
+<li>Create the PEM certificate Secret:<ul>
+<li>Command: <code>oc create secret generic &lt;secret-name&gt; --from-file=/path/to/downloaded/file.pem</code></li>
+<li>Example: <code>oc create secret generic es-ca-pemfile --from-file=/Users/osowski/Downloads/es-cert.pem</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="deploy-to-openshift-container-platform-ocp">Deploy to OpenShift Container Platform (OCP)</h2>
+<h3 id="deploy-to-ocp-311">Deploy to OCP 3.11</h3>
+<p><strong>Cross-component deployment prerequisites:</strong> <em>(needs to be done once per unique deployment of the entire application)</em>
+1. If desired, create a non-default Service Account for usage of deploying and running the K Container reference implementation.  This will become more important in future iterations, so it's best to start small:
+  - Command: <code>oc create serviceaccount -n &lt;target-namespace&gt; kcontainer-runtime</code>
+  - Example: <code>oc create serviceaccount -n eda-refarch kcontainer-runtime</code>
+2. The target Service Account needs to be allowed to run containers as <code>anyuid</code> for the time being:
+  - Command: <code>oc adm policy add-scc-to-user anyuid -z &lt;service-account-name&gt; -n &lt;target-namespace&gt;</code>
+  - Example: <code>oc adm policy add-scc-to-user anyuid -z kcontainer-runtime -n eda-refarch</code>
+  - NOTE: This requires <code>cluster-admin</code> level privileges.</p>
+<p><strong>Perform the following for the <code>voyages-ms</code> microservice:</strong>
+1. Build and push the Docker image by one of the two options below:
+  - Create a Jenkins project, pointing to the remote GitHub repository for the <code>voyages-ms</code> microservice, and manually creating the necessary parameters.  Refer to the individual microservice's <a href="../voyages-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> for appropriate parameter values.
+  - Manually build the Docker image and push it to a registry that is accessible from your cluster (Docker Hub, IBM Cloud Container Registry, manually deployed Quay instance):
+    - <code>docker build -t &lt;private-registry&gt;/&lt;image-namespace&gt;/kc-voyages-ms:latest order-command-ms/</code>
+    - <code>docker login -u &lt;user&gt; -p $(oc whoami -t) &lt;private-registry&gt;</code>
+    - <code>docker push &lt;private-registry&gt;/&lt;image-namespace&gt;/kc-voyages-ms:latest</code>
+2. Generate application YAMLs via <code>helm template</code>:
+  - Parameters:
+    - <code>--set image.repository=&lt;private-registry&gt;/&lt;image-namespace&gt;/&lt;image-repository&gt;</code>
+    - <code>--set image.pullSecret=&lt;private-registry-pullsecret&gt;</code> (only required if pulling from an external private registry)
+    - <code>--set kafka.brokersConfigMap=&lt;kafka brokers ConfigMap name&gt;</code>
+    - <code>--set eventstreams.enabled=(true/false)</code> (<code>true</code> when connecting to Event Streams of any kind, <code>false</code> when connecting to Kafka directly)
+    - <code>--set eventstreams.apikeyConfigMap=&lt;kafka api key Secret name&gt;</code>
+    - <code>--set eventstreams.caPemFileRequired=(true/false)</code> (<code>true</code> when connecting to Event Streams via ICP4I)
+    - <code>--set eventstreams.caPemSecretName=&lt;eventstreams ca pem file secret name&gt;</code> (only used when connecting to Event Streams via ICP4I)
+    - <code>--set serviceAccountName=&lt;service-account-name&gt;</code>
+    - <code>--namespace &lt;target-namespace&gt;</code>
+    - <code>--output-dir &lt;local-template-directory&gt;</code>
+  - Example using Event Streams via ICP4I:
+   <div class="codehilite"><pre><span></span>helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.caPemFileRequired=true --set eventstreams.caPemSecretName=es-ca-pemfile --output-dir templates --namespace eda-refarch chart/voyagesms
 </pre></div>
-
-<h2 id="not-verified-build-run-and-deploy-using-idt">NOT VERIFIED Build, run, and deploy using IDT</h2>
-<div class="codehilite"><pre><span></span><span class="c1"># Install needed dependencies:</span>
-npm run idt:install
-<span class="c1"># Build the docker image for your app:</span>
-npm run idt:build
-<span class="c1"># Run the app locally through docker:</span>
-npm run idt:run
-<span class="c1"># Deploy your app to IBM Cloud:</span>
-npm run idt:deploy
+  - Example using Event Streams hosted on IBM Cloud:
+  <div class="codehilite"><pre><span></span>helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms
 </pre></div>
+3. Deploy application using <code>oc apply</code>:
+  - <code>oc apply -f templates/voyagesms/templates</code></p>
                 
                   
                 
@@ -441,27 +430,6 @@ npm run idt:deploy
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-          <a href="../fleetms/" title="Fleet Simulator" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-            </div>
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                Fleet Simulator
-              </span>
-            </div>
-          </a>
-        
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

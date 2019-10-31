@@ -460,6 +460,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploy-to-openshift-container-platform-ocp" title="Deploy to OpenShift Container Platform (OCP)" class="md-nav__link">
+    Deploy to OpenShift Container Platform (OCP)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploy-to-ocp-311" title="Deploy to OCP 3.11" class="md-nav__link">
+    Deploy to OCP 3.11
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -477,7 +497,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../voyagems/" title="Voyage management microservice" class="md-nav__link">
+    <a href="../voyagems.md" title="Voyage management microservice" class="md-nav__link">
       Voyage management microservice
     </a>
   </li>
@@ -694,6 +714,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#deploy-to-openshift-container-platform-ocp" title="Deploy to OpenShift Container Platform (OCP)" class="md-nav__link">
+    Deploy to OpenShift Container Platform (OCP)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploy-to-ocp-311" title="Deploy to OCP 3.11" class="md-nav__link">
+    Deploy to OCP 3.11
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -716,7 +756,7 @@
                 <h1 id="fleet-manager-microservice">Fleet manager microservice</h1>
 <p>This microservice is responsible to support simulation of fleet of container carrier vessels. It used for demonstration purpose, but it is still using an event-driven microservice implementation approach. It supports the event, actors, and commands discovered during the event storming workshop and illustrated by the following figure for the "ship actor":</p>
 <p><img alt="" src="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/analysis/ship-dom-cmd3.png" /></p>
-<p>The service exposes simple REST API to support getting ships and fleets information, and start and stop simulator to emulate ship movements and container metrics events generation. When a ship leaves or enters it will also generate the events as listed in the analysis. </p>
+<p>The service exposes simple REST API to support getting ships and fleets information, and start and stop simulator to emulate ship movements and container metrics events generation. When a ship leaves or enters it will also generate the events as listed in the analysis.</p>
 <h2 id="what-you-will-learn">What you will learn</h2>
 <ul>
 <li>Using JAXRS API to define REST resources</li>
@@ -745,9 +785,9 @@
 <li>[x] The capacity of a ship is represented by a matrix, number of rows x number of columns to make it simpler. Therefore the total number of container is rows*columns.</li>
 <li>[x] Support GPS lat/log position reports, as ship position event, of the position of the ship a different point in time. This is modeled as csv file with one row of (lat,log) pair, a row representing a time stamp. (1h?)</li>
 <li>[ ] Generate ship event when leaving source port and when entering destination port, and when docked.</li>
-<li>[ ] Define query of what happen to a ship from a given time to retrace its past voyages. </li>
+<li>[ ] Define query of what happen to a ship from a given time to retrace its past voyages.</li>
 </ul>
-<p>For more in depth analysis and concepts explained <a href="https://github.com/ibm-cloud-architecture/refarch-kc#fleetsships-microservice---concept">see this note</a> </p>
+<p>For more in depth analysis and concepts explained <a href="https://github.com/ibm-cloud-architecture/refarch-kc#fleetsships-microservice---concept">see this note</a></p>
 <h2 id="run">Run</h2>
 <h3 id="run-the-fleet-service-on-your-laptop">Run the fleet service on your laptop</h3>
 <p>If you are in a hurry and want to see the simulator running quickly on your local machine, you can do start our docker compose for a unique kafka node cluster, start liberty server with the simulator app deployed and use one of the scenario to trigger a simulation. This can be summarized as the following steps
@@ -760,7 +800,7 @@ $ docker-compose -f backbone-compose.yml up
 # Go back to this project to build it
 $ ./script/buildDocker.sh
 
-# Start the liberty server. Note that this script defines environment variables to access kafka brokers 
+# Start the liberty server. Note that this script defines environment variables to access kafka brokers
 $ ./scripts/runDocker.sh
 
 # Workaround for NullPointerException when starting Docker :
@@ -816,7 +856,7 @@ mvn liberty:run-server
 <h3 id="user-stories_1">User stories</h3>
 <p>We are listing here the basic features to support:</p>
 <ul>
-<li>[x] Support simulate ship movement and refrigerated containers metrics simulation via  REST api to be easily consumable from backend for frontend component using a POST verb. </li>
+<li>[x] Support simulate ship movement and refrigerated containers metrics simulation via  REST api to be easily consumable from backend for frontend component using a POST verb.</li>
 <li>[x] Support simulation of container fire, container down and heat wave so container metric events can be analyzed down stream.</li>
 <li>[x] Integrate with IBM Event Streams running on IBM public cloud  using api_key</li>
 <li>[x] Integrate with Kafka running locally.</li>
@@ -825,13 +865,13 @@ mvn liberty:run-server
 </ul>
 <h3 id="code-organization">Code organization</h3>
 <p>The following package structure is used:
-<em> <code>ibm.labs.kc.model</code> for the domain specific model. 
-</em> <code>ibm.labs.kc.app.kafka</code> kafka consumer and producer and config management. 
+<em> <code>ibm.labs.kc.model</code> for the domain specific model.
+</em> <code>ibm.labs.kc.app.kafka</code> kafka consumer and producer and config management.
 <em> <code>ibm.labs.kc.app.rest</code> set of REST resources with API definitions
 </em> <code>ibm.labs.kc.dao</code> data access object for ship and fleet. Use mockup no backend DB yet.
 <em> <code>ibm.labs.kc.event.model</code> event definitions for the kafka topic payload
 </em> <code>ibm.labs.kc.simulator</code> simulators for the demo as we do not have real ships... yet.</p>
-<p>The most important properties are defined in the config.properties file under <code>src/main/resources</code>. </p>
+<p>The most important properties are defined in the config.properties file under <code>src/main/resources</code>.</p>
 <h3 id="test-driven-development">Test Driven Development</h3>
 <p>Test driven development should be used to develop microservice as it helps to develop by contract and think about how each function should work from a client point of view. <a href="https://cloudcontent.mybluemix.net/cloud/garage/content/code/practice_test_driven_development">This article</a> introduces the practice.
 To apply TDD we want to describe our approach for this project, by starting by the tests.</p>
@@ -864,8 +904,8 @@ To apply TDD we want to describe our approach for this project, by starting by t
 </pre></div>
 
 <p>In the future, we may want to filter out the ships or separate fleet from ship in different json files so some logic may be added in this <code>getFleets()</code> function. The DAO is defined via an interface, and we add a Factory to build DAO implementation depending on the configuration. The DAO implementation at first is loadding data from file.</p>
-<p>To execute all the tests outside of the Eclipse IDE, we use the maven: <code>mvn test</code>. </p>
-<p>Quickly we can see that the DAO may be more complex than expected so we add unit tests for the DAO too. After 10, 15 minutes we have a service component and a DAO with Factory and Mockup implementation created and tested. </p>
+<p>To execute all the tests outside of the Eclipse IDE, we use the maven: <code>mvn test</code>.</p>
+<p>Quickly we can see that the DAO may be more complex than expected so we add unit tests for the DAO too. After 10, 15 minutes we have a service component and a DAO with Factory and Mockup implementation created and tested.</p>
 <p>The Fleet service needs to be exposed as REST api, so we add the JAXRS annotations inside the service class to the method we want to expose.</p>
 <div class="codehilite"><pre><span></span><span class="nd">@Path</span><span class="o">(</span><span class="s">&quot;fleets&quot;</span><span class="o">)</span>
 <span class="kd">public</span> <span class="kd">class</span> <span class="nc">FleetService</span> <span class="o">{</span>
@@ -886,7 +926,7 @@ To apply TDD we want to describe our approach for this project, by starting by t
 <p>The pre-integration-test phase loads IBM Liberty server via another maven plugin: <a href="https://github.com/WASdev/ci.maven/blob/master/docs/parent-pom.md">liberty-maven-app-parent</a> so that the API can be tested from the app server.</p>
 <p>To execute the integration tests do a <code>mvn verify</code>.</p>
 <p>By using the same code approach as <code>HealthEndpointIT</code> we created a <code>TestFleetAPIsIT</code> Junit test class.</p>
-<p>The environment properties are set in the <code>pom.xml</code> file. </p>
+<p>The environment properties are set in the <code>pom.xml</code> file.</p>
 <div class="codehilite"><pre><span></span>    <span class="kd">protected</span> <span class="n">String</span> <span class="n">port</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&quot;liberty.test.port&quot;</span><span class="o">);</span>
     <span class="kd">protected</span> <span class="n">String</span> <span class="n">warContext</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&quot;war.context&quot;</span><span class="o">);</span>
     <span class="kd">protected</span> <span class="n">String</span> <span class="n">baseUrl</span> <span class="o">=</span> <span class="s">&quot;http://localhost:&quot;</span> <span class="o">+</span> <span class="n">port</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">warContext</span><span class="o">;</span>
@@ -917,9 +957,9 @@ The topic names are defined in the <code>src/main/resource/config.properties</co
 Event after adding the ShipSimulationControl Java Bean and the operation performSimulation into the service... we have a problem... How to unit tests without sending message to Kafka?.</p>
 <p>The ShipRunner is a Runnable class and uses the <code>positionPublisher</code> and <code>containerPublisher</code> which are standard Kafka producers.
 Here is a code snippet for the <code>run()</code> method of the <code>ShipRunner</code>: The ship positions are loaded from a file in the class loader and then for each container in the boat, send metrics.</p>
-<div class="codehilite"><pre><span></span><span class="k">try</span>  <span class="o">{</span> 
+<div class="codehilite"><pre><span></span><span class="k">try</span>  <span class="o">{</span>
     <span class="k">for</span> <span class="o">(</span><span class="n">Position</span> <span class="n">p</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">positions</span><span class="o">)</span> <span class="o">{</span>
-        <span class="c1">// ships publish their position to a queue </span>
+        <span class="c1">// ships publish their position to a queue</span>
         <span class="n">ShipPosition</span> <span class="n">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipPosition</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">shipName</span><span class="o">,</span><span class="n">p</span><span class="o">.</span><span class="na">getLatitude</span><span class="o">(),</span><span class="n">p</span><span class="o">.</span><span class="na">getLongitude</span><span class="o">());</span>
         <span class="n">positionPublisher</span><span class="o">.</span><span class="na">publishShipPosition</span><span class="o">(</span><span class="n">sp</span><span class="o">);</span>
 
@@ -933,7 +973,7 @@ Here is a code snippet for the <code>run()</code> method of the <code>ShipRunner
         <span class="n">currentWorldTime</span><span class="o">=</span><span class="n">modifyTime</span><span class="o">(</span><span class="n">currentWorldTime</span><span class="o">);</span>
         <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">numberOfMinutes</span><span class="o">*</span><span class="mi">60000</span><span class="o">/</span><span class="k">this</span><span class="o">.</span><span class="na">positions</span><span class="o">.</span><span class="na">size</span><span class="o">()));</span>
     <span class="o">}</span>
-<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span> 
+<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
 </pre></div>
 
 <p>So to avoid using kafka for unit tests, we can use mockito to mockup the producers. We encourage to read this <a href="https://javacodehouse.com/blog/mockito-tutorial/">Mockito tutorial</a> and <a href="http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects">this one.</a> to have some basic knowledge on how to use mockito. We added the following dependency in the <code>pom.xml</code>.</p>
@@ -951,7 +991,7 @@ Here is a code snippet for the <code>run()</code> method of the <code>ShipRunner
  <span class="nd">@Mock</span>
  <span class="kd">static</span> <span class="n">ContainerPublisher</span> <span class="n">containerPublisherMock</span><span class="o">;</span>
 
- <span class="nd">@Rule</span> <span class="kd">public</span> <span class="n">MockitoRule</span> <span class="n">mockitoRule</span> <span class="o">=</span> <span class="n">MockitoJUnit</span><span class="o">.</span><span class="na">rule</span><span class="o">();</span> 
+ <span class="nd">@Rule</span> <span class="kd">public</span> <span class="n">MockitoRule</span> <span class="n">mockitoRule</span> <span class="o">=</span> <span class="n">MockitoJUnit</span><span class="o">.</span><span class="na">rule</span><span class="o">();</span>
 
 
  <span class="nd">@Test</span>
@@ -971,7 +1011,7 @@ Now the tests succeed and do not send any message to Kafka.</p>
 <span class="nd">@APIResponses</span><span class="o">(</span>
     <span class="n">value</span> <span class="o">=</span> <span class="o">{</span>
         <span class="nd">@APIResponse</span><span class="o">(</span>
-            <span class="n">responseCode</span> <span class="o">=</span> <span class="s">&quot;404&quot;</span><span class="o">,</span> 
+            <span class="n">responseCode</span> <span class="o">=</span> <span class="s">&quot;404&quot;</span><span class="o">,</span>
             <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;fleet not found&quot;</span><span class="o">,</span>
             <span class="n">content</span> <span class="o">=</span> <span class="nd">@Content</span><span class="o">(</span><span class="n">mediaType</span> <span class="o">=</span> <span class="s">&quot;text/plain&quot;</span><span class="o">)),</span>
         <span class="nd">@APIResponse</span><span class="o">(</span>
@@ -982,9 +1022,9 @@ Now the tests succeed and do not send any message to Kafka.</p>
     <span class="kd">public</span> <span class="n">Fleet</span> <span class="nf">getFleetByName</span><span class="o">(</span>
             <span class="nd">@Parameter</span><span class="o">(</span>
                     <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;The fleetname to get ships data&quot;</span><span class="o">,</span>
-                    <span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span> 
-                    <span class="n">example</span> <span class="o">=</span> <span class="s">&quot;KC-NorthFleet&quot;</span><span class="o">,</span> 
-                    <span class="n">schema</span> <span class="o">=</span> <span class="nd">@Schema</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">SchemaType</span><span class="o">.</span><span class="na">STRING</span><span class="o">))</span> 
+                    <span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span>
+                    <span class="n">example</span> <span class="o">=</span> <span class="s">&quot;KC-NorthFleet&quot;</span><span class="o">,</span>
+                    <span class="n">schema</span> <span class="o">=</span> <span class="nd">@Schema</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">SchemaType</span><span class="o">.</span><span class="na">STRING</span><span class="o">))</span>
             <span class="nd">@PathParam</span><span class="o">(</span><span class="s">&quot;fleetName&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">fleetName</span><span class="o">)</span> <span class="o">{</span>
             <span class="o">}</span>
 </pre></div>
@@ -1071,9 +1111,9 @@ Once the server is restarted, we first go to http://localhost:9080/api/explorer 
 <p>The application is configured to provide JAX-RS REST capabilities, JNDI, JSON parsing and Contexts and Dependency Injection (CDI).
 These capabilities are provided through dependencies in the <code>pom.xml</code> file and Liberty features enabled in the server config file found in <code>src/main/liberty/config/server.xml</code>.</p>
 <h3 id="run-locally">Run Locally</h3>
-<p>We described the process in the <a href="#run-the-fleet-service-on-your-laptop">section above</a>  </p>
+<p>We described the process in the <a href="#run-the-fleet-service-on-your-laptop">section above</a></p>
 <h3 id="run-on-ibm-cloud-with-kubernetes-service">Run on IBM Cloud with Kubernetes Service</h3>
-<p>We are deploying the simulator on the kubernetes service. To define your own IBM Kubernetes Service (IKS) <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md">see our explanations here.</a> </p>
+<p>We are deploying the simulator on the kubernetes service. To define your own IBM Kubernetes Service (IKS) <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md">see our explanations here.</a></p>
 <p>We use <a href="https://helm.sh/">Helm</a> to install the fleetms service. Helm is a package manager to deploy applications and services to Kubernetes cluster. Package definitions are charts, which are yaml files, to be shareable between teams.</p>
 <p>The first time you need to build a chart for any microservice, select a chart name (e.g. <code>fleetms</code>) and then use the command like:
 <div class="codehilite"><pre><span></span>$ mkdir chart <span class="o">&amp;&amp;</span> <span class="nb">cd</span> chart
@@ -1084,18 +1124,18 @@ $ helm init fleetms
 <li><em>Chart.yaml</em>: This is a global parameter file. Set the version and name attributes, as they will be used in deployment.yaml. Each time you deploy a new version of your app you can just change the version number. The values in the chart.yaml are used in the templates.</li>
 </ul>
 <p>The following modifications were done to the deployment configuration file to leverage environment variables and docker registry and kafka api key secrets.
-<em> In <code>values.yml</code> file: <br />
+<em> In <code>values.yml</code> file:
  <div class="codehilite"><pre><span></span><span class="n">env</span><span class="o">:</span>
  <span class="n">kafka</span><span class="o">:</span>
-   <span class="n">brokers</span><span class="o">:</span> <span class="n">kafka03</span><span class="o">....</span>  
-   <span class="n">env</span><span class="o">:</span> <span class="n">IBMCLOUD</span>  
-<span class="n">image</span><span class="o">:</span>  
-    <span class="n">repository</span><span class="o">:</span>   <span class="n">registry</span><span class="o">.</span><span class="na">ng</span><span class="o">.</span><span class="na">bluemix</span><span class="o">.</span><span class="na">net</span><span class="sr">/ibmcaseeda/</span><span class="n">kc</span><span class="o">-</span><span class="n">fleetms</span>   
-    <span class="n">tag</span><span class="o">:</span> <span class="n">latest</span>  
-    <span class="n">pullPolicy</span><span class="o">:</span> <span class="n">Always</span>  
-    <span class="n">pullSecret</span><span class="o">:</span>   <span class="n">bluemix</span><span class="o">-</span><span class="n">browncompute</span><span class="o">-</span><span class="n">secret</span><span class="o">-</span><span class="n">regional</span>  
+   <span class="n">brokers</span><span class="o">:</span> <span class="n">kafka03</span><span class="o">....</span>
+   <span class="n">env</span><span class="o">:</span> <span class="n">IBMCLOUD</span>
+<span class="n">image</span><span class="o">:</span>
+    <span class="n">repository</span><span class="o">:</span>   <span class="n">registry</span><span class="o">.</span><span class="na">ng</span><span class="o">.</span><span class="na">bluemix</span><span class="o">.</span><span class="na">net</span><span class="sr">/ibmcaseeda/</span><span class="n">kc</span><span class="o">-</span><span class="n">fleetms</span>
+    <span class="n">tag</span><span class="o">:</span> <span class="n">latest</span>
+    <span class="n">pullPolicy</span><span class="o">:</span> <span class="n">Always</span>
+    <span class="n">pullSecret</span><span class="o">:</span>   <span class="n">bluemix</span><span class="o">-</span><span class="n">browncompute</span><span class="o">-</span><span class="n">secret</span><span class="o">-</span><span class="n">regional</span>
 </pre></div>
-</em> In <code>deployment.yml</code> template file<br />
+</em> In <code>deployment.yml</code> template file
  <div class="codehilite"><pre><span></span><span class="x">  spec:</span>
 <span class="x">     imagePullSecrets:</span>
 <span class="x">         - name: </span><span class="cp">{{</span> <span class="nv">.Values.image.pullSecret</span> <span class="cp">}}</span><span class="x"></span>
@@ -1129,7 +1169,7 @@ $ cd chart
 $ helm install fleetms/ --name kc-fleetms --namespace browncompute
 
 # if you have an issue and wants to uninstall do
-$ helm del --purge kc-fleetms 
+$ helm del --purge kc-fleetms
 
 # If you need to upgrade an existing deployed release use the command:
 $ helm upgrade kc-fleetms fleetms/ --namespace browncompute
@@ -1163,6 +1203,52 @@ $ ibmcloud ks workers &lt;cluster_name&gt;
 <a href="https://console.ng.bluemix.net/devops/setup/deploy/"><img alt="Create Toolchain" src="https://console.ng.bluemix.net/devops/graphics/create_toolchain_button.png" /></a></p>
 <h2 id="simulator-tracing">Simulator tracing</h2>
 <p><TBD></p>
+<h2 id="deploy-to-openshift-container-platform-ocp">Deploy to OpenShift Container Platform (OCP)</h2>
+<h3 id="deploy-to-ocp-311">Deploy to OCP 3.11</h3>
+<p><strong>Cross-component deployment prerequisites:</strong> <em>(needs to be done once per unique deployment of the entire application)</em>
+1. If desired, create a non-default Service Account for usage of deploying and running the K Container reference implementation.  This will become more important in future iterations, so it is best to start small:
+  - Command: <code>oc create serviceaccount -n &lt;target-namespace&gt; kcontainer-runtime</code>
+  - Example: <code>oc create serviceaccount -n eda-refarch kcontainer-runtime</code>
+2. The target Service Account needs to be allowed to run containers as <code>anyuid</code> for the time being:
+  - Command: <code>oc adm policy add-scc-to-user anyuid -z &lt;service-account-name&gt; -n &lt;target-namespace&gt;</code>
+  - Example: <code>oc adm policy add-scc-to-user anyuid -z kcontainer-runtime -n eda-refarch</code>
+  - NOTE: This requires <code>cluster-admin</code> level privileges.
+3. If you are using Event Streams as your Kafka broker provider and it is deployed via the IBM Cloud Pak for Integration (ICP4I), you will need to create an additional Secret to store the generated Certificates &amp; Truststores.
+  - From the "Connect to this cluster" tab on the landing page of your Event Streams installation, download both the <strong>Java truststore</strong> and the <strong>PEM certificate</strong>.
+  - Create the Java truststore Secret:
+    - Command: <code>oc create secret generic &lt;secret-name&gt; --from-file=/path/to/downloaded/file.jks</code>
+    - Example: <code>oc create secret generic es-truststore-jks --from-file=/Users/osowski/Downloads/es-cert.jks</code>
+  - Create the PEM certificate Secret:
+    - Command: <code>oc create secret generic &lt;secret-name&gt; --from-file=/path/to/downloaded/file.pem</code>
+    - Example: <code>oc create secret generic es-ca-pemfile --from-file=/Users/osowski/Downloads/es-cert.pem</code></p>
+<p><strong>Perform the following for the <code>fleetms</code> microservice:</strong>
+1. Build and push the Docker image by one of the two options below:
+  - Create a Jenkins project, pointing to the remote GitHub repository for the <code>fleet-ms</code> microservice, and manually creating the necessary parameters.  Refer to the individual microservice's <a href="../fleet-ms/Jenkinsfile.NoKubernetesPlugin"><code>Jenkinsfile.NoKubernetesPlugin</code></a> for appropriate parameter values.
+  - Manually build the Docker image and push it to a registry that is accessible from your cluster (Docker Hub, IBM Cloud Container Registry, manually deployed Quay instance):
+    - <code>docker build -t &lt;private-registry&gt;/&lt;image-namespace&gt;/kc-fleet-ms:latest fleet-ms/</code>
+    - <code>docker login &lt;private-registry&gt;</code>
+    - <code>docker push &lt;private-registry&gt;/&lt;image-namespace&gt;/kc-fleet-ms:latest</code>
+2. Generate application YAMLs via <code>helm template</code>:
+  - Parameters:
+    - <code>--set image.repository=&lt;private-registry&gt;/&lt;image-namespace&gt;/&lt;image-repository&gt;</code>
+    - <code>--set image.pullSecret=&lt;private-registry-pullsecret&gt;</code> (only required if pulling from an external private registry)
+    - <code>--set kafka.brokersConfigMap=&lt;kafka brokers ConfigMap name&gt;</code>
+    - <code>--set eventstreams.enabled=(true/false)</code> (<code>true</code> when connecting to Event Streams of any kind, <code>false</code> when connecting to Kafka directly)
+    - <code>--set eventstreams.apikeyConfigMap=&lt;kafka api key Secret name&gt;</code>
+    - <code>--set eventstreams.truststoreRequired=(true/false)</code> (<code>true</code> when connecting to Event Streams via ICP4I)
+    - <code>--set eventstreams.truststoreSecret=&lt;eventstreams jks file secret name&gt;</code> (only used when connecting to Event Streams via ICP4I)
+    - <code>--set eventstreams.truststorePassword=&lt;eventstreams jks password&gt;</code> (only used when connecting to Event Streams via ICP4I)
+    - <code>--set serviceAccountName=&lt;service-account-name&gt;</code>
+    - <code>--namespace &lt;target-namespace&gt;</code>
+    - <code>--output-dir &lt;local-template-directory&gt;</code>
+  - Example using Event Streams via ICP4I:
+   <div class="codehilite"><pre><span></span>helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-truststore-jks --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms
+</pre></div>
+  - Example using Event Streams hosted on IBM Cloud:
+   <div class="codehilite"><pre><span></span>helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms
+</pre></div>
+3. Deploy application using <code>oc apply</code>:
+  - <code>oc apply -f templates/fleetms/templates</code></p>
                 
                   
                 
@@ -1197,20 +1283,6 @@ $ ibmcloud ks workers &lt;cluster_name&gt;
             </div>
           </a>
         
-        
-          <a href="../voyagems/" title="Voyage management microservice" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Voyage management microservice
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
         
       </nav>
     </div>
