@@ -55,7 +55,7 @@ Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequ
   - Create a Jenkins project, pointing to the remote GitHub repository for the `voyages-ms` microservice, and manually creating the necessary parameters.  Refer to the individual microservice's [`Jenkinsfile.NoKubernetesPlugin`](../voyages-ms/Jenkinsfile.NoKubernetesPlugin) for appropriate parameter values.
   - Manually build the Docker image and push it to a registry that is accessible from your cluster (Docker Hub, IBM Cloud Container Registry, manually deployed Quay instance):
     - `docker build -t <private-registry>/<image-namespace>/kc-voyages-ms:latest order-command-ms/`
-    - `docker login <private-registry>`
+    - `docker login -u <user> -p $(oc whoami -t) <private-registry>`
     - `docker push <private-registry>/<image-namespace>/kc-voyages-ms:latest`
 2. Generate application YAMLs via `helm template`:
   - Parameters:

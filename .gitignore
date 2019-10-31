@@ -3,3 +3,4 @@ fleetms/bin/
 fleetms/es-cert.der
 .vscode/
 site/
+voyages-ms/templates/
