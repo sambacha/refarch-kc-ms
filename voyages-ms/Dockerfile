@@ -5,9 +5,8 @@ WORKDIR "/app"
 
 # Update packages and install dependency packages for services
 RUN apt-get update \
- && apt-get dist-upgrade -y \
  && dpkg -P libssl-dev \
- && apt-get install liblz4-dev libssl1.0-dev libsasl2-dev \
+ && apt-get install -y liblz4-dev libssl1.0-dev libsasl2-dev \
  && apt-get clean \
  && export LDFLAGS=-L/usr/local/opt/openssl/lib \
  && export CPPFLAGS=-I/usr/local/opt/openssl/include \
