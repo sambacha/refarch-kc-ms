@@ -26,7 +26,6 @@ USER root
 # 3 next lines need to be there to avoid NPE on javametrics-rest, javametrics-dash,
 COPY --from=0 /local/gitrepo/target/liberty/wlp/usr/servers/defaultServer /config/
 COPY --from=0 /local/gitrepo/target/liberty/wlp/usr/shared/resources /config/resources/
-COPY --from=0 /local/gitrepo/src/main/liberty/config/jvmbx.options /config/jvm.options
 # Grant write access to apps folder, this is to support old and new docker versions.
 # Liberty document reference : https://hub.docker.com/_/websphere-liberty/
 
