@@ -1,4 +1,4 @@
-name: Build & push images for 'order'
+name: Build & push images for 'kc-ms'
 on:
   push:
     branches:
