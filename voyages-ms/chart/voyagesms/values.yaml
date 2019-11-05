@@ -3,7 +3,7 @@
 replicaCount: 1
 revisionHistoryLimit: 1
 image:
-  repository: us.icr.io/ibmcaseeda/kc-voyagesms
+  repository: ibmcase/kcontainer-voyages-ms
   tag: latest
   pullPolicy: Always
   pullSecret: null

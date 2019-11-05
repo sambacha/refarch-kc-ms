@@ -5,10 +5,6 @@ LABEL maintainer="IBM Cloud Architecture Solution Engineering at IBM Cloud"
 RUN apt-get update && \
  apt-get install -y maven
 
- # attach volumes
-VOLUME /volume/gitrepo
-
-# create working directory
 RUN mkdir -p /local/gitrepo
 WORKDIR /local/gitrepo
 COPY src/ /local/gitrepo/src
@@ -19,19 +15,11 @@ RUN mvn install -DskipTests=true
 ### Stage 2 - Docker Build
 FROM websphere-liberty:19.0.0.3-microProfile2
 LABEL maintainer="IBM Cloud Architecture Solution Engineering at IBM Cloud"
-# This is the common image for websphere liberty to run only local
 
 USER root
-
-# 3 next lines need to be there to avoid NPE on javametrics-rest, javametrics-dash,
 COPY --from=0 /local/gitrepo/target/liberty/wlp/usr/servers/defaultServer /config/
-COPY --from=0 /local/gitrepo/target/liberty/wlp/usr/shared/resources /config/resources/
-# Grant write access to apps folder, this is to support old and new docker versions.
-# Liberty document reference : https://hub.docker.com/_/websphere-liberty/
 
 USER 1001
-
-# install any missing features required by server config
 RUN installUtility install defaultServer openapi-3.0 --acceptLicense
 
 # Upgrade to production license if URL to JAR provided
