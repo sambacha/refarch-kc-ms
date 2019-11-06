@@ -12,7 +12,7 @@ fi
 source ../../scripts/setenv.sh $kcenv
 msname="fleetms"
 chart=$(ls ./chart/| grep $msname)
-kname="kc-"$chart
+kname="kcontainer-fleet-ms"
 ns="greencompute"
 
 echo "##########################################"
@@ -37,7 +37,7 @@ if [[ "$kcenv" = "LOCAL" ]]
 then
    echo "docker build -f Dockerfile-local -t ibmcase/$kname ."
    docker build -f Dockerfile -t ibmcase/$kname .
-else 
+else
    docker build -f Dockerfile -t us.icr.io/ibmcaseeda/$kname .
 fi
 docker images | grep $kname

@@ -15,10 +15,11 @@ else
   kcenv=$1
 fi
 
+kname="kcontainer-voyages-ms"
 source  ./scripts/setenv.sh
 
 docker build -t ibmcase/$kname .
 if [[ "$kcenv" != "LOCAL" ]]; then
     # image for private registry in IBM Cloud
-    docker tag ibmcase/$kname us.icr.io/ibmcaseeda/$kname 
+    docker tag ibmcase/$kname us.icr.io/ibmcaseeda/$kname
 fi
