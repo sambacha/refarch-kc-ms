@@ -429,10 +429,9 @@ The following modifications were done to the deployment configuration file to le
     brokers: kafka03....
     env: IBMCLOUD
  image:
-     repository:   registry.ng.bluemix.net/ibmcaseeda/kc-fleetms
+     repository:   ibmcase/kcontainer-fleet-ms
      tag: latest
      pullPolicy: Always
-     pullSecret:   bluemix-browncompute-secret-regional
  ```
 * In `deployment.yml` template file
  ```yml
@@ -479,7 +478,7 @@ $ helm del --purge kc-fleetms
 $ helm upgrade kc-fleetms fleetms/ --namespace browncompute
 ```
 
-To get the IP address and port number of the `kc-fleetms` API use the commands:
+To get the IP address and port number of the `kcontainer-fleet-ms` API use the commands:
 
 ```
 $ kubectl get pods --namespace browncompute

@@ -425,10 +425,9 @@ The following modifications were done to the deployment configuration file to le
   kafka:
     brokers: kafka03....
  image:
-     repository:   registry.ng.bluemix.net/ibmcaseeda/kc-fleetms
+     repository: ibmcase/kcontainer-fleet-ms
      tag: latest
      pullPolicy: Always
-     pullSecret:   bluemix-browncompute-secret-regional
  ```
 * In `deployment.yml` template file
  ```yml
