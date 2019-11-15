@@ -23,7 +23,7 @@ module.exports = {
     },
 
     isEventStreams: function() {
-       return ('KAFKA_APIKEY' in process.env);
+       return ('KAFKA_APIKEY' in process.env && process.env.KAFKA_APIKEY.trim());
     },
 
     areEventStreamsCertificatesRequired: function() {
