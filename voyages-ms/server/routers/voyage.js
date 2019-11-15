@@ -46,6 +46,24 @@ module.exports = function(app) {
 
   });
 
+  router.post('/addVoyage/', function(req, res, next) {
+    try {
+      // Get the data element in the request which is the new voyage
+      var new_voyage = req.body;
+      console.log('Received new Voyage: ' + new_voyage);
+      // Check the JSON comes with all the parameters we expect and these are not empty
+      if (new_voyage.voyageID.trim() && new_voyage.shipID.trim() && new_voyage.srcPort.trim() && new_voyage.plannedDeparture.trim() && new_voyage.destPort.trim() && new_voyage.plannedArrival.trim() && new_voyage.freeCapacity != 0) {
+        voyagesList.push(new_voyage)
+        console.log('new Voyage added');
+      }
+    } catch (e) {
+      // An error parsing the JSON occurredß
+      console.error(e);
+    }
+    // Return list of voyages
+    res.send(voyagesList);
+  });
+
   app.use('/voyage', router);
 } // export
 
