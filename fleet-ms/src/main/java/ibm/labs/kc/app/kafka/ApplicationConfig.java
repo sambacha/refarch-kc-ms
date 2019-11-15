@@ -148,7 +148,7 @@ public class ApplicationConfig {
 		getProperties().put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG,
 	        		getProperties().getProperty(ApplicationConfig.KAFKA_BOOTSTRAP_SERVERS));
 
-		if (env.get("KAFKA_APIKEY") != null) {
+		if (env.get("KAFKA_APIKEY") != null && !env.get("KAFKA_APIKEY").isEmpty()) {
 			getProperties().setProperty(ApplicationConfig.KAFKA_APIKEY, env.get("KAFKA_APIKEY"));
 
 			getProperties().put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
