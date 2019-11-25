@@ -113,6 +113,7 @@ jobs:
       - name: Commit files
         run: |
           IMAGE_TAG=$(cat cached-build-tag/latest_tag.txt)
+          cd gitops
           git config --local user.email "gitops@ibmcloud.com"
           git config --local user.name "gitops-automation"
           git commit -m "Update to image ${IMAGE_TAG} for ${GITHUB_REPOSITORY}" -a
@@ -122,6 +123,6 @@ jobs:
           github_token: ${{ secrets.GITOPS_TOKEN }}
           repository: ${{ secrets.GITOPS_REPO }}
           branch: ${{ secrets.GITOPS_BRANCH }}
-          
+          directory: "gitops"          
           
 
