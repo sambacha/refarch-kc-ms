@@ -49,3 +49,78 @@ jobs:
         DOCKERFILE: Dockerfile
         IMAGE_NAME: ibmcase/kcontainer-voyages-ms
         IMAGE_TAG: ${{ steps.bump-version-action.outputs.new_tag }}
+    - name: Cache newest tag
+      id: cache-build-tag
+      run: |
+        echo ${IMAGE_TAG} > latest_tag.txt
+      env:
+        IMAGE_TAG: ${{ steps.bump-version-action.outputs.new_tag }}
+    - name: Upload newest tag
+      uses: actions/upload-artifact@v1
+      with:
+        name: cached-build-tag
+        path: latest_tag.txt
+        
+  update-gitops-repo:
+    if: ${{ secrets.GITOPS_REPO }} && ${{ secrets.GITOPS_TOKEN }}
+    runs-on: ubuntu-latest
+    env:
+      GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
+      GITOPS_REPO: ${{ secrets.GITOPS_REPO }}
+      GITOPS_BRANCH: ${{ secrets.GITOPS_BRANCH }}
+    steps:
+      - name: Download newest tag
+        uses: actions/download-artifact@v1
+        with:
+          name: cached-build-tag
+      - name: Update deployment yamls
+        shell: bash
+        run: |
+          IMAGE_TAG=$(cat cached-build-tag/latest_tag.txt)
+          echo ${IMAGE_TAG}
+          git clone ${{ secrets.GITOPS_REPO }} gitops
+          cd gitops
+          git checkout ${GITOPS_BRANCH}
+
+          #### Service one ####
+          IMAGE_NAME="ibmcase/kcontainer-fleet-ms"
+          SERVICE_NAME="fleetms"
+          ####
+          cd ${SERVICE_NAME}/templates
+          echo "images:" > kustomization.yaml
+          echo "- name: ${IMAGE_NAME}" >> kustomization.yaml
+          echo "  newTag: ${IMAGE_TAG}" >> kustomization.yaml
+          echo "resources:" >> kustomization.yaml
+          echo "- deployment.yaml" >> kustomization.yaml
+          kubectl kustomize . > deployment.yaml
+          rm kustomization.yaml
+          cd ../..
+          
+          #### Service two ####
+          IMAGE_NAME="ibmcase/kcontainer-voyages-ms"
+          SERVICE_NAME="voyagesms"
+          ####
+          cd ${SERVICE_NAME}/templates
+          echo "images:" > kustomization.yaml
+          echo "- name: ${IMAGE_NAME}" >> kustomization.yaml
+          echo "  newTag: ${IMAGE_TAG}" >> kustomization.yaml
+          echo "resources:" >> kustomization.yaml
+          echo "- deployment.yaml" >> kustomization.yaml
+          kubectl kustomize . > deployment.yaml
+          rm kustomization.yaml
+          cd ../..
+      - name: Commit files
+        run: |
+          IMAGE_TAG=$(cat cached-build-tag/latest_tag.txt)
+          git config --local user.email "gitops@ibmcloud.com"
+          git config --local user.name "gitops-automation"
+          git commit -m "Update to image ${IMAGE_TAG} for ${GITHUB_REPOSITORY}" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITOPS_TOKEN }}
+          repository: ${{ secrets.GITOPS_REPO }}
+          branch: ${{ secrets.GITOPS_BRANCH }}
+          
+          
+
