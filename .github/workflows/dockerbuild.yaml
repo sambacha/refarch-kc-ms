@@ -60,10 +60,10 @@ jobs:
       with:
         name: cached-build-tag
         path: latest_tag.txt
-        
+   
   update-gitops-repo:
-    if: secrets.GITOPS_REPO && secrets.GITOPS_TOKEN
-    needs: build-docker-images
+    if: startsWith(github.repository, 'ibm-cloud-architecture/')
+    needs: [build-docker-images]
     runs-on: ubuntu-latest
     env:
       GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
