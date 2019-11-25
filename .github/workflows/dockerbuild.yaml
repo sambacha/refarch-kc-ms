@@ -62,7 +62,8 @@ jobs:
         path: latest_tag.txt
         
   update-gitops-repo:
-    if: ${{ secrets.GITOPS_REPO }} && ${{ secrets.GITOPS_TOKEN }}
+    if: secrets.GITOPS_REPO && secrets.GITOPS_TOKEN
+    needs: build-docker-images
     runs-on: ubuntu-latest
     env:
       GITOPS_TOKEN: ${{ secrets.GITOPS_TOKEN }}
