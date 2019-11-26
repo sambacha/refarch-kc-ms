@@ -49,14 +49,11 @@ jobs:
         DOCKERFILE: Dockerfile
         IMAGE_NAME: ibmcase/kcontainer-voyages-ms
         IMAGE_TAG: ${{ steps.bump-version-action.outputs.new_tag }}
-    - name: Cache newest tag
-      id: cache-build-tag
-      run: |
-        echo ${IMAGE_TAG} > latest_tag.txt
-      env:
-        IMAGE_TAG: ${{ steps.bump-version-action.outputs.new_tag }}
-    - name: Upload newest tag
-      uses: actions/upload-artifact@v1
+    - name: Webhook to GitOps repo
+      id: gitops-repo-webhook
+      uses: osowski/repository-dispatch@v1
       with:
-        name: cached-build-tag
-        path: latest_tag.txt
+        token: ${{ secrets.WEBHOOK_TOKEN }}
+        repository: ibm-cloud-architecture/refarch-kc-gitops
+        event-type: gitops-refresh
+        client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "source": "${{ github.repository }}"}'
