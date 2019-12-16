@@ -26,7 +26,8 @@ const getProducerConfig = () => {
         'broker.version.fallback': '0.10.2.1',
         'log.connection.close' : false,
         'client.id': 'voyage-producer',
-        'dr_msg_cb': true // Enable delivery reports with message payload
+        'dr_msg_cb': true, // Enable delivery reports with message payload,
+        'socket.keepalive.enable': true
     };
     if (config.isEventStreams()) {
         eventStreamsConfig = getCloudConfig();
@@ -46,7 +47,8 @@ const getConsumerConfig = (gid) => {
         'log.connection.close' : false,
         'client.id': 'voyage-consumer',
         'group.id': gid,
-        'enable.auto.commit' : false
+        'enable.auto.commit' : false,
+        'socket.keepalive.enable': true
     };
     if (config.isEventStreams()) {
         eventStreamsConfig = getCloudConfig();
@@ -155,6 +157,7 @@ const reload = (subscription) => {
             }
 
             var reloadLimit = tps[0].offset-1;
+            console.log(tps);
             console.log('ReloadLimit='+reloadLimit);
 
             doReload(reloadLimit, subscription)
