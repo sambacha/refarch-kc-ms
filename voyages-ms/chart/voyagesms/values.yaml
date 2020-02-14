@@ -46,7 +46,7 @@ route:
   urlPrefix: kcontainer-voyagesms
 kafka:
   brokersConfigMap: kafka-brokers
-  orderTopicName: orders
+  topicsConfigMap: kafka-topics
 eventstreams:
   enabled: true
   apikeyConfigMap: eventstreams-apikey
