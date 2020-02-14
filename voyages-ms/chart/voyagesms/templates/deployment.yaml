@@ -50,7 +50,10 @@ spec:
                 name: "{{ .Values.kafka.brokersConfigMap }}"
                 key: brokers
           - name: ORDER_TOPIC
-            value: "{{ .Values.kafka.orderTopicName }}"
+            valueFrom:
+              configMapKeyRef:
+                name: "{{ .Values.kafka.topicsConfigMap }}"
+                key: ordersTopic
           {{- if .Values.eventstreams.enabled }}
           - name: KAFKA_APIKEY
             valueFrom:

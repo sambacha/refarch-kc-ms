@@ -41,9 +41,7 @@ route:
   urlPrefix: kcontainer-fleetms
 kafka:
   brokersConfigMap: kafka-brokers
-  bluewaterShipTopicName: bluewaterShip
-  bluewaterContainerTopicName: bluewaterContainer
-  bluewaterProblemTopicName: bluewaterProblem
+  topicsConfigMap: kafka-topics
 eventstreams:
   enabled: true
   apikeyConfigMap: eventstreams-apikey
