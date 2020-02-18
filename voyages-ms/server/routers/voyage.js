@@ -131,6 +131,24 @@ const cb = (message, reloading) => {
       console.log('[ERROR] - We could not find the order for orderID: ' + event.orderID);
     }
   }
+
+  if (event.type === 'OrderRejected') {
+    console.log('Order Rejected event for order ' + event.payload.orderID + ' received.');
+    if(event.payload.hasOwnProperty('voyageID')){
+      console.log('VoyageID assigned: ' + event.payload.voyageID);
+      console.log('Load used: ' + event.payload.quantity);
+      var compensation = compensateRejectedOrder(event.payload);
+      if (compensation.freeCapacity){
+        console.log('The new available load for voyageID: ' + event.payload.voyageID + ' is: ' + compensation.freeCapacity);
+      }
+      else{
+        console.log('[ERROR] - The voyageID: ' + event.payload.voyageID + ' could not be found.');
+      }
+    }
+    else {
+      console.log('No action taken. This order did not have a voyage assigned to it yet');
+    }
+  }
 }
 
 /**
@@ -160,4 +178,14 @@ const findSuitableVoyage = (order) => {
     }
   }
   return { 'reason': 'No matching destination'};
+}
+
+const compensateRejectedOrder = (order) => {
+  for (v of voyagesList) {
+    if (v.voyageID === order.voyageID) {
+        v.freeCapacity += order.quantity;
+        return { 'freeCapacity': v.freeCapacity};
+    }
+  }
+  return { 'reason': 'No matching voyageID'};
 }
