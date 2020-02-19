@@ -225,7 +225,7 @@ const listen = (subscription) => {
             consumer.commitMessageSync(message);
         } catch(err) {
             // TODO send to error queue
-            logger.error(err)
+            console.log(err);
         }
     });
     consumer.subscribe([subscription.topic]); //will consume from committed
