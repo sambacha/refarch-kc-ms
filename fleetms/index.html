@@ -32,7 +32,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.3">
     
     
       
@@ -40,17 +40,17 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
       
       
     
     
-      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
     
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
@@ -79,7 +79,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#fleet-manager-microservice" tabindex="1" class="md-skip">
+      <a href="#fleet-manager-microservice" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -88,7 +88,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href=".." title="Voyages and Fleet Simulation Solution Microservices" class="md-header-nav__button md-logo">
+        <a href=".." title="Voyages and Fleet Simulation Solution Microservices" aria-label="Voyages and Fleet Simulation Solution Microservices" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -119,7 +119,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
       <label class="md-icon md-search__icon" for="__search"></label>
       <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
         &#xE5CD;
@@ -482,7 +482,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../voyagems.md" title="Voyage management microservice" class="md-nav__link">
+    <a href="../voyagesms/" title="Voyage management microservice" class="md-nav__link">
       Voyage management microservice
     </a>
   </li>
@@ -776,47 +776,47 @@
 <h2 id="run">Run</h2>
 <h3 id="run-the-fleet-service-on-your-laptop">Run the fleet service on your laptop</h3>
 <p>If you are in a hurry and want to see the simulator running quickly on your local machine, you can do start our docker compose for a unique kafka node cluster, start liberty server with the simulator app deployed and use one of the scenario to trigger a simulation. This can be summarized as the following steps
-<div class="codehilite"><pre><span></span># <span class="nv">Go</span> <span class="nv">to</span> <span class="nv">the</span> <span class="nv">parent</span> <span class="nv">repository</span> <span class="nv">refarch</span><span class="o">-</span><span class="nv">kc</span><span class="o">/</span><span class="nv">docker</span> <span class="nv">folder</span>
-$ <span class="nv">cd</span> ..<span class="o">/</span><span class="nv">refarch</span><span class="o">-</span><span class="nv">kc</span><span class="o">/</span><span class="nv">docker</span>
+<div class="codehilite"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="k">Go</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">parent</span><span class="w"> </span><span class="n">repository</span><span class="w"> </span><span class="n">refarch</span><span class="o">-</span><span class="n">kc</span><span class="o">/</span><span class="n">docker</span><span class="w"> </span><span class="n">folder</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="p">..</span><span class="o">/</span><span class="n">refarch</span><span class="o">-</span><span class="n">kc</span><span class="o">/</span><span class="n">docker</span><span class="w"></span>
 
-# <span class="k">If</span> <span class="nv">not</span> <span class="nv">done</span> <span class="nv">previously</span>, <span class="nv">start</span> <span class="nv">kafka</span> <span class="nv">and</span> <span class="nv">zookeeper</span> <span class="nv">locally</span>. <span class="nv">See</span> <span class="nv">this</span> <span class="nv">section</span> <span class="k">for</span> <span class="nv">detail</span>: <span class="nv">https</span>:<span class="o">//</span><span class="nv">github</span>.<span class="nv">com</span><span class="o">/</span><span class="nv">ibm</span><span class="o">-</span><span class="nv">cloud</span><span class="o">-</span><span class="nv">architecture</span><span class="o">/</span><span class="nv">refarch</span><span class="o">-</span><span class="nv">kc</span>#<span class="nv">run</span><span class="o">-</span><span class="nv">locally</span>.
-$ <span class="nv">docker</span><span class="o">-</span><span class="nv">compose</span> <span class="o">-</span><span class="nv">f</span> <span class="nv">backbone</span><span class="o">-</span><span class="nv">compose</span>.<span class="nv">yml</span> <span class="nv">up</span>
+<span class="err">#</span><span class="w"> </span><span class="k">If</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">done</span><span class="w"> </span><span class="n">previously</span><span class="p">,</span><span class="w"> </span><span class="k">start</span><span class="w"> </span><span class="n">kafka</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">zookeeper</span><span class="w"> </span><span class="n">locally</span><span class="p">.</span><span class="w"> </span><span class="n">See</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">section</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nl">detail</span><span class="p">:</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">ibm</span><span class="o">-</span><span class="n">cloud</span><span class="o">-</span><span class="n">architecture</span><span class="o">/</span><span class="n">refarch</span><span class="o">-</span><span class="n">kc#run</span><span class="o">-</span><span class="n">locally</span><span class="p">.</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">docker</span><span class="o">-</span><span class="n">compose</span><span class="w"> </span><span class="o">-</span><span class="n">f</span><span class="w"> </span><span class="n">backbone</span><span class="o">-</span><span class="n">compose</span><span class="p">.</span><span class="n">yml</span><span class="w"> </span><span class="n">up</span><span class="w"></span>
 
-# <span class="nv">Go</span> <span class="nv">back</span> <span class="nv">to</span> <span class="nv">this</span> <span class="nv">project</span> <span class="nv">to</span> <span class="nv">build</span> <span class="nv">it</span>
-$ .<span class="o">/</span><span class="nv">script</span><span class="o">/</span><span class="nv">buildDocker</span>.<span class="nv">sh</span>
+<span class="err">#</span><span class="w"> </span><span class="k">Go</span><span class="w"> </span><span class="n">back</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">project</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="n">it</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">script</span><span class="o">/</span><span class="n">buildDocker</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
 
-# <span class="nv">Start</span> <span class="nv">the</span> <span class="nv">liberty</span> <span class="nv">server</span>. <span class="nv">Note</span> <span class="nv">that</span> <span class="nv">this</span> <span class="nv">script</span> <span class="nv">defines</span> <span class="nv">environment</span> <span class="nv">variables</span> <span class="nv">to</span> <span class="nv">access</span> <span class="nv">kafka</span> <span class="nv">brokers</span>
-$ .<span class="o">/</span><span class="nv">scripts</span><span class="o">/</span><span class="nv">runDocker</span>.<span class="nv">sh</span>
+<span class="err">#</span><span class="w"> </span><span class="k">Start</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">liberty</span><span class="w"> </span><span class="n">server</span><span class="p">.</span><span class="w"> </span><span class="n">Note</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="n">script</span><span class="w"> </span><span class="n">defines</span><span class="w"> </span><span class="n">environment</span><span class="w"> </span><span class="n">variables</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">access</span><span class="w"> </span><span class="n">kafka</span><span class="w"> </span><span class="n">brokers</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">runDocker</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
 
-# <span class="nv">Workaround</span> <span class="k">for</span> <span class="nv">NullPointerException</span> <span class="nv">when</span> <span class="nv">starting</span> <span class="nv">Docker</span> :
-# <span class="nv">run</span> <span class="nv">liberty</span> <span class="nv">locally</span> <span class="ss">(</span><span class="nv">see</span> <span class="nv">command</span> <span class="nv">above</span><span class="ss">)</span> <span class="nv">once</span>.
+<span class="err">#</span><span class="w"> </span><span class="n">Workaround</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">NullPointerException</span><span class="w"> </span><span class="k">when</span><span class="w"> </span><span class="n">starting</span><span class="w"> </span><span class="n">Docker</span><span class="w"> </span><span class="err">:</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">liberty</span><span class="w"> </span><span class="n">locally</span><span class="w"> </span><span class="p">(</span><span class="n">see</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">above</span><span class="p">)</span><span class="w"> </span><span class="n">once</span><span class="p">.</span><span class="w"></span>
 
-# <span class="nv">Verify</span> <span class="nv">the</span> <span class="nv">service</span> <span class="nv">is</span> <span class="nv">up</span> <span class="nv">and</span> <span class="nv">running</span> <span class="nv">by</span> <span class="nv">looking</span> <span class="nv">at</span> <span class="nv">the</span> <span class="nv">fleet</span> <span class="nv">API</span> <span class="nv">in</span> <span class="nv">your</span> <span class="nv">web</span> <span class="nv">browser</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">localhost</span>:<span class="mi">9081</span><span class="o">/</span><span class="nv">api</span><span class="o">/</span><span class="nv">explorer</span><span class="o">/</span> <span class="nv">and</span> <span class="nv">even</span> <span class="nv">execute</span> <span class="nv">the</span> <span class="nv">GET</span> <span class="o">/</span><span class="nv">fleetms</span><span class="o">/</span><span class="nv">fleets</span> <span class="nv">to</span> <span class="nv">get</span> <span class="nv">the</span> <span class="mi">3</span> <span class="nv">fleets</span> <span class="nv">defined</span>.
+<span class="err">#</span><span class="w"> </span><span class="n">Verify</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">up</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">running</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">looking</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">fleet</span><span class="w"> </span><span class="n">API</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">your</span><span class="w"> </span><span class="n">web</span><span class="w"> </span><span class="n">browser</span><span class="w"> </span><span class="nl">http</span><span class="p">:</span><span class="o">//</span><span class="nl">localhost</span><span class="p">:</span><span class="mi">9081</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">explorer</span><span class="o">/</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="n">even</span><span class="w"> </span><span class="k">execute</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">GET</span><span class="w"> </span><span class="o">/</span><span class="n">fleetms</span><span class="o">/</span><span class="n">fleets</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">get</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="n">fleets</span><span class="w"> </span><span class="n">defined</span><span class="p">.</span><span class="w"></span>
 
-# <span class="nv">Start</span> <span class="nv">the</span> <span class="nv">kafka</span> <span class="nv">consumer</span> <span class="nv">to</span> <span class="nv">get</span> <span class="nv">container</span> <span class="nv">metrics</span> <span class="nv">so</span> <span class="nv">you</span> <span class="nv">can</span> <span class="nv">see</span> <span class="nv">the</span> <span class="nv">solution</span> <span class="nv">generating</span> <span class="nv">events</span>.
-$ .<span class="o">/</span><span class="nv">scripts</span><span class="o">/</span><span class="nv">runContainerMetricConsumer</span>.<span class="nv">sh</span>
+<span class="err">#</span><span class="w"> </span><span class="k">Start</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">kafka</span><span class="w"> </span><span class="n">consumer</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">get</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="n">metrics</span><span class="w"> </span><span class="n">so</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">see</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">solution</span><span class="w"> </span><span class="n">generating</span><span class="w"> </span><span class="n">events</span><span class="p">.</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">scripts</span><span class="o">/</span><span class="n">runContainerMetricConsumer</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
 
-# <span class="nv">Start</span> <span class="nv">the</span> <span class="s2">&quot;</span><span class="s">Fire in containers</span><span class="s2">&quot;</span> <span class="nv">simulation</span>
-$ <span class="nv">cd</span> <span class="nv">scripts</span>
-$ .<span class="o">/</span><span class="nv">startContainerFireSimulation</span>.<span class="nv">sh</span>
-# .... <span class="nv">the</span> <span class="nv">simulation</span> <span class="nv">can</span> <span class="nv">run</span> <span class="k">for</span> <span class="nv">a</span> <span class="nv">minute</span> <span class="k">if</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">stop</span> <span class="nv">use</span> <span class="nv">the</span> <span class="nv">following</span> <span class="nv">command</span>
-$ .<span class="o">/</span><span class="nv">stopContainerSimulation</span>.<span class="nv">sh</span>
+<span class="err">#</span><span class="w"> </span><span class="k">Start</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="ss">&quot;Fire in containers&quot;</span><span class="w"> </span><span class="n">simulation</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">cd</span><span class="w"> </span><span class="n">scripts</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">startContainerFireSimulation</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="p">....</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">simulation</span><span class="w"> </span><span class="n">can</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">minute</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">you</span><span class="w"> </span><span class="n">want</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="k">use</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">following</span><span class="w"> </span><span class="n">command</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">stopContainerSimulation</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
 
-# <span class="nv">Another</span> <span class="nv">simulation</span>: <span class="nv">Start</span> <span class="nv">the</span> <span class="nv">Container</span> <span class="nv">power</span> <span class="nv">off</span> <span class="nv">simulation</span>
-$ .<span class="o">/</span><span class="nv">startContainerPowerOffSimulation</span>.<span class="nv">sh</span>
-</pre></div></p>
+<span class="err">#</span><span class="w"> </span><span class="n">Another</span><span class="w"> </span><span class="nl">simulation</span><span class="p">:</span><span class="w"> </span><span class="k">Start</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Container</span><span class="w"> </span><span class="nf">power</span><span class="w"> </span><span class="k">off</span><span class="w"> </span><span class="n">simulation</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="p">.</span><span class="o">/</span><span class="n">startContainerPowerOffSimulation</span><span class="p">.</span><span class="n">sh</span><span class="w"></span>
+</code></pre></div></p>
 <p>If you want to get a clear understanding of the traces see <a href="#simulator-tracing">this section</a></p>
 <h3 id="run-the-demo-locally-connected-to-event-streams-on-ibm-cloud">Run the demo locally connected to Event Streams on IBM Cloud</h3>
 <p>As an alternate you can use our Event Stream backbone we have configured on IBM Cloud and still run the fleet service on you laptop.</p>
 <p>If you want to run with our Event Streams backbone deployed on IBM Cloud, ask us for the api key and then do the following:
-<div class="codehilite"><pre><span></span><span class="n">export</span> <span class="n">KAFKA_BROKERS</span><span class="o">=</span><span class="ss">&quot;kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093&quot;</span>
-<span class="n">export</span> <span class="n">KAFKA_ENV</span><span class="o">=</span><span class="ss">&quot;IBMCLOUD&quot;</span>
-<span class="n">export</span> <span class="n">KAFKA_APIKEY</span><span class="o">=</span><span class="ss">&quot;&lt;the super secret key we will give you&gt;&quot;</span>
-<span class="n">mvn</span> <span class="n">liberty</span><span class="p">:</span><span class="n">run</span><span class="o">-</span><span class="n">server</span>
-</pre></div></p>
+<div class="codehilite"><pre><span></span><code><span class="err">export KAFKA_BROKERS=&quot;kafka03-prod02.messagehub.services.us-south.bluemix.net:9093,kafka01-prod02.messagehub.services.us-south.bluemix.net:9093,kafka02-prod02.messagehub.services.us-south.bluemix.net:9093,kafka04-prod02.messagehub.services.us-south.bluemix.net:9093,kafka05-prod02.messagehub.services.us-south.bluemix.net:9093&quot;</span>
+<span class="err">export KAFKA_ENV=&quot;IBMCLOUD&quot;</span>
+<span class="err">export KAFKA_APIKEY=&quot;&lt;the super secret key we will give you&gt;&quot;</span>
+<span class="err">mvn liberty:run-server</span>
+</code></pre></div></p>
 <h2 id="the-model">The model</h2>
 <p>A fleet will have one to many ships. Fleet has id and name. Ship has ID, name, status, position, port and type. Ship carries containers. Container has id, and metrics like amp, temperature. Here is an example of JSON document illustrating this model:
-<div class="codehilite"><pre><span></span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code> <span class="p">{</span>
     <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;f1&quot;</span><span class="p">,</span>
     <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;KC-NorthAtlantic&quot;</span><span class="p">,</span>
     <span class="nt">&quot;ships&quot;</span><span class="p">:</span> <span class="p">[</span>
@@ -835,7 +835,7 @@ $ .<span class="o">/</span><span class="nv">startContainerPowerOffSimulation</sp
          <span class="p">],</span>
       <span class="p">}],</span>
 <span class="p">}</span>
-</pre></div></p>
+</code></pre></div></p>
 <h2 id="code">Code</h2>
 <p>The base of the project was created using IBM Microclimate using microprofile / Java EE template deployable in WebSphere Liberty. Once, the project template was generated, we applied a Test Driven Development approach to develop the application logic. But first let define some use stories we want to support in this simulator.</p>
 <h3 id="user-stories_1">User stories</h3>
@@ -863,43 +863,43 @@ To apply TDD we want to describe our approach for this project, by starting by t
 <h4 id="start-simple">Start simple</h4>
 <p>As an example of TDD applied to this project, we want to test the "get the list of fleets" feature. As this code is built by iteration, the first iteration is to get the fleet definition and ships definition from files. The <code>src/main/resources</code> folder includes a json file to define the fleets. We do not need an external datasource for this mockup solution.</p>
 <p>The json is an array of fleet definitions, something like:
-<div class="codehilite"><pre><span></span><span class="p">[</span>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span>
   <span class="p">{</span>
     <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;f1&quot;</span><span class="p">,</span>
     <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;KC-NorthAtlantic&quot;</span><span class="p">,</span>
     <span class="nt">&quot;ships&quot;</span><span class="p">:</span> <span class="p">[</span> <span class="p">]</span>
   <span class="p">}</span>
 <span class="p">]</span>
-</pre></div></p>
+</code></pre></div></p>
 <p>So starting from the test, we implemented in <code>src/test/java</code> the <code>TestReadingFleet</code> class to test a FleetService. The service will provide the business interface and it will use a data access object to go to the datasource.</p>
 <p>The first test may look like the basic code below:</p>
-<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGetAllFleets</span><span class="o">()</span> <span class="o">{</span>
-    <span class="n">FleetDAO</span> <span class="n">dao</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FleetDAOMockup</span><span class="o">(</span><span class="s">&quot;Fleet.json&quot;</span><span class="o">);</span>
-    <span class="n">FleetService</span> <span class="n">serv</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FleetService</span><span class="o">(</span><span class="n">dao</span><span class="o">);</span>
-    <span class="n">List</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">serv</span><span class="o">.</span><span class="na">getFleets</span><span class="o">();</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertNotNull</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
-    <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">f</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="o">);</span>
-<span class="o">}</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span> <span class="kt">void</span> <span class="nf">testGetAllFleets</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">FleetDAO</span> <span class="n">dao</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FleetDAOMockup</span><span class="p">(</span><span class="s">&quot;Fleet.json&quot;</span><span class="p">);</span>
+    <span class="n">FleetService</span> <span class="n">serv</span> <span class="o">=</span> <span class="k">new</span> <span class="n">FleetService</span><span class="p">(</span><span class="n">dao</span><span class="p">);</span>
+    <span class="n">List</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;</span> <span class="n">f</span> <span class="o">=</span> <span class="n">serv</span><span class="p">.</span><span class="na">getFleets</span><span class="p">();</span>
+    <span class="n">Assert</span><span class="p">.</span><span class="na">assertNotNull</span><span class="p">(</span><span class="n">f</span><span class="p">);</span>
+    <span class="n">Assert</span><span class="p">.</span><span class="na">assertTrue</span><span class="p">(</span><span class="n">f</span><span class="p">.</span><span class="na">size</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>After generating class placeholder and java interface, executing the test fails, and we need to implement the DAO and the service operation <code>getFleets()</code>. In the FleetService we simply delegate to the DAO.</p>
-<div class="codehilite"><pre><span></span><span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;</span> <span class="nf">getFleets</span><span class="o">()</span> <span class="o">{</span>
-        <span class="k">return</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;(</span><span class="n">dao</span><span class="o">.</span><span class="na">getFleets</span><span class="o">());</span>
-    <span class="o">}</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;</span> <span class="nf">getFleets</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dao</span><span class="p">.</span><span class="na">getFleets</span><span class="p">());</span>
+    <span class="p">}</span>
+</code></pre></div>
 
 <p>In the future, we may want to filter out the ships or separate fleet from ship in different json files so some logic may be added in this <code>getFleets()</code> function. The DAO is defined via an interface, and we add a Factory to build DAO implementation depending on the configuration. The DAO implementation at first is loadding data from file.</p>
 <p>To execute all the tests outside of the Eclipse IDE, we use the maven: <code>mvn test</code>.</p>
 <p>Quickly we can see that the DAO may be more complex than expected so we add unit tests for the DAO too. After 10, 15 minutes we have a service component and a DAO with Factory and Mockup implementation created and tested.</p>
 <p>The Fleet service needs to be exposed as REST api, so we add the JAXRS annotations inside the service class to the method we want to expose.</p>
-<div class="codehilite"><pre><span></span><span class="nd">@Path</span><span class="o">(</span><span class="s">&quot;fleets&quot;</span><span class="o">)</span>
-<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FleetService</span> <span class="o">{</span>
+<div class="codehilite"><pre><span></span><code><span class="nd">@Path</span><span class="p">(</span><span class="s">&quot;fleets&quot;</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">FleetService</span> <span class="p">{</span>
 
     <span class="nd">@GET</span>
-    <span class="nd">@Produces</span><span class="o">(</span><span class="n">MediaType</span><span class="o">.</span><span class="na">APPLICATION_JSON</span><span class="o">)</span>
-    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;</span> <span class="nf">getFleets</span><span class="o">()</span> <span class="o">{}</span>
-<span class="o">}</span>
-</pre></div>
+    <span class="nd">@Produces</span><span class="p">(</span><span class="n">MediaType</span><span class="p">.</span><span class="na">APPLICATION_JSON</span><span class="p">)</span>
+    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Fleet</span><span class="o">&gt;</span> <span class="nf">getFleets</span><span class="p">()</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div>
 
 <p>So now if we want to test at the API level, we need to do integration tests. This is where <strong>IBM Microclimate</strong> is coming handy as it created a nice example with <code>HealthEndpointIT</code> test class to get us started. All integration tests are defined in the <code>it</code> java package so we can control the maven life cycle and execute the integration tests when the environment is ready. The <code>pom.xml</code> defines configuration using the <code>maven Failsafe Plugin</code> which is designed to run integration tests. This Maven plugin has four phases for running integration tests:</p>
 <ul>
@@ -912,16 +912,16 @@ To apply TDD we want to describe our approach for this project, by starting by t
 <p>To execute the integration tests do a <code>mvn verify</code>.</p>
 <p>By using the same code approach as <code>HealthEndpointIT</code> we created a <code>TestFleetAPIsIT</code> Junit test class.</p>
 <p>The environment properties are set in the <code>pom.xml</code> file.</p>
-<div class="codehilite"><pre><span></span>    <span class="kd">protected</span> <span class="n">String</span> <span class="n">port</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&quot;liberty.test.port&quot;</span><span class="o">);</span>
-    <span class="kd">protected</span> <span class="n">String</span> <span class="n">warContext</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">getProperty</span><span class="o">(</span><span class="s">&quot;war.context&quot;</span><span class="o">);</span>
-    <span class="kd">protected</span> <span class="n">String</span> <span class="n">baseUrl</span> <span class="o">=</span> <span class="s">&quot;http://localhost:&quot;</span> <span class="o">+</span> <span class="n">port</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">warContext</span><span class="o">;</span>
+<div class="codehilite"><pre><span></span><code>    <span class="kd">protected</span> <span class="n">String</span> <span class="n">port</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="na">getProperty</span><span class="p">(</span><span class="s">&quot;liberty.test.port&quot;</span><span class="p">);</span>
+    <span class="kd">protected</span> <span class="n">String</span> <span class="n">warContext</span> <span class="o">=</span> <span class="n">System</span><span class="p">.</span><span class="na">getProperty</span><span class="p">(</span><span class="s">&quot;war.context&quot;</span><span class="p">);</span>
+    <span class="kd">protected</span> <span class="n">String</span> <span class="n">baseUrl</span> <span class="o">=</span> <span class="s">&quot;http://localhost:&quot;</span> <span class="o">+</span> <span class="n">port</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="n">warContext</span><span class="p">;</span>
     <span class="c1">// .... then get a HTTP client and perform a HTTP GET</span>
-    <span class="n">Client</span> <span class="n">client</span> <span class="o">=</span> <span class="n">ClientBuilder</span><span class="o">.</span><span class="na">newClient</span><span class="o">();</span>
-    <span class="n">Invocation</span><span class="o">.</span><span class="na">Builder</span> <span class="n">invoBuild</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="na">target</span><span class="o">(</span><span class="n">url</span><span class="o">).</span><span class="na">request</span><span class="o">();</span>
-    <span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">invoBuild</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
-    <span class="n">String</span> <span class="n">fleetsAsString</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="na">readEntity</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    <span class="n">Client</span> <span class="n">client</span> <span class="o">=</span> <span class="n">ClientBuilder</span><span class="p">.</span><span class="na">newClient</span><span class="p">();</span>
+    <span class="n">Invocation</span><span class="p">.</span><span class="na">Builder</span> <span class="n">invoBuild</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="na">target</span><span class="p">(</span><span class="n">url</span><span class="p">).</span><span class="na">request</span><span class="p">();</span>
+    <span class="n">Response</span> <span class="n">response</span> <span class="o">=</span> <span class="n">invoBuild</span><span class="p">.</span><span class="na">get</span><span class="p">();</span>
+    <span class="n">String</span> <span class="n">fleetsAsString</span><span class="o">=</span><span class="n">response</span><span class="p">.</span><span class="na">readEntity</span><span class="p">(</span><span class="n">String</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
     <span class="c1">//..</span>
-</pre></div>
+</code></pre></div>
 
 <p>If you need to debug this test inside Eclipse, you need to start the liberty server as an external process by using <code>mvn liberty:run-server</code>.</p>
 <p>The second logic we want to TDD is the simulation.</p>
@@ -929,96 +929,96 @@ To apply TDD we want to describe our approach for this project, by starting by t
 <p>The simulation of the different container events is done in the class <code>BadEventSimulator</code>. But this class is used in a Runner, the <code>ShipRunner</code>. The approach is to move the ship to the next position as defined in the separate csv file (named by the ship's name), then to send the new ship position, and the container metrics at that position as events. So the simulator uses two Kafka producers, one for the ship position and one for the container metrics.
 The topic names are defined in the <code>src/main/resource/config.properties</code> as well as the Kafka parameters. If you did not configure your kafka server, we have a script to create those topics <a href="https://github.com/ibm-cloud-architecture/refarch-kc/tree/master/scripts/createLocalTopics.sh">here</a></p>
 <p>From a test point of view we want to create a simulation controller instance, call the service simulation operation and verify the impacted container:</p>
-<p><div class="codehilite"><pre><span></span><span class="nd">@Test</span>
-    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">validateContainerDown</span><span class="o">()</span> <span class="o">{</span>
-        <span class="n">serv</span> <span class="o">=</span>  <span class="k">new</span> <span class="n">ShipService</span><span class="o">();</span>
-        <span class="n">ShipSimulationControl</span> <span class="n">ctl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipSimulationControl</span><span class="o">(</span><span class="s">&quot;JimminyCricket&quot;</span><span class="o">,</span> <span class="n">ShipSimulationControl</span><span class="o">.</span><span class="na">REEFER_DOWN</span><span class="o">);</span>
-        <span class="n">ctl</span><span class="o">.</span><span class="na">setNumberOfMinutes</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
-        <span class="n">Response</span> <span class="n">res</span> <span class="o">=</span> <span class="n">serv</span><span class="o">.</span><span class="na">performSimulation</span><span class="o">(</span><span class="n">ctl</span><span class="o">);</span>
-        <span class="n">Ship</span> <span class="n">s</span> <span class="o">=</span> <span class="o">(</span><span class="n">Ship</span><span class="o">)</span><span class="n">res</span><span class="o">.</span><span class="na">getEntity</span><span class="o">();</span>
-        <span class="n">Assert</span><span class="o">.</span><span class="na">assertTrue</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">getContainers</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">get</span><span class="o">(</span><span class="mi">3</span><span class="o">).</span><span class="na">getStatus</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">Container</span><span class="o">.</span><span class="na">STATUS_DOWN</span><span class="o">));</span>
-    <span class="o">}</span>
-</pre></div>
+<p><div class="codehilite"><pre><span></span><code><span class="nd">@Test</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">validateContainerDown</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">serv</span> <span class="o">=</span>  <span class="k">new</span> <span class="n">ShipService</span><span class="p">();</span>
+        <span class="n">ShipSimulationControl</span> <span class="n">ctl</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipSimulationControl</span><span class="p">(</span><span class="s">&quot;JimminyCricket&quot;</span><span class="p">,</span> <span class="n">ShipSimulationControl</span><span class="p">.</span><span class="na">REEFER_DOWN</span><span class="p">);</span>
+        <span class="n">ctl</span><span class="p">.</span><span class="na">setNumberOfMinutes</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+        <span class="n">Response</span> <span class="n">res</span> <span class="o">=</span> <span class="n">serv</span><span class="p">.</span><span class="na">performSimulation</span><span class="p">(</span><span class="n">ctl</span><span class="p">);</span>
+        <span class="n">Ship</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ship</span><span class="p">)</span><span class="n">res</span><span class="p">.</span><span class="na">getEntity</span><span class="p">();</span>
+        <span class="n">Assert</span><span class="p">.</span><span class="na">assertTrue</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="na">getContainers</span><span class="p">().</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="na">get</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="na">getStatus</span><span class="p">().</span><span class="na">equals</span><span class="p">(</span><span class="n">Container</span><span class="p">.</span><span class="na">STATUS_DOWN</span><span class="p">));</span>
+    <span class="p">}</span>
+</code></pre></div>
 Event after adding the ShipSimulationControl Java Bean and the operation performSimulation into the service... we have a problem... How to unit tests without sending message to Kafka?.</p>
 <p>The ShipRunner is a Runnable class and uses the <code>positionPublisher</code> and <code>containerPublisher</code> which are standard Kafka producers.
 Here is a code snippet for the <code>run()</code> method of the <code>ShipRunner</code>: The ship positions are loaded from a file in the class loader and then for each container in the boat, send metrics.</p>
-<div class="codehilite"><pre><span></span><span class="k">try</span>  <span class="o">{</span>
-    <span class="k">for</span> <span class="o">(</span><span class="n">Position</span> <span class="n">p</span> <span class="o">:</span> <span class="k">this</span><span class="o">.</span><span class="na">positions</span><span class="o">)</span> <span class="o">{</span>
+<div class="codehilite"><pre><span></span><code><span class="k">try</span>  <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">Position</span> <span class="n">p</span> <span class="p">:</span> <span class="k">this</span><span class="p">.</span><span class="na">positions</span><span class="p">)</span> <span class="p">{</span>
         <span class="c1">// ships publish their position to a queue</span>
-        <span class="n">ShipPosition</span> <span class="n">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipPosition</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">shipName</span><span class="o">,</span><span class="n">p</span><span class="o">.</span><span class="na">getLatitude</span><span class="o">(),</span><span class="n">p</span><span class="o">.</span><span class="na">getLongitude</span><span class="o">());</span>
-        <span class="n">positionPublisher</span><span class="o">.</span><span class="na">publishShipPosition</span><span class="o">(</span><span class="n">sp</span><span class="o">);</span>
+        <span class="n">ShipPosition</span> <span class="n">sp</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipPosition</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">shipName</span><span class="p">,</span><span class="n">p</span><span class="p">.</span><span class="na">getLatitude</span><span class="p">(),</span><span class="n">p</span><span class="p">.</span><span class="na">getLongitude</span><span class="p">());</span>
+        <span class="n">positionPublisher</span><span class="p">.</span><span class="na">publishShipPosition</span><span class="p">(</span><span class="n">sp</span><span class="p">);</span>
 
         <span class="c1">// Then publish the state of their containers</span>
-        <span class="k">for</span> <span class="o">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Container</span><span class="o">&gt;</span> <span class="n">row</span> <span class="o">:</span>  <span class="n">ship</span><span class="o">.</span><span class="na">getContainers</span><span class="o">())</span> <span class="o">{</span>
-            <span class="k">for</span> <span class="o">(</span><span class="n">Container</span> <span class="n">c</span> <span class="o">:</span> <span class="n">row</span><span class="o">)</span> <span class="o">{</span>
-                <span class="n">ContainerMetric</span> <span class="n">cm</span> <span class="o">=</span> <span class="n">BadEventSimulator</span><span class="o">.</span><span class="na">buildContainerMetric</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">shipName</span><span class="o">,</span><span class="n">c</span><span class="o">,</span><span class="n">dateFormat</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">currentWorldTime</span><span class="o">));</span>
-                <span class="n">containerPublisher</span><span class="o">.</span><span class="na">publishContainerMetric</span><span class="o">(</span><span class="n">cm</span><span class="o">);</span>
-            <span class="o">}</span>
-        <span class="o">}</span>
-        <span class="n">currentWorldTime</span><span class="o">=</span><span class="n">modifyTime</span><span class="o">(</span><span class="n">currentWorldTime</span><span class="o">);</span>
-        <span class="n">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="n">Math</span><span class="o">.</span><span class="na">round</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">numberOfMinutes</span><span class="o">*</span><span class="mi">60000</span><span class="o">/</span><span class="k">this</span><span class="o">.</span><span class="na">positions</span><span class="o">.</span><span class="na">size</span><span class="o">()));</span>
-    <span class="o">}</span>
-<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
-</pre></div>
+        <span class="k">for</span> <span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Container</span><span class="o">&gt;</span> <span class="n">row</span> <span class="p">:</span>  <span class="n">ship</span><span class="p">.</span><span class="na">getContainers</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="n">Container</span> <span class="n">c</span> <span class="p">:</span> <span class="n">row</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">ContainerMetric</span> <span class="n">cm</span> <span class="o">=</span> <span class="n">BadEventSimulator</span><span class="p">.</span><span class="na">buildContainerMetric</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">shipName</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="n">dateFormat</span><span class="p">.</span><span class="na">format</span><span class="p">(</span><span class="n">currentWorldTime</span><span class="p">));</span>
+                <span class="n">containerPublisher</span><span class="p">.</span><span class="na">publishContainerMetric</span><span class="p">(</span><span class="n">cm</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">currentWorldTime</span><span class="o">=</span><span class="n">modifyTime</span><span class="p">(</span><span class="n">currentWorldTime</span><span class="p">);</span>
+        <span class="n">Thread</span><span class="p">.</span><span class="na">sleep</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="na">round</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="na">numberOfMinutes</span><span class="o">*</span><span class="mi">60000</span><span class="o">/</span><span class="k">this</span><span class="p">.</span><span class="na">positions</span><span class="p">.</span><span class="na">size</span><span class="p">()));</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">InterruptedException</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+</code></pre></div>
 
 <p>So to avoid using kafka for unit tests, we can use mockito to mockup the producers. We encourage to read this <a href="https://javacodehouse.com/blog/mockito-tutorial/">Mockito tutorial</a> and <a href="http://www.vogella.com/tutorials/Mockito/article.html#testing-with-mock-objects">this one.</a> to have some basic knowledge on how to use mockito. We added the following dependency in the <code>pom.xml</code>.</p>
-<div class="codehilite"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;dependency&gt;</span>
     <span class="nt">&lt;groupId&gt;</span>org.mockito<span class="nt">&lt;/groupId&gt;</span>
     <span class="nt">&lt;artifactId&gt;</span>mockito-core<span class="nt">&lt;/artifactId&gt;</span>
     <span class="nt">&lt;version&gt;</span>2.23.4<span class="nt">&lt;/version&gt;</span>
     <span class="nt">&lt;scope&gt;</span>test<span class="nt">&lt;/scope&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
-</pre></div>
+</code></pre></div>
 
 <p>Add a constructor in <code>ShipRunner</code> so we can inject the producer. The test can use mockup at the simulator level or at the producer level. Here is an example in the unit test class of injecting for producer:
-<div class="codehilite"><pre><span></span> <span class="nd">@Mock</span>
- <span class="kd">static</span> <span class="n">PositionPublisher</span> <span class="n">positionPublisherMock</span><span class="o">;</span>
+<div class="codehilite"><pre><span></span><code> <span class="nd">@Mock</span>
+ <span class="kd">static</span> <span class="n">PositionPublisher</span> <span class="n">positionPublisherMock</span><span class="p">;</span>
  <span class="nd">@Mock</span>
- <span class="kd">static</span> <span class="n">ContainerPublisher</span> <span class="n">containerPublisherMock</span><span class="o">;</span>
+ <span class="kd">static</span> <span class="n">ContainerPublisher</span> <span class="n">containerPublisherMock</span><span class="p">;</span>
 
- <span class="nd">@Rule</span> <span class="kd">public</span> <span class="n">MockitoRule</span> <span class="n">mockitoRule</span> <span class="o">=</span> <span class="n">MockitoJUnit</span><span class="o">.</span><span class="na">rule</span><span class="o">();</span>
+ <span class="nd">@Rule</span> <span class="kd">public</span> <span class="n">MockitoRule</span> <span class="n">mockitoRule</span> <span class="o">=</span> <span class="n">MockitoJUnit</span><span class="p">.</span><span class="na">rule</span><span class="p">();</span>
 
 
  <span class="nd">@Test</span>
- <span class="kd">public</span> <span class="kt">void</span> <span class="nf">validateContainerFire</span><span class="o">()</span> <span class="o">{</span>
+ <span class="kd">public</span> <span class="kt">void</span> <span class="nf">validateContainerFire</span><span class="p">()</span> <span class="p">{</span>
      <span class="c1">// use dependency injection via constructor.</span>
-    <span class="n">ShipRunner</span> <span class="n">sr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipRunner</span><span class="o">(</span><span class="n">positionPublisherMock</span><span class="o">,</span> <span class="n">containerPublisherMock</span><span class="o">);</span>
-    <span class="n">ShipSimulator</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipSimulator</span><span class="o">(</span><span class="n">sr</span><span class="o">);</span>
-    <span class="n">serv</span> <span class="o">=</span>  <span class="k">new</span> <span class="n">ShipService</span><span class="o">(</span><span class="n">DAOFactory</span><span class="o">.</span><span class="na">buildOrGetShipDAOInstance</span><span class="o">(</span><span class="s">&quot;Fleet.json&quot;</span><span class="o">),</span><span class="n">s</span><span class="o">);</span>
+    <span class="n">ShipRunner</span> <span class="n">sr</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipRunner</span><span class="p">(</span><span class="n">positionPublisherMock</span><span class="p">,</span> <span class="n">containerPublisherMock</span><span class="p">);</span>
+    <span class="n">ShipSimulator</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShipSimulator</span><span class="p">(</span><span class="n">sr</span><span class="p">);</span>
+    <span class="n">serv</span> <span class="o">=</span>  <span class="k">new</span> <span class="n">ShipService</span><span class="p">(</span><span class="n">DAOFactory</span><span class="p">.</span><span class="na">buildOrGetShipDAOInstance</span><span class="p">(</span><span class="s">&quot;Fleet.json&quot;</span><span class="p">),</span><span class="n">s</span><span class="p">);</span>
     <span class="c1">// ..</span>
-    <span class="n">Response</span> <span class="n">res</span> <span class="o">=</span> <span class="n">serv</span><span class="o">.</span><span class="na">performSimulation</span><span class="o">(</span><span class="n">ctl</span><span class="o">);</span>
-<span class="o">}</span>
-</pre></div>
+    <span class="n">Response</span> <span class="n">res</span> <span class="o">=</span> <span class="n">serv</span><span class="p">.</span><span class="na">performSimulation</span><span class="p">(</span><span class="n">ctl</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
 Now the tests succeed and do not send any message to Kafka.</p>
 <h3 id="apis-definition">APIs definition</h3>
 <p>We can define the API using yaml file and generates code from there, but we are using a TDD approach we start by the code: so we need to add API annotations to get the Swagger generated for us. The MicroProfile OpenAPI specification provides a set of Java interfaces and programming models that allow Java developers to natively produce OpenAPI v3 documents from their JAX-RS applications. We added annotations to the resource classes to support API documentation. Here is an example of microprofile openapi annotations.</p>
-<div class="codehilite"><pre><span></span><span class="nd">@Operation</span><span class="o">(</span><span class="n">summary</span> <span class="o">=</span> <span class="s">&quot;Get fleet by fleet name&quot;</span><span class="o">,</span><span class="n">description</span><span class="o">=</span><span class="s">&quot; Retrieve a fleet with ships from is unique name&quot;</span><span class="o">)</span>
-<span class="nd">@APIResponses</span><span class="o">(</span>
-    <span class="n">value</span> <span class="o">=</span> <span class="o">{</span>
-        <span class="nd">@APIResponse</span><span class="o">(</span>
-            <span class="n">responseCode</span> <span class="o">=</span> <span class="s">&quot;404&quot;</span><span class="o">,</span>
-            <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;fleet not found&quot;</span><span class="o">,</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="nd">@Content</span><span class="o">(</span><span class="n">mediaType</span> <span class="o">=</span> <span class="s">&quot;text/plain&quot;</span><span class="o">)),</span>
-        <span class="nd">@APIResponse</span><span class="o">(</span>
-            <span class="n">responseCode</span> <span class="o">=</span> <span class="s">&quot;200&quot;</span><span class="o">,</span>
-            <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;fleet retrieved&quot;</span><span class="o">,</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="nd">@Content</span><span class="o">(</span><span class="n">mediaType</span> <span class="o">=</span> <span class="s">&quot;application/json&quot;</span><span class="o">,</span>
-            <span class="n">schema</span> <span class="o">=</span> <span class="nd">@Schema</span><span class="o">(</span><span class="n">implementation</span> <span class="o">=</span> <span class="n">Fleet</span><span class="o">.</span><span class="na">class</span><span class="o">)))</span> <span class="o">})</span>
-    <span class="kd">public</span> <span class="n">Fleet</span> <span class="nf">getFleetByName</span><span class="o">(</span>
-            <span class="nd">@Parameter</span><span class="o">(</span>
-                    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;The fleetname to get ships data&quot;</span><span class="o">,</span>
-                    <span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="o">,</span>
-                    <span class="n">example</span> <span class="o">=</span> <span class="s">&quot;KC-NorthFleet&quot;</span><span class="o">,</span>
-                    <span class="n">schema</span> <span class="o">=</span> <span class="nd">@Schema</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">SchemaType</span><span class="o">.</span><span class="na">STRING</span><span class="o">))</span>
-            <span class="nd">@PathParam</span><span class="o">(</span><span class="s">&quot;fleetName&quot;</span><span class="o">)</span> <span class="n">String</span> <span class="n">fleetName</span><span class="o">)</span> <span class="o">{</span>
-            <span class="o">}</span>
-</pre></div>
+<div class="codehilite"><pre><span></span><code><span class="nd">@Operation</span><span class="p">(</span><span class="n">summary</span> <span class="o">=</span> <span class="s">&quot;Get fleet by fleet name&quot;</span><span class="p">,</span><span class="n">description</span><span class="o">=</span><span class="s">&quot; Retrieve a fleet with ships from is unique name&quot;</span><span class="p">)</span>
+<span class="nd">@APIResponses</span><span class="p">(</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nd">@APIResponse</span><span class="p">(</span>
+            <span class="n">responseCode</span> <span class="o">=</span> <span class="s">&quot;404&quot;</span><span class="p">,</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;fleet not found&quot;</span><span class="p">,</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="nd">@Content</span><span class="p">(</span><span class="n">mediaType</span> <span class="o">=</span> <span class="s">&quot;text/plain&quot;</span><span class="p">)),</span>
+        <span class="nd">@APIResponse</span><span class="p">(</span>
+            <span class="n">responseCode</span> <span class="o">=</span> <span class="s">&quot;200&quot;</span><span class="p">,</span>
+            <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;fleet retrieved&quot;</span><span class="p">,</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="nd">@Content</span><span class="p">(</span><span class="n">mediaType</span> <span class="o">=</span> <span class="s">&quot;application/json&quot;</span><span class="p">,</span>
+            <span class="n">schema</span> <span class="o">=</span> <span class="nd">@Schema</span><span class="p">(</span><span class="n">implementation</span> <span class="o">=</span> <span class="n">Fleet</span><span class="p">.</span><span class="na">class</span><span class="p">)))</span> <span class="p">})</span>
+    <span class="kd">public</span> <span class="n">Fleet</span> <span class="nf">getFleetByName</span><span class="p">(</span>
+            <span class="nd">@Parameter</span><span class="p">(</span>
+                    <span class="n">description</span> <span class="o">=</span> <span class="s">&quot;The fleetname to get ships data&quot;</span><span class="p">,</span>
+                    <span class="n">required</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+                    <span class="n">example</span> <span class="o">=</span> <span class="s">&quot;KC-NorthFleet&quot;</span><span class="p">,</span>
+                    <span class="n">schema</span> <span class="o">=</span> <span class="nd">@Schema</span><span class="p">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">SchemaType</span><span class="p">.</span><span class="na">STRING</span><span class="p">))</span>
+            <span class="nd">@PathParam</span><span class="p">(</span><span class="s">&quot;fleetName&quot;</span><span class="p">)</span> <span class="n">String</span> <span class="n">fleetName</span><span class="p">)</span> <span class="p">{</span>
+            <span class="p">}</span>
+</code></pre></div>
 
 <p>In the Liberty configuration file: <code>src/main/liberty/server.xml</code> we added the following features:
-<div class="codehilite"><pre><span></span><span class="nt">&lt;feature&gt;</span>jaxrs-2.0<span class="nt">&lt;/feature&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;feature&gt;</span>jaxrs-2.0<span class="nt">&lt;/feature&gt;</span>
 <span class="nt">&lt;feature&gt;</span>openapi-3.0<span class="nt">&lt;/feature&gt;</span>
 <span class="nt">&lt;feature&gt;</span>restConnector-2.0<span class="nt">&lt;/feature&gt;</span>
-</pre></div>
+</code></pre></div>
 Once the server is restarted, we first go to http://localhost:9080/api/explorer to access the API definitions and even we are able to test it:</p>
 <p><img alt="" src="../images/fleets-api.png" /></p>
 <p>A summary of the operations defined for this simulator are:</p>
@@ -1075,22 +1075,22 @@ Once the server is restarted, we first go to http://localhost:9080/api/explorer 
 </tbody>
 </table>
 <p>The pom.xml uses those variables to use the local kafka for the integration tests:</p>
-<div class="codehilite"><pre><span></span><span class="nt">&lt;configuration&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;configuration&gt;</span>
         <span class="nt">&lt;environmentVariables&gt;</span>
             <span class="nt">&lt;KAFKA_ENV&gt;</span>LOCAL<span class="nt">&lt;/KAFKA_ENV&gt;</span>
             <span class="nt">&lt;KAFKA_BROKERS&gt;</span>gc-kafka-0.gc-kafka-hl-svc.greencompute.svc.cluster.local:32224<span class="nt">&lt;/KAFKA_BROKERS&gt;</span>
         <span class="nt">&lt;/environmentVariables&gt;</span>
-</pre></div>
+</code></pre></div>
 
 <p>One interesting integration test is defined in the class <code>it.FireContainerSimulationIT.java</code> as it starts a Thread running a ContainerConsumer (bullet 1 in figure below) which uses Kafka api to get <code>Container events</code> (class <code>ibm.labs.kc.event.model.ContainerMetric</code>) from the <code>bluewaterContainer</code> topic, and then calls the POST HTTP end point (2): <code>http://localhost:9080/fleetms/ships/simulate</code> with a simulator control object (<code>ibm.labs.kc.dto.model.ShipSimulationControl</code>). The application is producing ship position events and container metrics events at each time slot (3). The consumer is getting multiple events (4) from the topic showing some containers are burning:</p>
-<div class="codehilite"><pre><span></span><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;c_2&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Reefer&quot;</span><span class="p">,</span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span><span class="nt">&quot;amp&quot;</span><span class="p">:</span><span class="mi">46</span><span class="p">,</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;FIRE&quot;</span><span class="p">,</span><span class="nt">&quot;row&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;shipId&quot;</span><span class="p">:</span><span class="s2">&quot;JimminyCricket&quot;</span><span class="p">}</span><span class="err">,</span>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;c_2&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Reefer&quot;</span><span class="p">,</span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span><span class="nt">&quot;amp&quot;</span><span class="p">:</span><span class="mi">46</span><span class="p">,</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;FIRE&quot;</span><span class="p">,</span><span class="nt">&quot;row&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&quot;shipId&quot;</span><span class="p">:</span><span class="s2">&quot;JimminyCricket&quot;</span><span class="p">}</span><span class="err">,</span>
 <span class="p">{</span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="s2">&quot;c_3&quot;</span><span class="p">,</span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;Reefer&quot;</span><span class="p">,</span><span class="nt">&quot;temperature&quot;</span><span class="p">:</span><span class="mi">150</span><span class="p">,</span><span class="nt">&quot;amp&quot;</span><span class="p">:</span><span class="mi">42</span><span class="p">,</span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="s2">&quot;FIRE&quot;</span><span class="p">,</span><span class="nt">&quot;row&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&quot;shipId&quot;</span><span class="p">:</span><span class="s2">&quot;JimminyCricket&quot;</span><span class="p">}</span>
-</pre></div>
+</code></pre></div>
 
 <p><img alt="" src="../images/it-fire-containers.png" /></p>
 <p>The integration tests are executed with maven:
-<div class="codehilite"><pre><span></span><span class="n">mvn</span> <span class="n">verify</span>
-</pre></div></p>
+<div class="codehilite"><pre><span></span><code><span class="err">mvn verify</span>
+</code></pre></div></p>
 <h2 id="deployment">Deployment</h2>
 <h3 id="configuration">Configuration</h3>
 <p>The application is configured to provide JAX-RS REST capabilities, JNDI, JSON parsing and Contexts and Dependency Injection (CDI).
@@ -1101,16 +1101,16 @@ These capabilities are provided through dependencies in the <code>pom.xml</code>
 <p>We are deploying the simulator on the kubernetes service. To define your own IBM Kubernetes Service (IKS) <a href="https://github.com/ibm-cloud-architecture/refarch-kc/blob/master/docs/prepare-ibm-cloud.md">see our explanations here.</a></p>
 <p>We use <a href="https://helm.sh/">Helm</a> to install the fleetms service. Helm is a package manager to deploy applications and services to Kubernetes cluster. Package definitions are charts, which are yaml files, to be shareable between teams.</p>
 <p>The first time you need to build a chart for any microservice, select a chart name (e.g. <code>fleetms</code>) and then use the command like:
-<div class="codehilite"><pre><span></span>$ mkdir chart <span class="o">&amp;&amp;</span> <span class="nb">cd</span> chart
+<div class="codehilite"><pre><span></span><code>$ mkdir chart <span class="o">&amp;&amp;</span> <span class="nb">cd</span> chart
 $ helm init fleetms
-</pre></div></p>
+</code></pre></div></p>
 <p>This creates yaml files and a simple set of folders. Those files play a role to define the deployment configuration for kubernetes. Under the templates folder the yaml files use parameters coming from the <code>values.yaml</code> and <code>chart.yaml</code> files.</p>
 <ul>
 <li><em>Chart.yaml</em>: This is a global parameter file. Set the version and name attributes, as they will be used in deployment.yaml. Each time you deploy a new version of your app you can just change the version number. The values in the chart.yaml are used in the templates.</li>
 </ul>
 <p>The following modifications were done to the deployment configuration file to leverage environment variables and docker registry and kafka api key secrets.
 * In <code>values.yml</code> file:
- <div class="codehilite"><pre><span></span><span class="n">env</span><span class="o">:</span>
+ <div class="codehilite"><pre><span></span><code><span class="n">env</span><span class="o">:</span>
  <span class="n">kafka</span><span class="o">:</span>
    <span class="n">brokers</span><span class="o">:</span> <span class="n">kafka03</span><span class="o">....</span>
    <span class="n">env</span><span class="o">:</span> <span class="n">IBMCLOUD</span>
@@ -1118,9 +1118,9 @@ $ helm init fleetms
     <span class="n">repository</span><span class="o">:</span>   <span class="n">ibmcase</span><span class="o">/</span><span class="n">kcontainer</span><span class="o">-</span><span class="n">fleet</span><span class="o">-</span><span class="n">ms</span>
     <span class="n">tag</span><span class="o">:</span> <span class="n">latest</span>
     <span class="n">pullPolicy</span><span class="o">:</span> <span class="n">Always</span>
-</pre></div>
+</code></pre></div>
 * In <code>deployment.yml</code> template file
- <div class="codehilite"><pre><span></span><span class="x">  spec:</span>
+ <div class="codehilite"><pre><span></span><code><span class="x">  spec:</span>
 <span class="x">     imagePullSecrets:</span>
 <span class="x">         - name: </span><span class="cp">{{</span> <span class="nv">.Values.image.pullSecret</span> <span class="cp">}}</span><span class="x"></span>
 <span class="x">     containers: ...</span>
@@ -1134,47 +1134,47 @@ $ helm init fleetms
 <span class="x">             secretKeyRef:</span>
 <span class="x">               name: es-secret</span>
 <span class="x">               key: apikey</span>
-</pre></div></p>
+</code></pre></div></p>
 <p>The commands for the deploymnet are described below:</p>
-<div class="codehilite"><pre><span></span># <span class="nv">be</span> <span class="nv">sure</span> <span class="nv">to</span> <span class="nv">be</span> <span class="nv">connected</span> <span class="nv">to</span> <span class="nv">your</span> <span class="nv">kubernetes</span> <span class="nv">cluster</span>:
-$ <span class="nv">ibmcloud</span> <span class="nv">login</span> <span class="o">-</span><span class="nv">a</span> <span class="nv">https</span>:<span class="o">//</span><span class="nv">api</span>.<span class="nv">us</span><span class="o">-</span><span class="nv">east</span>.<span class="nv">bluemix</span>.<span class="nv">net</span>
+<div class="codehilite"><pre><span></span><code><span class="o">#</span> <span class="n">be</span> <span class="n">sure</span> <span class="k">to</span> <span class="n">be</span> <span class="n">connected</span> <span class="k">to</span> <span class="n">your</span> <span class="n">kubernetes</span> <span class="k">cluster</span><span class="p">:</span>
+<span class="err">$</span> <span class="n">ibmcloud</span> <span class="n">login</span> <span class="o">-</span><span class="n">a</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">api</span><span class="p">.</span><span class="n">us</span><span class="o">-</span><span class="n">east</span><span class="p">.</span><span class="n">bluemix</span><span class="p">.</span><span class="n">net</span>
 
-# <span class="nv">Target</span> <span class="nv">the</span> <span class="nv">IBM</span> <span class="nv">Cloud</span> <span class="nv">Container</span> <span class="nv">Service</span> <span class="nv">region</span> <span class="nv">in</span> <span class="nv">which</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">work</span>
-$ <span class="nv">ibmcloud</span> <span class="nv">cs</span> <span class="nv">region</span><span class="o">-</span><span class="nv">set</span> <span class="nv">us</span><span class="o">-</span><span class="nv">east</span>
+<span class="o">#</span> <span class="n">Target</span> <span class="n">the</span> <span class="n">IBM</span> <span class="n">Cloud</span> <span class="n">Container</span> <span class="n">Service</span> <span class="n">region</span> <span class="k">in</span> <span class="n">which</span> <span class="n">you</span> <span class="n">want</span> <span class="k">to</span> <span class="k">work</span>
+<span class="err">$</span> <span class="n">ibmcloud</span> <span class="n">cs</span> <span class="n">region</span><span class="o">-</span><span class="k">set</span> <span class="n">us</span><span class="o">-</span><span class="n">east</span>
 
-$ <span class="nv">ibmcloud</span> <span class="nv">cs</span> <span class="nv">cluster</span><span class="o">-</span><span class="nv">config</span> <span class="o">&lt;</span><span class="nv">cluster</span><span class="o">-</span><span class="nv">name</span><span class="o">&gt;</span>
-$ <span class="nv">export</span> <span class="nv">KUBECONFIG</span><span class="o">=/</span><span class="nv">Users</span><span class="o">/</span><span class="nv">jeromeboyer</span><span class="o">/</span>.<span class="nv">bluemix</span><span class="o">/</span><span class="nv">plugins</span><span class="o">/</span><span class="nv">container</span><span class="o">-</span><span class="nv">service</span><span class="o">/</span><span class="nv">clusters</span><span class="o">/&lt;</span><span class="nv">cluster</span><span class="o">-</span><span class="nv">name</span><span class="o">&gt;/&lt;</span><span class="nv">kube</span><span class="o">-</span><span class="nv">config</span><span class="o">-&lt;</span><span class="nv">cluster</span><span class="o">-</span><span class="nv">name</span><span class="o">&gt;</span>.<span class="nv">yml</span><span class="o">&gt;</span>
+<span class="err">$</span> <span class="n">ibmcloud</span> <span class="n">cs</span> <span class="k">cluster</span><span class="o">-</span><span class="n">config</span> <span class="o">&lt;</span><span class="k">cluster</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span>
+<span class="err">$</span> <span class="n">export</span> <span class="n">KUBECONFIG</span><span class="o">=/</span><span class="n">Users</span><span class="o">/</span><span class="n">jeromeboyer</span><span class="o">/</span><span class="p">.</span><span class="n">bluemix</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">container</span><span class="o">-</span><span class="n">service</span><span class="o">/</span><span class="n">clusters</span><span class="o">/&lt;</span><span class="k">cluster</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;/&lt;</span><span class="n">kube</span><span class="o">-</span><span class="n">config</span><span class="o">-&lt;</span><span class="k">cluster</span><span class="o">-</span><span class="n">name</span><span class="o">&gt;</span><span class="p">.</span><span class="n">yml</span><span class="o">&gt;</span>
 
-# <span class="nv">Verify</span> <span class="nv">you</span> <span class="nv">reach</span> <span class="nv">the</span> <span class="nv">cluster</span> <span class="nv">and</span> <span class="nv">get</span> <span class="nv">the</span> <span class="nv">nodes</span>
-$ <span class="nv">kubectl</span> <span class="nv">get</span> <span class="nv">nodes</span>
-$ <span class="nv">helm</span> <span class="nv">init</span>
-$ <span class="nv">helm</span> <span class="nv">version</span>
-$ <span class="nv">cd</span> <span class="nv">chart</span>
-$ <span class="nv">helm</span> <span class="nv">install</span> <span class="nv">fleetms</span><span class="o">/</span> <span class="o">--</span><span class="nv">name</span> <span class="nv">kc</span><span class="o">-</span><span class="nv">fleetms</span> <span class="o">--</span><span class="nv">namespace</span> <span class="nv">browncompute</span>
+<span class="o">#</span> <span class="n">Verify</span> <span class="n">you</span> <span class="n">reach</span> <span class="n">the</span> <span class="k">cluster</span> <span class="k">and</span> <span class="k">get</span> <span class="n">the</span> <span class="n">nodes</span>
+<span class="err">$</span> <span class="n">kubectl</span> <span class="k">get</span> <span class="n">nodes</span>
+<span class="err">$</span> <span class="n">helm</span> <span class="n">init</span>
+<span class="err">$</span> <span class="n">helm</span> <span class="k">version</span>
+<span class="err">$</span> <span class="n">cd</span> <span class="n">chart</span>
+<span class="err">$</span> <span class="n">helm</span> <span class="n">install</span> <span class="n">fleetms</span><span class="o">/</span> <span class="c1">--name kc-fleetms --namespace browncompute</span>
 
-# <span class="k">if</span> <span class="nv">you</span> <span class="nv">have</span> <span class="nv">an</span> <span class="nv">issue</span> <span class="nv">and</span> <span class="nv">wants</span> <span class="nv">to</span> <span class="nv">uninstall</span> <span class="k">do</span>
-$ <span class="nv">helm</span> <span class="nv">del</span> <span class="o">--</span><span class="nv">purge</span> <span class="nv">kc</span><span class="o">-</span><span class="nv">fleetms</span>
+<span class="o">#</span> <span class="k">if</span> <span class="n">you</span> <span class="n">have</span> <span class="n">an</span> <span class="n">issue</span> <span class="k">and</span> <span class="n">wants</span> <span class="k">to</span> <span class="n">uninstall</span> <span class="k">do</span>
+<span class="err">$</span> <span class="n">helm</span> <span class="n">del</span> <span class="c1">--purge kc-fleetms</span>
 
-# <span class="k">If</span> <span class="nv">you</span> <span class="nv">need</span> <span class="nv">to</span> <span class="nv">upgrade</span> <span class="nv">an</span> <span class="nv">existing</span> <span class="nv">deployed</span> <span class="nv">release</span> <span class="nv">use</span> <span class="nv">the</span> <span class="nv">command</span>:
-$ <span class="nv">helm</span> <span class="nv">upgrade</span> <span class="nv">kc</span><span class="o">-</span><span class="nv">fleetms</span> <span class="nv">fleetms</span><span class="o">/</span> <span class="o">--</span><span class="nv">namespace</span> <span class="nv">browncompute</span>
-</pre></div>
+<span class="o">#</span> <span class="k">If</span> <span class="n">you</span> <span class="n">need</span> <span class="k">to</span> <span class="n">upgrade</span> <span class="n">an</span> <span class="k">existing</span> <span class="n">deployed</span> <span class="n">release</span> <span class="n">use</span> <span class="n">the</span> <span class="n">command</span><span class="p">:</span>
+<span class="err">$</span> <span class="n">helm</span> <span class="n">upgrade</span> <span class="n">kc</span><span class="o">-</span><span class="n">fleetms</span> <span class="n">fleetms</span><span class="o">/</span> <span class="c1">--namespace browncompute</span>
+</code></pre></div>
 
 <p>To get the IP address and port number of the <code>kcontainer-fleet-ms</code> API use the commands:</p>
-<div class="codehilite"><pre><span></span>$ <span class="nv">kubectl</span> <span class="nv">get</span> <span class="nv">pods</span> <span class="o">--</span><span class="nv">namespace</span> <span class="nv">browncompute</span>
-<span class="nv">NAME</span>                                  <span class="nv">READY</span>     <span class="nv">STATUS</span>    <span class="nv">RESTARTS</span>   <span class="nv">AGE</span>
-<span class="nv">fleetms</span><span class="o">-</span><span class="nv">deployment</span><span class="o">-</span><span class="mi">85</span><span class="nv">ccf47475</span><span class="o">-</span><span class="nv">nj54q</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span>       <span class="nv">Running</span>   <span class="mi">0</span>          <span class="mi">1</span><span class="nv">h</span>
+<div class="codehilite"><pre><span></span><code>$ kubectl get pods --namespace browncompute
+NAME                                  READY     STATUS    RESTARTS   AGE
+fleetms-deployment-85ccf47475-nj54q   <span class="m">1</span>/1       Running   <span class="m">0</span>          1h
 
 
-$ <span class="nv">kubectl</span> <span class="nv">describe</span> <span class="nv">pod</span> <span class="nv">fleetms</span><span class="o">-</span><span class="nv">deployment</span><span class="o">-</span><span class="mi">85</span><span class="nv">ccf47475</span><span class="o">-</span><span class="nv">nj54q</span> <span class="o">-</span><span class="nv">n</span> <span class="nv">browncompute</span>
+$ kubectl describe pod fleetms-deployment-85ccf47475-nj54q -n browncompute
 
-# <span class="nv">Get</span> <span class="nv">port</span> <span class="nv">number</span> <span class="k">for</span> <span class="nv">the</span> <span class="nv">exposed</span> <span class="nv">nodeport</span>
-$ <span class="nv">kubectl</span> <span class="nv">get</span> <span class="nv">service</span> <span class="o">-</span><span class="nv">n</span> <span class="nv">browncompute</span>
-<span class="nv">NAME</span>              <span class="nv">TYPE</span>       <span class="nv">CLUSTER</span><span class="o">-</span><span class="nv">IP</span>       <span class="nv">EXTERNAL</span><span class="o">-</span><span class="nv">IP</span>   <span class="nv">PORT</span><span class="ss">(</span><span class="nv">S</span><span class="ss">)</span>                         <span class="nv">AGE</span>
-<span class="nv">fleetms</span><span class="o">-</span><span class="nv">service</span>   <span class="nv">NodePort</span>   <span class="mi">172</span>.<span class="mi">21</span>.<span class="mi">151</span>.<span class="mi">255</span>   <span class="o">&lt;</span><span class="nv">none</span><span class="o">&gt;</span>        <span class="mi">9080</span>:<span class="mi">30951</span><span class="o">/</span><span class="nv">TCP</span>,<span class="mi">9443</span>:<span class="mi">30931</span><span class="o">/</span><span class="nv">TCP</span>   <span class="mi">1</span><span class="nv">h</span>
+<span class="c1"># Get port number for the exposed nodeport</span>
+$ kubectl get service -n browncompute
+NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT<span class="o">(</span>S<span class="o">)</span>                         AGE
+fleetms-service   NodePort   <span class="m">172</span>.21.151.255   &lt;none&gt;        <span class="m">9080</span>:30951/TCP,9443:30931/TCP   1h
 
-# <span class="nv">Get</span> <span class="nv">public</span> <span class="nv">address</span> <span class="nv">of</span> <span class="nv">the</span> <span class="nv">worker</span> <span class="nv">nodes</span>:
-$ <span class="nv">ibmcloud</span> <span class="nv">ks</span> <span class="nv">workers</span> <span class="o">&lt;</span><span class="nv">cluster_name</span><span class="o">&gt;</span>
-</pre></div>
+<span class="c1"># Get public address of the worker nodes:</span>
+$ ibmcloud ks workers &lt;cluster_name&gt;
+</code></pre></div>
 
 <p>Test the deployed app is running using the URL: <code>http://&lt;public-IP-address&gt;:&lt;port&gt;/fleetms/fleets</code></p>
 <h4 id="potential-issue">Potential issue</h4>
@@ -1226,15 +1226,16 @@ $ <span class="nv">ibmcloud</span> <span class="nv">ks</span> <span class="nv">w
     - <code>--namespace &lt;target-namespace&gt;</code>
     - <code>--output-dir &lt;local-template-directory&gt;</code>
   - Example using Event Streams via ICP4I:
-   <div class="codehilite"><pre><span></span><span class="n">helm</span> <span class="k">template</span> <span class="c1">--set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-truststore-jks --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms</span>
-</pre></div>
+   <div class="codehilite"><pre><span></span><code><span class="err">helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.truststoreRequired=true --set eventstreams.truststoreSecret=es-truststore-jks --set eventstreams.truststorePassword=password --output-dir templates --namespace eda-refarch chart/voyagesms</span>
+</code></pre></div>
   - Example using Event Streams hosted on IBM Cloud:
-   <div class="codehilite"><pre><span></span><span class="n">helm</span> <span class="k">template</span> <span class="c1">--set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms</span>
-</pre></div>
+   <div class="codehilite"><pre><span></span><code><span class="err">helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-fleet-ms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms</span>
+</code></pre></div>
 3. Deploy application using <code>oc apply</code>:
   - <code>oc apply -f templates/fleetms/templates</code></p>
                 
                   
+                
                 
               
               
@@ -1268,6 +1269,20 @@ $ <span class="nv">ibmcloud</span> <span class="nv">ks</span> <span class="nv">w
           </a>
         
         
+          <a href="../voyagesms/" title="Voyage management microservice" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Voyage management microservice
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
       </nav>
     </div>
   
@@ -1276,9 +1291,9 @@ $ <span class="nv">ibmcloud</span> <span class="nv">ks</span> <span class="nv">w
       <div class="md-footer-copyright">
         
         powered by
-        <a href="https://www.mkdocs.org">MkDocs</a>
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
         and
-        <a href="https://squidfunk.github.io/mkdocs-material/">
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs</a>
       </div>
       
@@ -1288,7 +1303,7 @@ $ <span class="nv">ibmcloud</span> <span class="nv">ks</span> <span class="nv">w
       
     </div>
     
-      <script src="../assets/javascripts/application.c648116f.js"></script>
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       

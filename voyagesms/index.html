@@ -32,25 +32,25 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.3">
     
     
       
-        <title>Voyage Management Service - Voyages and Fleet Simulation Solution Microservices</title>
+        <title>Voyage management microservice - Voyages and Fleet Simulation Solution Microservices</title>
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
       
       
     
     
-      <script src="../assets/javascripts/modernizr.74668098.js"></script>
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
     
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700|Roboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
         <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
@@ -79,7 +79,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#voyage-management-service" tabindex="1" class="md-skip">
+      <a href="#voyage-management-service" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -88,7 +88,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href=".." title="Voyages and Fleet Simulation Solution Microservices" class="md-header-nav__button md-logo">
+        <a href=".." title="Voyages and Fleet Simulation Solution Microservices" aria-label="Voyages and Fleet Simulation Solution Microservices" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -105,7 +105,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                Voyage Management Service
+                Voyage management microservice
               
             </span>
           
@@ -119,7 +119,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
       <label class="md-icon md-search__icon" for="__search"></label>
       <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
         &#xE5CD;
@@ -238,11 +238,83 @@
       
       
 
+  
 
-  <li class="md-nav__item">
-    <a href="../voyagems.md" title="Voyage management microservice" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Voyage management microservice
+      </label>
+    
+    <a href="./" title="Voyage management microservice" class="md-nav__link md-nav__link--active">
       Voyage management microservice
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#build" class="md-nav__link">
+    Build
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#run-locally-as-nodejs-application" class="md-nav__link">
+    Run locally as Node.js application
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-prerequisites" class="md-nav__link">
+    Deployment prerequisites
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy-to-openshift-container-platform-ocp" class="md-nav__link">
+    Deploy to OpenShift Container Platform (OCP)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploy-to-ocp-311" class="md-nav__link">
+    Deploy to OCP 3.11
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
     
@@ -335,10 +407,10 @@
 <p>The script <code>.script/buildDocker.sh</code> build the docker image for this service.</p>
 <h2 id="run-locally-as-nodejs-application">Run locally as Node.js application</h2>
 <p>This is more for development purpose in your sandbox.</p>
-<div class="codehilite"><pre><span></span>npm install
+<div class="codehilite"><pre><span></span><code>npm install
 npm <span class="nb">test</span>
 npm start
-</pre></div>
+</code></pre></div>
 
 <h2 id="deployment-prerequisites">Deployment prerequisites</h2>
 <p>Regardless of specific deployment targets (OCP, IKS, k8s), the following prerequisite Kubernetes artifacts need to be created to support the deployments of application components.  These artifacts need to be created once per unique deployment of the entire application and can be shared between application components in the same overall application deployment.</p>
@@ -392,15 +464,16 @@ npm start
     - <code>--namespace &lt;target-namespace&gt;</code>
     - <code>--output-dir &lt;local-template-directory&gt;</code>
   - Example using Event Streams via ICP4I:
-   <div class="codehilite"><pre><span></span><span class="n">helm</span> <span class="k">template</span> <span class="c1">--set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.caPemFileRequired=true --set eventstreams.caPemSecretName=es-ca-pemfile --output-dir templates --namespace eda-refarch chart/voyagesms</span>
-</pre></div>
+   <div class="codehilite"><pre><span></span><code><span class="err">helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set kafka.brokersConfigMap=es-kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=es-eventstreams-apikey --set serviceAccountName=kcontainer-runtime --set eventstreams.caPemFileRequired=true --set eventstreams.caPemSecretName=es-ca-pemfile --output-dir templates --namespace eda-refarch chart/voyagesms</span>
+</code></pre></div>
   - Example using Event Streams hosted on IBM Cloud:
-  <div class="codehilite"><pre><span></span><span class="n">helm</span> <span class="k">template</span> <span class="c1">--set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms</span>
-</pre></div>
+  <div class="codehilite"><pre><span></span><code><span class="err">helm template --set image.repository=rhos-quay.internal-network.local/browncompute/kc-voyages-ms --set kafka.brokersConfigMap=kafka-brokers --set eventstreams.enabled=true --set eventstreams.apikeyConfigMap=eventstreams-apikey --set serviceAccountName=kcontainer-runtime --output-dir templates --namespace eda-refarch chart/voyagesms</span>
+</code></pre></div>
 3. Deploy application using <code>oc apply</code>:
   - <code>oc apply -f templates/voyagesms/templates</code></p>
                 
                   
+                
                 
               
               
@@ -416,14 +489,35 @@ npm start
         
 <footer class="md-footer">
   
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../fleetms/" title="Fleet Simulator" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Fleet Simulator
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-footer-copyright">
         
         powered by
-        <a href="https://www.mkdocs.org">MkDocs</a>
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
         and
-        <a href="https://squidfunk.github.io/mkdocs-material/">
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs</a>
       </div>
       
@@ -433,7 +527,7 @@ npm start
       
     </div>
     
-      <script src="../assets/javascripts/application.c648116f.js"></script>
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
       
