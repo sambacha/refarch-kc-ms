@@ -76,7 +76,7 @@ const cb = (message, reloading) => {
     console.log('OrderCreated event received and stored. Waiting for its ContainerAllocated event.');
     myMap.set(event.payload.orderID, event);
     // Uncomment for debugging
-    console.log(myMap);
+    // console.log(myMap);
 
   }
   
@@ -100,10 +100,6 @@ const cb = (message, reloading) => {
               'voyageID': matchedVoyage.voyageID,
               'orderID': order.payload.orderID
             }
-          }
-          if (!myMap.delete(order.payload.orderID)){
-            console.log('[ERROR] -  An error occurred while deleting the orderID ' + order.payload.orderID + ' from the order in memory map');
-            console.log(myMap);
           }
         } else {
           assignOrRejectEvent = {
@@ -130,6 +126,10 @@ const cb = (message, reloading) => {
     } else {
       console.log('[ERROR] - We could not find the order for orderID: ' + event.orderID);
     }
+    if (!myMap.delete(order.payload.orderID)){
+      console.log('[ERROR] -  An error occurred while deleting the orderID ' + order.payload.orderID + ' from the order in memory map');
+      console.log(myMap);
+    }
   }
 
   if (event.type === 'OrderRejected') {
@@ -149,6 +149,16 @@ const cb = (message, reloading) => {
       console.log('No action taken. This order did not have a voyage assigned to it yet');
     }
   }
+
+  if (event.type === 'ContainerNotFound') {
+    // Simply delete the order from the in memory map
+    console.log('Container Not Found event for order ' + event.payload.orderID + ' received.');
+    if (!myMap.delete(event.payload.orderID)){
+      console.log('[ERROR] -  An error occurred while deleting the orderID ' + event.payload.orderID + ' from the order in memory map');
+      console.log(myMap);
+    }
+  }
+
 }
 
 /**
