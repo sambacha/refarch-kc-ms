@@ -132,12 +132,19 @@ const cb = (message, reloading) => {
     }
   }
 
+  /**
+   * Since the Voyage microservice is the last one, for now, in the SAGA pattern for the new order creation process,
+   * OrderRejected events will only be received when a container or a voyage has not been found for the order.
+   * Thus, these events will always come without a voyageID.
+   * However, we leave here the implementation for deallocate the space of the container in the voyage in case the
+   * SAGA pattern is extended in the future (for instance, with some payment functionality afterwards).
+   */
   if (event.type === 'OrderRejected') {
     console.log('Order Rejected event for order ' + event.payload.orderID + ' received.');
     if(event.payload.hasOwnProperty('voyageID')){
       console.log('VoyageID assigned: ' + event.payload.voyageID);
       console.log('Load used: ' + event.payload.quantity);
-      var compensation = compensateRejectedOrder(event.payload);
+      var compensation = compensateCancelledOrRejectedOrder(event.payload);
       if (compensation.freeCapacity){
         console.log('The new available load for voyageID: ' + event.payload.voyageID + ' is: ' + compensation.freeCapacity);
       }
@@ -147,6 +154,30 @@ const cb = (message, reloading) => {
     }
     else {
       console.log('No action taken. This order did not have a voyage assigned to it yet');
+    }
+  }
+
+  /**
+   * The OrderCancelled events are expected to come with a VoyageID.
+   * However, we only send a WARNING if it comes without a VoyageID
+   * in case there was a race condition whereby a cancellation is processed
+   * before the order gets assigned or rejected.
+   */
+  if (event.type === 'OrderCancelled') {
+    console.log('Order Cancelled event for order ' + event.payload.orderID + ' received.');
+    if(event.payload.hasOwnProperty('voyageID')){
+      console.log('VoyageID assigned: ' + event.payload.voyageID);
+      console.log('Load used: ' + event.payload.quantity);
+      var compensation = compensateCancelledOrRejectedOrder(event.payload);
+      if (compensation.freeCapacity){
+        console.log('The new available load for voyageID: ' + event.payload.voyageID + ' is: ' + compensation.freeCapacity);
+      }
+      else{
+        console.log('[ERROR] - The voyageID: ' + event.payload.voyageID + ' could not be found.');
+      }
+    }
+    else {
+      console.log('[WARNING] - This order did not have a voyage assigned to it yet. No action taken.');
     }
   }
 
@@ -190,7 +221,7 @@ const findSuitableVoyage = (order) => {
   return { 'reason': 'No matching destination'};
 }
 
-const compensateRejectedOrder = (order) => {
+const compensateCancelledOrRejectedOrder = (order) => {
   for (v of voyagesList) {
     if (v.voyageID === order.voyageID) {
         v.freeCapacity += order.quantity;
